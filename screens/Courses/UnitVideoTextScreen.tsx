@@ -8,13 +8,16 @@ import {
   Platform,
   TouchableOpacity,
   Image,
+  StatusBar,
 } from "react-native";
+
 //import VimeoPlayer from "../Courses/VimeoPlayer";
 import getVideoId from "get-video-id";
 import { ScrollView } from "react-native-gesture-handler";
 import Font from "../../constants/Font";
 import { WithLocalSvg } from "react-native-svg";
 import { WebView } from "react-native-webview";
+import ReactPlayer from "react-player/vimeo";
 
 import { VimeoPlayer } from "@mindtechapps/rn-vimeo-player";
 //import VideoPlayer from "react-native-video-controls";
@@ -36,19 +39,33 @@ const UnitVideoTextScreen = (props) => {
   const { id } = getVideoId(props.route.params.content.video);
   return (
     <View style={{ width, height, flex: 1 }}>
+      <StatusBar hidden />
       <Header
-        title={props.route.params.title}
+        title={`Unit ${props.route.params.order}`}
         onPress={() => {
           props.navigation.navigate("UnitScreen");
         }}
       />
-      <View style={{ width, height: 500 }}>
+      <View style={{ width, height: 350 }}>
         <VimeoPlayer videoId={id} />
       </View>
 
+      <Text
+        style={{
+          flex: 1,
+          textAlign: "left",
+          color: "#3E3E3E",
+          fontSize: Font.h5,
+          marginLeft: 15,
+          fontFamily: "Poppins-Regular",
+        }}
+      >
+        Unit : {props.route.params.title}
+      </Text>
+
       <View
         style={{
-          backgroundColor: "#FAFAFA",
+          backgroundColor: "#FFFFFF",
           flexDirection: "row",
           position: "absolute",
           bottom: 0,
@@ -106,7 +123,7 @@ const UnitVideoTextScreen = (props) => {
             marginLeft: 40,
           }}
           onPress={() => {
-            props.navigation.navigate("UnitTextScreenFirst");
+            //props.navigation.navigate("UnitTextScreenFirst",);
           }}
         >
           <Text

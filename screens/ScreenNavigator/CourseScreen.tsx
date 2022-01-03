@@ -7,6 +7,8 @@ import {
   Modal,
   Pressable,
   FlatList,
+  StatusBar,
+  Dimensions,
 } from "react-native";
 import CardComponentScreent from "../../components/CardCoponentScreent";
 import { ScrollView } from "react-native-gesture-handler";
@@ -53,6 +55,9 @@ const Data = [
     tag: [{ tag1: "Nutrition" }, { tag2: "health" }, { tag3: "Fitness" }],
   },
 ];
+
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 
 const CourseScreen = (props: {
   route: any;
@@ -108,7 +113,6 @@ const CourseScreen = (props: {
           keyExtractor={({ id }, index) => id}
           renderItem={({ item }) => (
             <View style={styles.screen}>
-              {console.warn(item)}
               <CardComponentScreent
                 Img={Data[1].Img}
                 title={item.title}
@@ -190,6 +194,7 @@ const CourseScreen = (props: {
 
   return (
     <View style={{ flex: 1 }}>
+      <StatusBar hidden />
       <Header title="Courses" />
       <Modal
         animationType="slide"
@@ -206,9 +211,9 @@ const CourseScreen = (props: {
           style={{
             borderRadius: 25,
             backgroundColor: "#E6E7E9",
-            width: 300,
+            width: width - 50,
             height: 50,
-            marginLeft: 20,
+            marginLeft: 25,
             flexDirection: "row",
           }}
         >
@@ -216,7 +221,7 @@ const CourseScreen = (props: {
             <TouchableOpacity
               style={{
                 backgroundColor: "#00B5E0",
-                width: 140,
+                width: width / 2 - 35,
                 height: 40,
                 margin: 5,
                 borderRadius: 25,
@@ -242,7 +247,7 @@ const CourseScreen = (props: {
             <TouchableOpacity
               style={{
                 backgroundColor: "#E6E7E9",
-                width: 140,
+                width: width / 2 - 35,
                 height: 40,
                 margin: 5,
                 borderRadius: 25,
@@ -270,7 +275,7 @@ const CourseScreen = (props: {
             <TouchableOpacity
               style={{
                 backgroundColor: "#00B5E0",
-                width: 140,
+                width: width / 2 - 35,
                 height: 40,
                 margin: 5,
                 borderRadius: 25,
@@ -296,7 +301,7 @@ const CourseScreen = (props: {
             <TouchableOpacity
               style={{
                 backgroundColor: "#E6E7E9",
-                width: 140,
+                width: width / 2 - 35,
                 height: 40,
                 margin: 5,
                 borderRadius: 25,
@@ -321,7 +326,7 @@ const CourseScreen = (props: {
           )}
         </View>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             width: 40,
             backgroundColor: "#00B5E0",
@@ -339,7 +344,7 @@ const CourseScreen = (props: {
             height={20}
             asset={require("../../assets/filterNew.svg")}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       {isAllCoursesClicked ? <AllCourses /> : <EnrolledCourses />}

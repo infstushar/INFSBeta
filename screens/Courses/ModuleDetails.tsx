@@ -19,6 +19,7 @@ import RenderHtml from "react-native-render-html";
 //import json2html from "json-to-html";
 import Header from "../../components/HeaderwithBack";
 import { WithLocalSvg } from "react-native-svg";
+import AdfToHtml from "./AdfTohtml";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -553,7 +554,7 @@ const ModuleDetails = (props) => {
                   paddingTop: 5,
                 }}
               >
-                {data.study_hours} hours
+                {data.study_hours / 30} Credits
               </Text>
             </View>
           </View>
@@ -590,7 +591,6 @@ const ModuleDetails = (props) => {
             <Text
               style={{
                 color: "#3E3E3E",
-
                 fontFamily: "Poppins-Medium",
                 fontSize: Font.h5,
               }}
@@ -600,7 +600,6 @@ const ModuleDetails = (props) => {
             <Text
               style={{
                 color: "#838383",
-
                 fontFamily: "Poppins-Regular",
                 fontSize: Font.p1,
               }}
@@ -709,7 +708,7 @@ const ModuleDetails = (props) => {
               {DATA[0].eligiblity}
             </Text>
           </View>
-          <View style={{ marginTop: 10 }}>
+          {/*<View style={{ marginTop: 10 }}>
             <Text
               style={{
                 color: "#3E3E3E",
@@ -754,7 +753,7 @@ const ModuleDetails = (props) => {
                   />
                 }
               >
-                <View>
+               <View>
                   <Card.Content>
                     <View style={{ flexDirection: "row" }}>
                       <Image
@@ -930,7 +929,7 @@ const ModuleDetails = (props) => {
                 </View>
               </Swiper>
             </Card>
-          </View>
+                    </View>*/}
         </View>
         <View style={{ height: 100 }}></View>
       </ScrollView>

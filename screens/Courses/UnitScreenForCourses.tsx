@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   Alert,
   FlatList,
+  StatusBar,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { WithLocalSvg } from "react-native-svg";
@@ -63,7 +64,7 @@ const UnitScreenForCourses = (props) => {
           props.navigation.goBack(null);
         }}
       />
-      <View style={{ flexDirection: "row", marginTop: 15, marginLeft: 20 }}>
+      {/* <View style={{ flexDirection: "row", marginTop: 15, marginLeft: 20 }}>
         <WithLocalSvg
           width={21}
           height={21}
@@ -81,24 +82,33 @@ const UnitScreenForCourses = (props) => {
         >
           Discussion Forum
         </Text>
-      </View>
-      <ScrollView>
-        <FlatList
-          data={data}
-          keyExtractor={({ id }, index) => id}
-          renderItem={({ item }) => (
+      </View> */}
+
+      <FlatList
+        data={data}
+        keyExtractor={({ id }, index) => id}
+        renderItem={({ item }) => (
+          <View style={{ flexDirection: "row", marginLeft: 10 }}>
+            <Text
+              style={{
+                marginLeft: 5,
+                fontFamily: "Poppins-Medium",
+                fontSize: normalize(17.5),
+                color: "#3E3E3E",
+                marginTop: 20,
+              }}
+            >
+              {item.order} :
+            </Text>
             <TouchableHighlight
               onPress={() => {
                 props.navigation.navigate("UnitScreen", item);
               }}
-              style={{ width: width, height: 90 }}
+              style={{ width: width - 40, height: 90 }}
             >
               <View
                 style={{
-                  marginLeft: 13,
                   marginTop: 15,
-
-                  marginRight: 10,
                 }}
               >
                 <Text
@@ -125,9 +135,9 @@ const UnitScreenForCourses = (props) => {
                 </Text>
               </View>
             </TouchableHighlight>
-          )}
-        />
-      </ScrollView>
+          </View>
+        )}
+      />
     </View>
   );
 };

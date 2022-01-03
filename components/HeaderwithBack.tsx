@@ -1,6 +1,12 @@
 import * as React from "react";
 import { Appbar } from "react-native-paper";
-import { TouchableOpacity, View, Text, ImageBackground } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  ImageBackground,
+  StatusBar,
+} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { WithLocalSvg } from "react-native-svg";
 import {
@@ -16,6 +22,7 @@ const HeaderwithBack = (props) => {
       resizeMode="cover"
       style={{ width: wp("100%") }}
     >
+      <StatusBar hidden />
       <Appbar.Header style={{ backgroundColor: "transparent" }}>
         <View style={{ width: wp("42%"), flexDirection: "row" }}>
           <TouchableOpacity

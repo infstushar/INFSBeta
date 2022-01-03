@@ -13,10 +13,11 @@ import {
 } from "react-native";
 import CourseContentScreen from "../../components/CourseContentScreen";
 import { ScrollView } from "react-native-gesture-handler";
-
+import AdfTohtml from "./AdfTohtml";
 import Swiper from "react-native-swiper";
 import Header from "../../components/HeaderwithBack";
 import { WithLocalSvg } from "react-native-svg";
+import ListComponent from "../../components/ListComponent";
 
 import { Card, Chip, List } from "react-native-paper";
 import Font from "../../constants/Font";
@@ -210,7 +211,10 @@ const CourseDetailScreen = (props) => {
           style={{ width: width, height: "100%" }}
         />
       </View>
-      <ScrollView style={{ flexGrow: 1 }}>
+      <ScrollView
+        style={{ flexGrow: 1 }}
+        contentInsetAdjustmentBehavior="automatic"
+      >
         <View style={{ marginLeft: 15 }}>
           <View style={{ flexDirection: "row", marginTop: 10 }}>
             <WithLocalSvg
@@ -338,7 +342,7 @@ const CourseDetailScreen = (props) => {
                   paddingTop: 5,
                 }}
               >
-                {data.study_hours} hours
+                {data.study_hours / 30} Credits
               </Text>
             </View>
           </View>
@@ -349,55 +353,18 @@ const CourseDetailScreen = (props) => {
             horizontal
           />*/}
         </View>
-        <View
-          style={{
-            marginTop: 10,
-            borderWidth: 1,
-            borderColor: "#EAEAEA",
+        <View>
+          <ListComponent
+            title={"This Course Includes"}
+            sourceData={data.courseoverview?.includes}
+          />
+        </View>
 
-            margin: 15,
-            paddingVertical: 15,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: Font.h5,
-              fontFamily: "Poppins-Medium",
-              color: "#3E3E3E",
-              marginLeft: 20,
-            }}
-          >
-            This Course Includes:
-          </Text>
-          <FlatList
-            data={DATA[0].coursecontent}
-            renderItem={renderItemforCourseContent}
-            keyExtractor={(item) => item.id}
-          />
-        </View>
-        <Text
-          style={{
-            fontSize: Font.h5,
-            fontFamily: "Poppins-Medium",
-            color: "#3E3E3E",
-            marginLeft: 30,
-          }}
-        >
-          Here’s what you ‘ll learn:
-        </Text>
-        <View
-          style={{
-            marginTop: 5,
-            paddingVertical: 15,
-            backgroundColor: "#F8F8F8",
-          }}
-        >
-          <FlatList
-            data={DATA[0].learningcontent}
-            renderItem={renderItemforlearn}
-            keyExtractor={(item) => item.id}
-          />
-        </View>
+        <ListComponent
+          title={"Here’s what you ‘ll learn"}
+          sourceData={data.courseoverview?.what_will_you}
+        />
+
         <View style={{ marginTop: 10 }}>
           <Text
             style={{
@@ -458,53 +425,16 @@ const CourseDetailScreen = (props) => {
         </TouchableOpacity> */}
 
         <View>
-          <Text
-            style={{
-              color: "#3E3E3E",
-              marginLeft: 15,
-              fontSize: Font.h5,
-              fontFamily: "Poppins-SemiBold",
-              marginTop: 5,
-            }}
-          >
-            Course Description
-          </Text>
-          <Text
-            style={{
-              marginLeft: 15,
-              fontSize: Font.p1,
-              fontFamily: "Poppins-Regular",
-              paddingVertical: 10,
-              marginHorizontal: 10,
-              color: "#838383",
-            }}
-          >
-            {DATA[0].description}
-          </Text>
+          <ListComponent
+            title={"Course Description"}
+            sourceData={data.courseoverview?.long_description}
+          />
         </View>
         <View>
-          <Text
-            style={{
-              color: "#3E3E3E",
-              marginLeft: 15,
-              fontSize: Font.h5,
-              fontFamily: "Poppins-SemiBold",
-            }}
-          >
-            Course Eligibility
-          </Text>
-          <Text
-            style={{
-              marginLeft: 15,
-              fontSize: Font.p1,
-              fontFamily: "Poppins-Regular",
-              paddingVertical: 10,
-              marginHorizontal: 10,
-              color: "#838383",
-            }}
-          >
-            {DATA[0].eligiblity}
-          </Text>
+          <ListComponent
+            title={"Course Eligibility"}
+            sourceData={data.courseoverview?.eligibility}
+          />
         </View>
         <View style={{ marginTop: 10 }}>
           <Text
@@ -527,13 +457,14 @@ const CourseDetailScreen = (props) => {
                   resizeMode: "stretch",
                 }}
               />
+
               <Image
                 source={require("../../assets/iso.jpeg")}
                 style={{
                   height: 60,
                   width: 60,
                   resizeMode: "stretch",
-                  marginLeft: 20,
+                  marginLeft: 30,
                 }}
               />
             </View>
@@ -548,7 +479,7 @@ const CourseDetailScreen = (props) => {
             />
           </View>
         </View>
-        <View style={{ marginTop: 10 }}>
+        {/* <View style={{ marginTop: 10 }}>
           <Text
             style={{
               color: "#3E3E3E",
@@ -831,11 +762,11 @@ const CourseDetailScreen = (props) => {
                   keyExtractor={(item) => item.id}
                 />
               </List.Accordion>
-            </List.Section>
+              </List.Section>
           </ScrollView>
-        </View>
+              </View>*/}
       </ScrollView>
-      <View
+      {/*  <View
         style={{
           alignItems: "center",
           flexDirection: "row",
@@ -903,7 +834,7 @@ const CourseDetailScreen = (props) => {
             Enroll Now
           </Text>
         </TouchableOpacity>
-      </View>
+          </View>*/}
     </View>
   );
 };

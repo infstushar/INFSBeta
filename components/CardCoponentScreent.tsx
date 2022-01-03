@@ -111,6 +111,9 @@ const CardCoponentScreent = (props) => {
                 style={{
                   flexDirection: "row",
                   marginLeft: 35,
+                  position: "absolute",
+                  right: 10,
+                  top: 5,
                 }}
               >
                 <WithLocalSvg
@@ -143,7 +146,7 @@ const CardCoponentScreent = (props) => {
                 style={{}}
               />
               <Text style={styles.cardTextStyleforMedium}>
-                {props.hrs} hours
+                {props.hrs / 30} Credits
               </Text>
             </View>
           </View>

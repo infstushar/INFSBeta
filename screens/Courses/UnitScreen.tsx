@@ -9,11 +9,14 @@ import {
   TouchableHighlight,
   Alert,
   FlatList,
+  StatusBar,
+  TouchableOpacity,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { WithLocalSvg } from "react-native-svg";
 import Header from "../../components/HeaderwithBack";
-
+import { Checkbox } from "react-native-paper";
+import Font from "../../constants/Font";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 const scale = width / 415;
@@ -52,7 +55,6 @@ const UnitScreen = (props) => {
   const displayText = () => {
     return data.map((item, id) => {});
   };
-
   return (
     <View style={{ backgroundColor: "#FFFFFF" }}>
       {console.warn(data)}
@@ -62,7 +64,7 @@ const UnitScreen = (props) => {
           props.navigation.goBack(null);
         }}
       />
-      <View style={{ flexDirection: "row", marginTop: 15, marginLeft: 20 }}>
+      {/* <View style={{ flexDirection: "row", marginTop: 15, marginLeft: 20 }}>
         <WithLocalSvg
           width={21}
           height={21}
@@ -80,41 +82,54 @@ const UnitScreen = (props) => {
         >
           Discussion Forum
         </Text>
-      </View>
+      </View> */}
 
       <FlatList
         data={data}
         keyExtractor={({ id }, index) => id}
         renderItem={({ item }) => (
-          <TouchableHighlight
-            onPress={() => {
-              props.navigation.navigate("UnitVideoTextScreen", item);
-            }}
-            style={{ width: width, height: 75 }}
-          >
-            <View style={{ marginLeft: 15, marginTop: 15 }}>
-              <Text
-                style={{
-                  marginLeft: 15,
-                  fontFamily: "Poppins-Medium",
-                  fontSize: normalize(17.5),
-                  color: "#3E3E3E",
-                  marginTop: 5,
-                }}
-              >
-                {item.title}
-              </Text>
-              <View style={{ flexDirection: "row" }}>
-                <WithLocalSvg
-                  width={12}
-                  height={14}
-                  asset={require("../../assets/Iconopen-document.svg")}
-                  style={{ marginLeft: 20 }}
-                />
-                <Text style={{ marginLeft: 5 }}>Video</Text>
+          <View style={{ flexDirection: "row", marginLeft: 20 }}>
+            <Text
+              style={{
+                fontFamily: "Poppins-Medium",
+                fontSize: normalize(17.5),
+                color: "#3E3E3E",
+                marginTop: 20,
+              }}
+            >
+              {item.order} :
+            </Text>
+            <TouchableHighlight
+              onPress={() => {
+                props.navigation.navigate("UnitVideoTextScreen", item);
+              }}
+              style={{ width: width - 40, height: 75 }}
+            >
+              <View style={{ marginLeft: 15, marginTop: 15 }}>
+                <Text
+                  style={{
+                    marginLeft: 15,
+                    fontFamily: "Poppins-Medium",
+                    fontSize: normalize(17.5),
+                    color: "#3E3E3E",
+                    marginTop: 5,
+                  }}
+                  numberOfLines={2}
+                >
+                  {item.title}
+                </Text>
+                <View style={{ flexDirection: "row" }}>
+                  <WithLocalSvg
+                    width={12}
+                    height={14}
+                    asset={require("../../assets/Iconopen-document.svg")}
+                    style={{ marginLeft: 20 }}
+                  />
+                  <Text style={{ marginLeft: 5 }}>Video</Text>
+                </View>
               </View>
-            </View>
-          </TouchableHighlight>
+            </TouchableHighlight>
+          </View>
         )}
       />
     </View>
@@ -126,6 +141,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  roundButton: {
+    height: 10,
+    width: 10,
+    borderRadius: 1000,
   },
 });
 

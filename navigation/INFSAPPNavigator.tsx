@@ -90,8 +90,8 @@ const INFSAPPNavigator = () => {
             }}
           />
           <Stack.Screen
-            name="Atkit"
-            component={Atkit}
+            name="AdfTohtml"
+            component={AdfTohtml}
             options={{
               headerShown: false,
               headerTitleStyle: { fontFamily: "Poppins-Regular" },
