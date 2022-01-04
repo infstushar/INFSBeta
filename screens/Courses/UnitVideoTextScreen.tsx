@@ -63,7 +63,7 @@ const UnitVideoTextScreen = (props) => {
         Unit : {props.route.params.title}
       </Text>
 
-      <View
+      {/* <View
         style={{
           backgroundColor: "#FFFFFF",
           flexDirection: "row",
@@ -138,7 +138,7 @@ const UnitVideoTextScreen = (props) => {
             Next Lesson
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 };

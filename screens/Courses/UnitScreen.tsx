@@ -101,7 +101,10 @@ const UnitScreen = (props) => {
             </Text>
             <TouchableHighlight
               onPress={() => {
-                props.navigation.navigate("UnitVideoTextScreen", item);
+                console.warn(item.lesson_type);
+                if (item.lesson_type === "video")
+                  props.navigation.navigate("UnitVideoTextScreen", item);
+                else props.navigation.navigate("UnitTextScreen", item);
               }}
               style={{ width: width - 40, height: 75 }}
             >
@@ -125,7 +128,9 @@ const UnitScreen = (props) => {
                     asset={require("../../assets/Iconopen-document.svg")}
                     style={{ marginLeft: 20 }}
                   />
-                  <Text style={{ marginLeft: 5 }}>Video</Text>
+                  <Text style={{ marginLeft: 5, textTransform: "capitalize" }}>
+                    {item.lesson_type}
+                  </Text>
                 </View>
               </View>
             </TouchableHighlight>

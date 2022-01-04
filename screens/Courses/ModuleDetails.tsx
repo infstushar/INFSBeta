@@ -20,6 +20,7 @@ import RenderHtml from "react-native-render-html";
 import Header from "../../components/HeaderwithBack";
 import { WithLocalSvg } from "react-native-svg";
 import AdfToHtml from "./AdfTohtml";
+import ListComponent from "../../components/ListComponent";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -31,173 +32,6 @@ const normalize = (size) => {
   } else {
     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
   }
-};
-const Document = {
-  type: "doc",
-  content: [
-    {
-      type: "bulletList",
-      content: [
-        {
-          type: "listItem",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "INFS Basic Nutrition and Fitness Course is designed specifically for the people who are at the absolute start of their fitness career.",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: "listItem",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "It is highly recommended for a fitness enthusiast or anyone keen to learn how to get results through scientific principles of nutrition and fitness.",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: "listItem",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "The concepts have been explained at a practical level through fun activity-based tasks that will help you improve your health and quality of life.",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: "listItem",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "This course has modules that form part of the professional courses in Nutrition and Exercise Science, so you are already on your way to completing requirements for a professional certification!",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: "listItem",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "Your learning is completely online and you can even attend Live Lectures virtually conducted by INFS faculty.",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: "listItem",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "The faculty will also be available to answer any queries you have in both formats - live in the planned tutorial sessions, as well as through the Discussion Forums.",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: "listItem",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "If you complete your assessment activities, you will be provided a Certificate towards completion of this course.",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [{ text: "The course is divided into 3 modules", type: "text" }],
-    },
-    {
-      type: "bulletList",
-      content: [
-        {
-          type: "listItem",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "Basics of Food and Nutrition (8 Units)",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: "listItem",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "Introduction to Exercise Science (6 Units)",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: "listItem",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  text: "Introduction to Resistance Training (5 Units)",
-                  type: "text",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    { type: "paragraph", content: [] },
-    {
-      type: "paragraph",
-      content: [
-        { text: "The duration of the course is 4-6 weeks.", type: "text" },
-      ],
-    },
-  ],
-  version: 1,
 };
 
 const DATA = [
@@ -587,6 +421,7 @@ const ModuleDetails = (props) => {
               keyExtractor={(item) => item.id}
             />
           </View>
+
           <View style={{ marginTop: 10 }}>
             <Text
               style={{
@@ -608,7 +443,7 @@ const ModuleDetails = (props) => {
             </Text>
             <View style={styles.horizontalline} />
           </View>
-          <View style={{ width: width, height: "20%" }}>
+          {/* <View style={{ width: width, height: "20%" }}>
             <ScrollView>
               <List.Section style={{ marginRight: 5 }}>
                 <List.Accordion
@@ -658,9 +493,9 @@ const ModuleDetails = (props) => {
                   />
                 </List.Accordion>
               </List.Section>
-            </ScrollView>
-          </View>
-          <View>
+            </ScrollView> 
+          </View> */}
+          {/* <View>
             <Text
               style={{
                 color: "#3E3E3E",
@@ -683,6 +518,12 @@ const ModuleDetails = (props) => {
             >
               {DATA[0].description}
             </Text>
+          </View> */}
+          <View>
+            <ListComponent
+              title={"Module Description"}
+              sourceData={data.short_description}
+            />
           </View>
           <View>
             <Text
