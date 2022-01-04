@@ -115,23 +115,14 @@ const AdfTohtml = (props) => {
       //domVisitors={domVisitors}
       containerStyle={props.bgStyle}
       tagsStyles={{
-        ul: {
-          fontSize: Font.h6,
-        },
         li: {
-          marginTop: -30,
           fontFamily: "Poppins-Regular",
-          marginRight: 15,
-          lineHeight: 24,
           color: "#3E3E3E",
+          marginTop: -16,
         },
         p: {
-          marginLeft: 20,
           fontSize: Font.p1,
           fontFamily: "Poppins-Bold",
-          paddingVertical: 10,
-          marginHorizontal: 10,
-          // color: "#838383",
         },
       }}
     />
