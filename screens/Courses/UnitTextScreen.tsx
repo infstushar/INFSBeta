@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Font from "../../constants/Font";
-
+import AdfTohtml from "../Courses/AdfTohtml";
 import { WithLocalSvg } from "react-native-svg";
 import Header from "../../components/HeaderwithBack";
 import ListComponent from "../../components/ListComponent";
@@ -283,7 +283,15 @@ const UnitTextScreen = (props) => {
       />
       {console.warn(data.title)}
       <ScrollView>
-        <ListComponent sourceData={data.content} />
+        <AdfTohtml
+          source={data.content}
+          bgStyle={{
+            marginTop: 20,
+            paddingVertical: 15,
+            backgroundColor: "#F8F8F8",
+            marginLeft: 15,
+          }}
+        ></AdfTohtml>
       </ScrollView>
     </View>
   );
