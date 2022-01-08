@@ -25,7 +25,7 @@ const Header = (props) => {
       resizeMode="cover"
       style={{ width: wp("100%") }}
     >
-      <Appbar.Header style={{ backgroundColor: "transparent", }}>
+      <Appbar.Header style={{ backgroundColor: "transparent" }}>
         <View style={{ flexDirection: "row" }}>
           <Text
             style={{
@@ -37,12 +37,12 @@ const Header = (props) => {
           >
             {props.title}
           </Text>
-          <WithLocalSvg
+          {/* <WithLocalSvg
             width={18}
             height={18}
             asset={require("../assets/Notification.svg")}
             style={{ marginLeft: wp("50%"), marginTop: 15 }}
-          />
+          /> */}
         </View>
       </Appbar.Header>
     </ImageBackground>

@@ -274,14 +274,14 @@ const UnitTextScreen = (props) => {
     //     </TouchableOpacity>
     //   </View> */}
     // </View>
-    <View>
+    <View style={{ backgroundColor: "#FFFFFF" }}>
       <Header
         title={data.title}
         onPress={() => {
           props.navigation.goBack("UnitScreen");
         }}
       />
-      {console.warn(data.title)}
+
       <ScrollView
         contentContainerStyle={{
           paddingBottom: 60,

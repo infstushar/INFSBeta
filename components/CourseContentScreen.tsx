@@ -30,7 +30,7 @@ const CourseContentScreen = (props) => {
           style={{
             fontFamily: "Poppins-SemiBold",
             fontSize: Font.h5,
-            color: "#3E3E3E",
+            color: "#00B5E0",
           }}
         >
           {props.title}

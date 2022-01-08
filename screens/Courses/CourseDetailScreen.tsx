@@ -212,10 +212,10 @@ const CourseDetailScreen = (props) => {
         />
       </View>
       <ScrollView
-        style={{ flexGrow: 1 }}
+        style={{ flexGrow: 1, marginBottom: 5 }}
         contentInsetAdjustmentBehavior="automatic"
       >
-        <View style={{ marginLeft: 15 }}>
+        <View style={{ marginLeft: 15, marginBottom: 10 }}>
           <View style={{ flexDirection: "row", marginTop: 10 }}>
             <WithLocalSvg
               width={12}
@@ -353,16 +353,25 @@ const CourseDetailScreen = (props) => {
             horizontal
           />*/}
         </View>
-        <View>
-          <ListComponent
-            title={"This Course Includes"}
-            sourceData={data.courseoverview?.includes}
-          />
-        </View>
-
         <ListComponent
           title={"Here’s what you ‘ll learn"}
           sourceData={data.courseoverview?.what_will_you}
+          setViewStyle={{
+            paddingVertical: 15,
+            backgroundColor: "#F8F8F8",
+          }}
+        />
+
+        <ListComponent
+          title={"This Course Includes"}
+          sourceData={data.courseoverview?.includes}
+          setViewStyle={{
+            marginTop: 10,
+            borderWidth: 1,
+            borderColor: "#EAEAEA",
+            margin: 15,
+            paddingVertical: 15,
+          }}
         />
 
         <View style={{ marginTop: 10 }}>
@@ -374,7 +383,7 @@ const CourseDetailScreen = (props) => {
               fontSize: Font.h5,
             }}
           >
-            Course Content :
+            Course Content
           </Text>
 
           <FlatList
@@ -428,12 +437,16 @@ const CourseDetailScreen = (props) => {
           <ListComponent
             title={"Course Description"}
             sourceData={data.courseoverview?.long_description}
+            setViewStyle={{
+              marginTop: 10,
+            }}
           />
         </View>
         <View>
           <ListComponent
             title={"Course Eligibility"}
             sourceData={data.courseoverview?.eligibility}
+            setViewStyle={{ marginTop: 10 }}
           />
         </View>
         <View style={{ marginTop: 10 }}>
@@ -835,6 +848,53 @@ const CourseDetailScreen = (props) => {
           </Text>
         </TouchableOpacity>
           </View>*/}
+      <View
+        style={{
+          alignItems: "center",
+          flexDirection: "row",
+          marginBottom: 30,
+          height: 40,
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            height: 40,
+            width: "45%",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: 20,
+            borderRadius: 29,
+            backgroundColor: "#00B5E0",
+            shadowColor: "#00000029",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 1,
+            shadowRadius: 3,
+            marginLeft: width * 0.28,
+          }}
+          onPress={() => {
+            if (checkData() === 1)
+              return props.navigation.navigate("UnitScreen", data);
+            else
+              return props.navigation.navigate(
+                "ModuleDetails",
+                data.modules[0]
+              );
+          }}
+        >
+          <Text
+            style={{
+              flex: 1,
+              textAlign: "center",
+              color: "#FFFFFF",
+              fontSize: Font.h6,
+              fontFamily: "Poppins-SemiBold",
+            }}
+          >
+            Start My Learing
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

@@ -143,7 +143,7 @@ const ModuleDetails = (props) => {
     }
   };
   useEffect(() => {
-    console.warn(props?.route?.params?.id);
+    console.warn(props?.route?.params?.slug);
     getData();
   }, []);
 
@@ -211,7 +211,7 @@ const ModuleDetails = (props) => {
   );
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-      {console.warn(props?.route?.params?.id)}
+      {console.warn(data.slug)}
       <Header
         title={data.title}
         onPress={() => {
@@ -269,6 +269,7 @@ const ModuleDetails = (props) => {
               paddingBottom: 10,
             }}
           >
+            {console.warn(data.title)}
             {data.title}
           </Text>
           <View style={{ flexDirection: "row" }}>
@@ -430,7 +431,7 @@ const ModuleDetails = (props) => {
                 fontSize: Font.h5,
               }}
             >
-              Module Content :
+              Module Content
             </Text>
             <Text
               style={{
@@ -523,13 +524,13 @@ const ModuleDetails = (props) => {
             <ListComponent
               title={"Module Description"}
               sourceData={data.short_description}
+              setViewStyle={{ marginTop: 10 }}
             />
           </View>
           <View>
             <Text
               style={{
                 color: "#3E3E3E",
-
                 marginTop: 5,
                 fontSize: Font.h5,
                 fontFamily: "Poppins-SemiBold",
@@ -772,7 +773,6 @@ const ModuleDetails = (props) => {
             </Card>
                     </View>*/}
         </View>
-        <View style={{ height: 100 }}></View>
       </ScrollView>
       <View
         style={{

@@ -32,7 +32,6 @@ import QuizForStartUpScreen from "../screens/Quiz/QuizForStartUpScreen";
 import Atkit from "../screens/Courses/Atkit";
 import AdfTohtml, { AdftoHtml } from "../screens/Courses/AdfTohtml";
 import UnitScreenForCourses from "../screens/Courses/UnitScreenForCourses";
-import Example from "../screens/Courses/Example";
 
 const INFSAPPNavigator = () => {
   const Stack = createStackNavigator();
@@ -107,15 +106,7 @@ const INFSAPPNavigator = () => {
               headerBackTitleStyle: { fontFamily: "Poppins-Regular" },
             }}
           />
-          <Stack.Screen
-            name="Example"
-            component={Example}
-            options={{
-              headerShown: false,
-              headerTitleStyle: { fontFamily: "Poppins-Regular" },
-              headerBackTitleStyle: { fontFamily: "Poppins-Regular" },
-            }}
-          />
+
           <Stack.Screen
             name="ForgotUsername"
             component={ForgotUserScreen}

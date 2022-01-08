@@ -2,20 +2,13 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import AdfTohtml from "../screens/Courses/AdfTohtml";
 import Font from "../constants/Font";
+import CollapseView from "../components/CollapseView";
 
 const ListComponent = (props) => {
   if (props.sourceData === null || props.sourceData === undefined) return null;
   else
     return (
-      <View
-        style={{
-          marginTop: 10,
-          borderWidth: 1,
-          borderColor: "#EAEAEA",
-          margin: 15,
-          paddingVertical: 15,
-        }}
-      >
+      <View style={props.setViewStyle}>
         <Text
           style={{
             color: "#3E3E3E",
@@ -23,20 +16,13 @@ const ListComponent = (props) => {
             fontSize: Font.h5,
             fontFamily: "Poppins-SemiBold",
             marginTop: 5,
+            marginBottom: 10,
           }}
         >
-          {props.title} :
+          {props.title}
         </Text>
 
-        <AdfTohtml
-          source={props.sourceData}
-          bgStyle={{
-            marginTop: 20,
-            paddingVertical: 15,
-            backgroundColor: "#F8F8F8",
-            marginLeft: 15,
-          }}
-        ></AdfTohtml>
+        <AdfTohtml source={props.sourceData}></AdfTohtml>
       </View>
     );
 };

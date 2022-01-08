@@ -51,12 +51,12 @@ const HeaderwithBack = (props) => {
             </Text>
           </View>
 
-          <WithLocalSvg
+          {/* <WithLocalSvg
             width={18}
             height={18}
             asset={require("../assets/Notification.svg")}
             style={{ marginLeft: wp("20%"), marginTop: 7 }}
-          />
+          /> */}
         </View>
       </Appbar.Header>
     </ImageBackground>

@@ -32,7 +32,7 @@ function HomeStackScreen() {
 const BottomTabs = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Path"
+      initialRouteName="Courses"
       shifting={false}
       barStyle={{ backgroundColor: "white" }}
       activeColor={Colors.textColor}

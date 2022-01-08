@@ -12,11 +12,13 @@ import {
   StatusBar,
   TouchableOpacity,
 } from "react-native";
+import CollapseView from "../../components/CollapseView";
 import { ScrollView } from "react-native-gesture-handler";
 import { WithLocalSvg } from "react-native-svg";
 import Header from "../../components/HeaderwithBack";
 import { Checkbox } from "react-native-paper";
 import Font from "../../constants/Font";
+
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 const scale = width / 415;
