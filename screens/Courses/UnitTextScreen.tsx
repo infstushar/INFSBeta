@@ -281,6 +281,7 @@ const UnitTextScreen = (props) => {
           props.navigation.goBack("UnitScreen");
         }}
       />
+<<<<<<< HEAD
 
       <ScrollView
         contentContainerStyle={{
@@ -293,6 +294,17 @@ const UnitTextScreen = (props) => {
           source={data.content}
           bgStyle={{
             backgroundColor: "#F8F8F8",
+=======
+      {console.warn(data.title)}
+      <ScrollView>
+        <AdfTohtml
+          source={data.content}
+          bgStyle={{
+            marginTop: 20,
+            paddingVertical: 15,
+            backgroundColor: "#F8F8F8",
+            marginLeft: 15,
+>>>>>>> c7585c0e32a1d6bc32a6e5092f990b8bf9401abf
           }}
         ></AdfTohtml>
       </ScrollView>
