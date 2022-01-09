@@ -25,6 +25,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import ReadMore from "react-native-read-more-text";
 
 const { width, height } = Dimensions.get("window");
 
@@ -104,11 +105,11 @@ const CourseDetailScreen = (props) => {
     getData();
   }, []);
 
-  const checkData = () => {
+  const checkData = (item) => {
     // const lengnth = Object.keys(data.modules).length;
     // if (lengnth === 0) return 0;
     // else return 1;
-    if (data.course_type === "workshops") return 1;
+    if (item === "workshops") return 1;
     else return 0;
   };
 
@@ -193,7 +194,6 @@ const CourseDetailScreen = (props) => {
   );
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-      {console.warn(checkData())}
       <Header
         title={data.title}
         onPress={() => {
@@ -387,7 +387,7 @@ const CourseDetailScreen = (props) => {
           </Text>
 
           <FlatList
-            data={checkData() === 1 ? data.units : data.modules}
+            data={checkData(data.course_type) === 1 ? data.units : data.modules}
             keyExtractor={({ id }, index) => id}
             renderItem={({ item }) => (
               <View style={{ marginLeft: 15, marginVertical: 10 }}>
@@ -395,7 +395,7 @@ const CourseDetailScreen = (props) => {
                 <CourseContentScreen
                   title={item.title}
                   onPress={() => {
-                    if (checkData() === 1)
+                    if (checkData(data.course_type) === 1)
                       return props.navigation.navigate("UnitScreen", data);
                     else
                       return props.navigation.navigate("ModuleDetails", item);
@@ -873,7 +873,7 @@ const CourseDetailScreen = (props) => {
             marginLeft: width * 0.28,
           }}
           onPress={() => {
-            if (checkData() === 1)
+            if (checkData(data.course_type) === 1)
               return props.navigation.navigate("UnitScreen", data);
             else
               return props.navigation.navigate(

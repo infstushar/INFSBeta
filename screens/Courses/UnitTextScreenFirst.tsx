@@ -13,6 +13,11 @@ import { ScrollView } from "react-native-gesture-handler";
 import Font from "../../constants/Font";
 import { WithLocalSvg } from "react-native-svg";
 import Header from "../../components/HeaderwithBack";
+import {
+  Collapse,
+  CollapseHeader,
+  CollapseBody,
+} from "accordion-collapse-react-native";
 
 const { width, height } = Dimensions.get("window");
 
