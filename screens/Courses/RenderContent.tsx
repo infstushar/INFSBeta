@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TouchableHighlight } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import Font from "../../constants/Font";
 import { WithLocalSvg } from "react-native-svg";
+import { useNavigation } from "@react-navigation/native";
 
 export const RenderContent = (props) => {
   const [content, setContent] = useState([]);
+  const navigation = useNavigation();
   const getData = async (unit) => {
     try {
       const response = await fetch(
@@ -28,24 +30,22 @@ export const RenderContent = (props) => {
     return (
       <View>
         {content.map((value) => (
-          <View style={{ flexDirection: "row" }}>
-            <Text
-              style={{
-                fontFamily: "Poppins-Regular",
-                fontSize: Font.h6,
-              }}
-            >
-              {value.order} :
-            </Text>
+          <TouchableOpacity
+            onPress={() => {
+              if (value.lesson_type === "video")
+                navigation.navigate("UnitVideoTextScreen", value);
+              else navigation.navigate("UnitTextScreen", value);
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <WithLocalSvg
+                width={12}
+                height={14}
+                asset={require("../../assets/Iconopen-document.svg")}
+                style={{ marginTop: 15 }}
+              />
 
-            <TouchableHighlight
-              onPress={() => {
-                //navigation.navigate("UnitTextScreen", value);
-                if (value.lesson_type === "video")
-                  props.navigation.navigate("UnitVideoTextScreen", value);
-              }}
-            >
-              <View style={{ marginLeft: 15, marginTop: 15 }}>
+              <View style={{ marginLeft: 5, marginRight: 10 }}>
                 <Text
                   style={{
                     marginLeft: 15,
@@ -58,20 +58,9 @@ export const RenderContent = (props) => {
                 >
                   {value.title}
                 </Text>
-                <View style={{ flexDirection: "row" }}>
-                  <WithLocalSvg
-                    width={12}
-                    height={14}
-                    asset={require("../../assets/Iconopen-document.svg")}
-                    style={{ marginLeft: 20 }}
-                  />
-                  <Text style={{ marginLeft: 5, textTransform: "capitalize" }}>
-                    {value.lesson_type}
-                  </Text>
-                </View>
               </View>
-            </TouchableHighlight>
-          </View>
+            </View>
+          </TouchableOpacity>
         ))}
         {/* <Text> Loaded ...</Text> */}
       </View>

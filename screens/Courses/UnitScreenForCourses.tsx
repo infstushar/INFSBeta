@@ -92,8 +92,6 @@ const UnitScreenForCourses = (props) => {
   };
 
   const renderContent = (section, _, isActive) => {
-    // Accordion Content view
-    // console.log("rendercontent : " + section.slug);
     return (
       <Animatable.View
         duration={400}
@@ -102,7 +100,7 @@ const UnitScreenForCourses = (props) => {
       >
         <Animatable.Text
           animation={isActive ? "bounceIn" : undefined}
-          style={{ textAlign: "left" }}
+          style={{ textAlign: "left", marginRight: 10 }}
         >
           <RenderContent section={section} />
         </Animatable.Text>
@@ -252,17 +250,15 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "#F5FCFF",
-    fontFamily: "Poppins-SemiBold",
-    fontSize: Font.h5,
     paddingLeft: 10,
   },
   headerText: {
     textAlign: "center",
-    fontFamily: "Poppins-Regular",
+    fontFamily: "Poppins-SemiBold",
     fontSize: Font.h5,
   },
   content: {
-    paddingLeft: 30,
+    paddingLeft: 20,
     backgroundColor: "#fff",
   },
   active: {

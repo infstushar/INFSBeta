@@ -47,7 +47,6 @@ const UnitTextScreen = (props) => {
   };
 
   useEffect(() => {
-    console.warn(props?.route?.params?.slug);
     getData();
   }, []);
   return (
@@ -55,7 +54,7 @@ const UnitTextScreen = (props) => {
       <Header
         title={data.title}
         onPress={() => {
-          props.navigation.goBack("UnitScreen");
+          props.navigation.goBack(null);
         }}
       />
 

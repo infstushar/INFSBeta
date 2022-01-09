@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -37,13 +37,14 @@ const normalize = (size) => {
 
 const UnitVideoTextScreen = (props) => {
   const { id } = getVideoId(props.route.params.content.video);
+
   return (
     <View style={{ width, height, flex: 1 }}>
       <StatusBar hidden />
       <Header
         title={`Unit ${props.route.params.order}`}
         onPress={() => {
-          props.navigation.navigate("UnitScreen");
+          props.navigation.goBack(null);
         }}
       />
       <View style={{ width, height: 350 }}>
