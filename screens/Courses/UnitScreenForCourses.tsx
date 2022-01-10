@@ -15,9 +15,9 @@ import {
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { WithLocalSvg } from "react-native-svg";
-import Collapsible from "react-native-collapsible";
+
 import * as Animatable from "react-native-animatable";
-import { Thumbnail, List, ListItem, Separator } from "native-base";
+
 import Header from "../../components/HeaderwithBack";
 import Accordion from "react-native-collapsible/Accordion";
 import Font from "../../constants/Font";
@@ -48,8 +48,11 @@ const UnitScreenForCourses = (props) => {
   const getData = async () => {
     try {
       const response = await fetch(
-        `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/units?module=` +
-          props?.route?.params?.slug
+        props?.route?.params?.id
+          ? `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/units?module=` +
+              props?.route?.params?.id
+          : `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/units?module=` +
+              props?.route?.params?.slug
       );
       const json = await response.json();
       setData(json);
@@ -61,7 +64,6 @@ const UnitScreenForCourses = (props) => {
   };
 
   useEffect(() => {
-    console.warn(props?.route?.params?.slug);
     getData();
   }, []);
 
@@ -83,9 +85,11 @@ const UnitScreenForCourses = (props) => {
         style={[styles.header, isActive ? styles.active : styles.inactive]}
         transition="backgroundColor"
       >
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.headerText}>{section.order} : </Text>
-          <Text style={styles.headerText}>{section.title}</Text>
+        <View style={{ flexDirection: "row", marginRight: 10 }}>
+          <Text style={styles.headerText}>{section.order} </Text>
+          <Text style={styles.headerText} numberOfLines={2}>
+            {section.title}
+          </Text>
         </View>
       </Animatable.View>
     );
@@ -98,12 +102,14 @@ const UnitScreenForCourses = (props) => {
         style={[styles.content, isActive ? styles.active : styles.inactive]}
         transition="backgroundColor"
       >
-        <Animatable.Text
+        {/* <Animatable.Text
           animation={isActive ? "bounceIn" : undefined}
-          style={{ textAlign: "left", marginRight: 10 }}
+          style={{ textAlign: "left", marginRight: 30 }}
         >
           <RenderContent section={section} />
-        </Animatable.Text>
+        </Animatable.Text> */}
+
+        <RenderContent section={section} />
       </Animatable.View>
     );
   };
@@ -206,27 +212,29 @@ const UnitScreenForCourses = (props) => {
       {/*//}</View>
         )}
       /> */}
-      <Accordion
-        activeSections={activeSections}
-        // For any default active section
-        sections={data}
-        // Title and content of accordion
-        touchableComponent={TouchableOpacity}
-        // Which type of touchable component you want
-        // It can be the following Touchables
-        // TouchableHighlight, TouchableNativeFeedback
-        // TouchableOpacity , TouchableWithoutFeedback
-        expandMultiple={multipleSelect}
-        // If you want to expand multiple at a time
-        renderHeader={renderHeader}
-        // Header Component(View) to render
-        renderContent={renderContent}
-        // Content Component(View) to render
-        duration={400}
-        // Duration for Collapse and expand
-        onChange={setSections}
-        // Setting the state of active sections
-      />
+      <ScrollView>
+        <Accordion
+          activeSections={activeSections}
+          // For any default active section
+          sections={data}
+          // Title and content of accordion
+          touchableComponent={TouchableOpacity}
+          // Which type of touchable component you want
+          // It can be the following Touchables
+          // TouchableHighlight, TouchableNativeFeedback
+          // TouchableOpacity , TouchableWithoutFeedback
+          expandMultiple={multipleSelect}
+          // If you want to expand multiple at a time
+          renderHeader={renderHeader}
+          // Header Component(View) to render
+          renderContent={renderContent}
+          // Content Component(View) to render
+          duration={400}
+          // Duration for Collapse and expand
+          onChange={setSections}
+          // Setting the state of active sections
+        />
+      </ScrollView>
     </View>
   );
 };
@@ -240,22 +248,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F5FCFF",
-    paddingTop: 10,
+    margin: 10,
+    height: 50,
+    width: width,
   },
   title: {
     textAlign: "center",
     fontFamily: "Poppins-SemiBold",
     fontSize: Font.h5,
-    marginBottom: 10,
+    margin: 10,
+    marginTop: 5,
   },
   header: {
     backgroundColor: "#F5FCFF",
     paddingLeft: 10,
+    marginRight: 20,
+    marginTop: 10,
   },
   headerText: {
-    textAlign: "center",
     fontFamily: "Poppins-SemiBold",
     fontSize: Font.h5,
+    marginTop: 5,
+    marginLeft: 10,
+    marginRight: 10,
   },
   content: {
     paddingLeft: 20,
@@ -271,6 +286,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     flexDirection: "row",
     justifyContent: "center",
+    marginRight: 10,
   },
   selector: {
     backgroundColor: "#F5FCFF",

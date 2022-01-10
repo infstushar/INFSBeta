@@ -37,13 +37,22 @@ export const RenderContent = (props) => {
               else navigation.navigate("UnitTextScreen", value);
             }}
           >
-            <View style={{ flexDirection: "row" }}>
-              <WithLocalSvg
-                width={12}
-                height={14}
-                asset={require("../../assets/Iconopen-document.svg")}
-                style={{ marginTop: 15 }}
-              />
+            <View style={{ flexDirection: "row", marginRight: 10 }}>
+              {value.lesson_type === "video" ? (
+                <WithLocalSvg
+                  width={16}
+                  height={16}
+                  asset={require("../../assets/Vector.svg")}
+                  style={{ marginTop: 15 }}
+                />
+              ) : (
+                <WithLocalSvg
+                  width={16}
+                  height={16}
+                  asset={require("../../assets/fluent_document-20-filled.svg")}
+                  style={{ marginTop: 15 }}
+                />
+              )}
 
               <View style={{ marginLeft: 5, marginRight: 10 }}>
                 <Text
@@ -52,9 +61,10 @@ export const RenderContent = (props) => {
                     fontFamily: "Poppins-Medium",
                     fontSize: Font.h5,
                     color: "#3E3E3E",
-                    marginTop: 5,
+                    marginTop: 9,
+                    marginRight: 10,
                   }}
-                  numberOfLines={2}
+                  numberOfLines={3}
                 >
                   {value.title}
                 </Text>

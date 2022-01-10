@@ -390,9 +390,8 @@ const CourseDetailScreen = (props) => {
             data={checkData(data.course_type) === 1 ? data.units : data.modules}
             keyExtractor={({ id }, index) => id}
             renderItem={({ item }) => (
-              <View style={{ marginLeft: 15, marginVertical: 10 }}>
-                <View style={styles.horizontalline} />
-                <CourseContentScreen
+              <View style={{ marginLeft: 15 }}>
+                {/* <CourseContentScreen
                   title={item.title}
                   onPress={() => {
                     if (checkData(data.course_type) === 1)
@@ -401,8 +400,56 @@ const CourseDetailScreen = (props) => {
                       return props.navigation.navigate("ModuleDetails", item);
                   }}
                   bgColor="#F8F8F8"
-                />
-                <View style={styles.horizontalline} />
+                /> */}
+                <View
+                  style={{
+                    borderWidth: 1,
+                    borderColor: "#EAEAEA",
+                    marginRight: 15,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-SemiBold",
+                      fontSize: Font.h5,
+                      color: "#3E3E3E",
+                      paddingLeft: 5,
+                      marginLeft: 5,
+                      marginTop: 5,
+                    }}
+                  >
+                    {item.title}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: "Poppins-Regular",
+                      fontSize: Font.p1,
+                      color: "#838383",
+                      paddingLeft: 5,
+                      marginLeft: 5,
+                      marginTop: 5,
+                    }}
+                    numberOfLines={3}
+                  >
+                    {DATA[0].description}
+                  </Text>
+                  <Text
+                    style={{
+                      color: "blue",
+                      fontFamily: "Poppins-Regular",
+                      fontSize: Font.p1,
+                      marginLeft: width - 170,
+                    }}
+                    onPress={() => {
+                      if (checkData(data.course_type) === 1)
+                        return props.navigation.navigate("UnitScreen", data);
+                      else
+                        return props.navigation.navigate("ModuleDetails", item);
+                    }}
+                  >
+                    Learn more.....
+                  </Text>
+                </View>
               </View>
             )}
           />
@@ -877,7 +924,7 @@ const CourseDetailScreen = (props) => {
               return props.navigation.navigate("UnitScreen", data);
             else
               return props.navigation.navigate(
-                "ModuleDetails",
+                "UnitScreenForCourses",
                 data.modules[0]
               );
           }}

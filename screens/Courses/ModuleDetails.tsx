@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -19,8 +19,12 @@ import RenderHtml from "react-native-render-html";
 //import json2html from "json-to-html";
 import Header from "../../components/HeaderwithBack";
 import { WithLocalSvg } from "react-native-svg";
+import LessonContent from "./LessonContent";
+import * as Animatable from "react-native-animatable";
 import AdfToHtml from "./AdfTohtml";
 import ListComponent from "../../components/ListComponent";
+import AccordionForModule from "./AccordionForModule";
+import { Item } from "react-native-paper/lib/typescript/components/List/List";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -118,16 +122,15 @@ const DATA = [
   },
 ];
 
-const source = {
-  //html: `<h1><a name=""></a></h1><p><b>{</b><br /><b>"version": 1,</b><br /><b>"type": "doc",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "paragraph",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "text",</b><br /><b>"text": "What is Nutrition?"</b><br /><b>}</b><br /><b>]</b><br /><b>},</b><br /><b>{</b><br /><b>"type": "paragraph",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "text",</b><br /><b>"text": "Here are two statements."</b><br /><b>}</b><br /><b>]</b><br /><b>},</b><br /><b>{</b><br /><b>"type": "paragraph",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "text",</b><br /><b>"text": "Statement A - Nutrition is the food we eat.&nbsp;"</b><br /><b>}</b><br /><b>]</b><br /><b>},</b><br /><b>{</b><br /><b>"type": "paragraph",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "text",</b><br /><b>"text": "Statement B - Nutrition is how food affects us.&nbsp;"</b><br /><b>}</b><br /><b>]</b><br /><b>},</b><br /><b>{</b><br /><b>"type": "paragraph",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "text",</b><br /><b>"text": "So, what exactly is Nutrition?"</b><br /><b>}</b><br /><b>]</b><br /><b>},</b><br /><b>{</b><br /><b>"type": "paragraph",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "text",</b><br /><b>"text": "While most think Option A is true and don’t consider option B, let it be clear that Nutrition includes BOTH of these. If everyone begins to recognize that what is eaten matters as much as how it affects the body, everyone will live healthier lives.&nbsp;"</b><br /><b>}</b><br /><b>]</b><br /><b>},</b><br /><b>{</b><br /><b>"type": "paragraph",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "text",</b><br /><b>"text": "“Small chemical components of food that are needed in adequate amounts by the body to grow, reproduce and lead a normal healthy life are nutrients.”"</b><br /><b>}</b><br /><b>]</b><br /><b>},</b><br /><b>{</b><br /><b>"type": "paragraph",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "text",</b><br /><b>"text": "Everything that is consumed consists of nutrients. Broadly speaking, there are 3 types of nutrients;"</b><br /><b>}</b><br /><b>]</b><br /><b>},</b><br /><b>{</b><br /><b>"type": "orderedList",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "listItem",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "paragraph",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "text",</b><br /><b>"text": "Macronutrients - Proteins, Fats, and Carbohydrates"</b><br /><b>}</b><br /><b>]</b><br /><b>}</b><br /><b>]</b><br /><b>},</b><br /><b>{</b><br /><b>"type": "listItem",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "paragraph",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "text",</b><br /><b>"text": "Micronutrients - Vitamins and Minerals"</b><br /><b>}</b><br /><b>]</b><br /><b>}</b><br /><b>]</b><br /><b>},</b><br /><b>{</b><br /><b>"type": "listItem",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "paragraph",</b><br /><b>"content": [</b><br /><b>{</b><br /><b>"type": "text",</b><br /><b>"text": "Inorganic Nutrients - Water and Oxygen"</b><br /><b>}</b><br /><b>]</b><br /><b>}</b><br /><b>]</b><br /><b>}</b><br /><b>]</b><br /><b>}</b><br /><b>]</b><br /><b>}</b></p>`,
-  //html: `<h1><a name="Hello"></a>Hello</h1><p></p><ul class="alternate" type="disc"><li data-parent="ul">1</li><li data-parent="ul">2</li><li data-parent="ul">3</li><li data-parent="ul">4</li></ul><p></p>`,
-};
-
 const ModuleDetails = (props) => {
-  const [expanded, setExpanded] = React.useState(true);
   const [data, setData] = useState([]);
-  const [isLoading, setLoading] = useState(true);
+
+  const [expanded, setExpanded] = useState(true);
+
   const handlePress = () => setExpanded(!expanded);
+
+  const [isLoading, setLoading] = useState(true);
+
   const getData = async () => {
     try {
       const response = await fetch(
@@ -142,8 +145,8 @@ const ModuleDetails = (props) => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
-    console.warn(props?.route?.params?.slug);
     getData();
   }, []);
 
@@ -209,9 +212,10 @@ const ModuleDetails = (props) => {
       </View>
     </View>
   );
+
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-      {console.warn(data.slug)}
+      {console.log("data" + JSON.stringify(data))}
       <Header
         title={data.title}
         onPress={() => {
@@ -260,7 +264,6 @@ const ModuleDetails = (props) => {
               100 reviews
             </Text>
           </View>
-
           <Text
             style={{
               fontFamily: "Poppins-SemiBold",
@@ -315,7 +318,6 @@ const ModuleDetails = (props) => {
               {DATA[0].lang}
             </Text>
           </View>
-
           <View style={{ flexDirection: "row", paddingTop: 5 }}>
             <Image
               source={require("../../assets/abc.jpeg")}
@@ -422,7 +424,6 @@ const ModuleDetails = (props) => {
               keyExtractor={(item) => item.id}
             />
           </View>
-
           <View style={{ marginTop: 10 }}>
             <Text
               style={{
@@ -444,82 +445,38 @@ const ModuleDetails = (props) => {
             </Text>
             <View style={styles.horizontalline} />
           </View>
-          {/* <View style={{ width: width, height: "20%" }}>
-            <ScrollView>
-              <List.Section style={{ marginRight: 5 }}>
-                <List.Accordion
-                  title={<Text>To define Health and Fitness</Text>}
-                  titleStyle={{
-                    fontSize: Font.h6,
-                    fontFamily: "Poppins-Medium",
-                    color: "#3E3E3E",
-                  }}
-                  style={{ backgroundColor: "#F4F4F4" }}
-                >
-                  <FlatList
-                    data={DATA[0].unitcontent}
-                    renderItem={renderItemforUnit}
-                    keyExtractor={(item) => item.id}
-                  />
-                </List.Accordion>
+          <FlatList
+            data={data.units}
+            keyExtractor={(id) => id}
+            renderItem={({ item }) => (
+              <View>
+                <List.Section>
+                  <List.Accordion
+                    title={item.title}
+                    style={{ marginTop: 1 }}
+                    titleStyle={{
+                      fontFamily: "Poppins-SemiBold",
+                      fontSize: Font.h6,
+                      color: "#3E3E3E",
+                      marginRight: 5,
+                    }}
+                  >
+                    <List.Item
+                      title={DATA[0].description}
+                      titleStyle={{
+                        fontFamily: "Poppins-Regular",
+                        fontSize: Font.p1,
+                        color: "#3E3E3E",
+                        marginRight: 5,
+                      }}
+                      titleNumberOfLines={3}
+                    />
+                  </List.Accordion>
+                </List.Section>
+              </View>
+            )}
+          />
 
-                <List.Accordion
-                  title={<Text>To understand BMI and its drawbacks</Text>}
-                  titleStyle={{
-                    fontSize: Font.h6,
-                    fontFamily: "Poppins-Medium",
-                    color: "#3E3E3E",
-                  }}
-                  style={{ backgroundColor: "#F4F4F4" }}
-                >
-                  <FlatList
-                    data={DATA[0].unitcontent1}
-                    renderItem={renderItemforUnit}
-                    keyExtractor={(item) => item.id}
-                  />
-                </List.Accordion>
-                <List.Accordion
-                  title={<Text>To understand Nutrition Pyramid</Text>}
-                  titleStyle={{
-                    fontSize: Font.h6,
-                    fontFamily: "Poppins-Medium",
-                    color: "#3E3E3E",
-                  }}
-                  style={{ backgroundColor: "#F4F4F4" }}
-                >
-                  <FlatList
-                    data={DATA[0].unitcontent2}
-                    renderItem={renderItemforUnit}
-                    keyExtractor={(item) => item.id}
-                  />
-                </List.Accordion>
-              </List.Section>
-            </ScrollView> 
-          </View> */}
-          {/* <View>
-            <Text
-              style={{
-                color: "#3E3E3E",
-
-                fontSize: Font.h4,
-                fontFamily: "Poppins-SemiBold",
-                marginTop: 5,
-              }}
-            >
-              Module Description
-            </Text>
-            <Text
-              style={{
-                fontSize: Font.p1,
-                fontFamily: "Poppins-Regular",
-                marginRight: 15,
-                lineHeight: normalize(24),
-                color: "#838383",
-              }}
-            >
-              {DATA[0].description}
-            </Text>
-          </View> */}
           <View>
             <ListComponent
               title={"Module Description"}
@@ -550,228 +507,6 @@ const ModuleDetails = (props) => {
               {DATA[0].eligiblity}
             </Text>
           </View>
-          {/*<View style={{ marginTop: 10 }}>
-            <Text
-              style={{
-                color: "#3E3E3E",
-
-                fontSize: Font.h5,
-                fontFamily: "Poppins-SemiBold",
-              }}
-            >
-              Testimonials
-            </Text>
-            <Card
-              style={{
-                borderWidth: 1,
-                borderRadius: 10,
-                marginBottom: 10,
-                height: height * 0.33,
-                width: width - 30,
-                backgroundColor: "#FFFFFF",
-              }}
-            >
-              <Swiper
-                dot={
-                  <View
-                    style={{
-                      height: 10,
-                      width: 10,
-                      marginHorizontal: 5,
-                      borderRadius: 10 / 2,
-                      backgroundColor: "#00B5E0",
-                    }}
-                  />
-                }
-                activeDot={
-                  <View
-                    style={{
-                      height: 10,
-                      width: 20,
-                      marginHorizontal: 5,
-                      borderRadius: 10 / 2,
-                      backgroundColor: "#00B5E0",
-                    }}
-                  />
-                }
-              >
-               <View>
-                  <Card.Content>
-                    <View style={{ flexDirection: "row" }}>
-                      <Image
-                        source={require("../../assets/abc.jpeg")}
-                        style={{
-                          borderRadius: 30,
-                          width: 70,
-                          height: 70,
-                          backgroundColor: "#FFFFFF",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          marginLeft: 5,
-                          borderWidth: 1,
-                          borderColor: "#FFFFFF",
-                          marginTop: 10,
-                        }}
-                      />
-                      <View style={{ marginTop: 15 }}>
-                        <Text
-                          style={{
-                            color: "#3E3E3E",
-                            marginLeft: 15,
-                            fontSize: Font.h5,
-                            fontFamily: "Poppins-Medium",
-                          }}
-                        >
-                          Virendra Tilekar
-                        </Text>
-                        <Text
-                          style={{
-                            color: "#3E3E3E",
-                            marginLeft: 15,
-                            fontSize: Font.p1,
-                            fontFamily: "Poppins-Regular",
-                          }}
-                        >
-                          Foundation Course,
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-
-                          alignItems: "center",
-                          width: 50,
-                          height: 20,
-                          borderRadius: 10,
-                          backgroundColor: "#37B84C",
-                          marginLeft: 50,
-                          marginTop: 20,
-                          flexGrow: 1,
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: Font.p2,
-                            fontFamily: "Poppins-Medium",
-                            color: "#FFFFFF",
-                          }}
-                        >
-                          4.5
-                        </Text>
-
-                        <WithLocalSvg
-                          width={12}
-                          height={12}
-                          asset={require("../../assets/Iconionic-ios-star.svg")}
-                          style={{ marginLeft: 3 }}
-                        />
-                      </View>
-                    </View>
-                    <Text
-                      style={{
-                        fontSize: Font.p1,
-                        fontFamily: "Poppins-Regular",
-                        color: "#838383",
-                      }}
-                    >
-                      There are many variations of passages of Ipsum available,
-                      but the majority have suffered alteration in some form, by
-                      injected humour, or randomised words which don’t look even
-                      slightly believable.
-                    </Text>
-                  </Card.Content>
-                </View>
-                <View>
-                  <Card.Content>
-                    <View style={{ flexDirection: "row" }}>
-                      <Image
-                        source={require("../../assets/abc.jpeg")}
-                        style={{
-                          borderRadius: 30,
-                          width: 70,
-                          height: 70,
-                          backgroundColor: "#FFFFFF",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          marginLeft: 5,
-                          borderWidth: 1,
-                          borderColor: "#FFFFFF",
-                          marginTop: 10,
-                        }}
-                      />
-                      <View style={{ marginTop: 15 }}>
-                        <Text
-                          style={{
-                            color: "#3E3E3E",
-                            marginLeft: 15,
-                            fontSize: Font.h5,
-                            fontFamily: "Poppins-Medium",
-                          }}
-                        >
-                          Virendra Tilekar
-                        </Text>
-                        <Text
-                          style={{
-                            color: "#3E3E3E",
-                            marginLeft: 15,
-                            fontSize: normalize(14),
-                            fontFamily: "Poppins-Regular",
-                          }}
-                        >
-                          Foundation Course,
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-
-                          alignItems: "center",
-                          width: 50,
-                          height: 20,
-                          borderRadius: 10,
-                          backgroundColor: "#37B84C",
-                          marginLeft: 40,
-                          marginTop: 20,
-                          flexGrow: 1,
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontSize: Font.p2,
-                            fontFamily: "Poppins-Medium",
-                            color: "#FFFFFF",
-                          }}
-                        >
-                          4.5
-                        </Text>
-
-                        <WithLocalSvg
-                          width={12}
-                          height={12}
-                          asset={require("../../assets/Iconionic-ios-star.svg")}
-                          style={{ marginLeft: 3 }}
-                        />
-                      </View>
-                    </View>
-                    <Text
-                      style={{
-                        fontSize: Font.p1,
-                        fontFamily: "Poppins-Regular",
-                        color: "#838383",
-                      }}
-                    >
-                      There are many variations of passages of Ipsum available,
-                      but the majority have suffered alteration in some form, by
-                      injected humour, or randomised words which don’t look even
-                      slightly believable.
-                    </Text>
-                  </Card.Content>
-                </View>
-              </Swiper>
-            </Card>
-                    </View>*/}
         </View>
       </ScrollView>
       <View
@@ -811,7 +546,7 @@ const ModuleDetails = (props) => {
               fontFamily: "Poppins-SemiBold",
             }}
           >
-            Start My Learng
+            Start My Learning
           </Text>
         </TouchableOpacity>
       </View>
@@ -871,6 +606,31 @@ const styles = StyleSheet.create({
     width: "92%",
     marginTop: 5,
     marginLeft: 15,
+  },
+  content: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
+  touchable: {
+    backgroundColor: "#181829",
+    height: 50,
+  },
+  title: {
+    fontSize: 14,
+    color: "#FFFFFF",
+    fontWeight: "500",
+  },
+  message: {
+    fontSize: 16,
+    color: "#FFFFFF",
+    fontWeight: "500",
+  },
+  icon: {
+    height: 24,
+    width: 24,
+  },
+  button: {
+    padding: 16,
   },
 });
 

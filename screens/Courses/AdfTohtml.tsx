@@ -20,6 +20,7 @@ import { useWindowDimensions } from "react-native";
 import RenderHtml, { ignoredStyles } from "react-native-render-html";
 import Font from "../../constants/Font";
 import { removeElement, isTag } from "domutils";
+import CounterStyle from "@jsamr/counter-style";
 
 const AdfTohtml = (props) => {
   const isDarkMode = useColorScheme() === "dark";
@@ -70,95 +71,100 @@ const AdfTohtml = (props) => {
 
   const { width } = useWindowDimensions();
 
-  function onElement(element) {
-    // Remove the first two children of an ol tag.
-    if (element.tagName === "ul") {
-      let i = 0;
-      for (const child of element.children) {
-        // Children might be text node or comments.
-        // We don't want to count these.
-        if (isTag(child)) {
-          for (const child1 of child.children) {
-            let value = child1.element;
-
-            removeElement(child1);
-          }
-        }
-      }
+  const onElement = (el) => {
+    const { children, name } = el;
+    if (name === "ul" && children && children.length) {
+      el.attribs["style"] = "list-style-type: green-tick;";
     }
-  }
+  };
+
+  const customListStyleSpecs = {
+    "green-tick": {
+      type: "textual",
+      counterStyleRenderer: CounterStyle.cyclic("✓").withSuffix(" "),
+    },
+  };
+  const tagsStyles = {
+    body: {
+      padding: 15,
+    },
+  };
+  const renderersProps = {
+    ul: {
+      markerBoxStyle: {
+        marginTop: 15,
+      },
+      markerTextStyle: {
+        color: "green",
+      },
+
+      li: {
+        marginTop: 8,
+      },
+      p: {
+        fontSize: Font.p1,
+        fontFamily: "Poppins-Regular",
+        color: "#3E3E3E",
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: -10,
+      },
+      h2: {
+        fontFamily: "Poppins-Regular",
+        color: "#00B5E0",
+        fontSize: Font.h4,
+        marginLeft: 10,
+      },
+      h1: {
+        fontFamily: "Poppins-Regular",
+        color: "#00B5E0",
+        fontSize: Font.h1,
+        marginLeft: 10,
+      },
+      h6: {
+        fontFamily: "Poppins-Regular",
+        color: "#00B5E0",
+        fontSize: Font.p1,
+        marginLeft: 10,
+      },
+      h3: {
+        fontFamily: "Poppins-Regular",
+        color: "#00B5E0",
+        fontSize: Font.h5,
+        marginLeft: 10,
+      },
+      h4: {
+        fontFamily: "Poppins-Regular",
+        color: "#00B5E0",
+        fontSize: Font.h4,
+        marginLeft: 10,
+      },
+      h5: {
+        fontFamily: "Poppins-Regular",
+        color: "#00B5E0",
+        fontSize: Font.h5,
+        marginLeft: 10,
+      },
+      strong: {
+        color: "#00B5E0",
+      },
+    },
+  };
 
   const domVisitors = {
     onElement: onElement,
   };
-  console.log({ source });
+
   return (
     <RenderHtml
       contentWidth={width}
       source={source}
       classesStyles={{}}
       baseStyle={{}}
-      enableExperimentalGhostLinesPrevention={true}
-      enableExperimentalBRCollapsing={true}
-      //domVisitors={domVisitors}
-      baseFontStyle={{ fontFamily: "Poppins-Regular" }}
-      tagsStyles={{
-        ul: {
-          fontFamily: "Poppins-Regular",
-          color: "#3E3E3E",
-          marginVertical: 2,
-        },
-        li: {
-          marginTop: 8,
-        },
-        p: {
-          fontSize: Font.p1,
-          fontFamily: "Poppins-Regular",
-          color: "#3E3E3E",
-          marginLeft: 10,
-          marginRight: 10,
-          marginTop: -10,
-        },
-        h2: {
-          fontFamily: "Poppins-Regular",
-          color: "#00B5E0",
-          fontSize: Font.h4,
-          marginLeft: 10,
-        },
-        h1: {
-          fontFamily: "Poppins-Regular",
-          color: "#00B5E0",
-          fontSize: Font.h1,
-          marginLeft: 10,
-        },
-        h6: {
-          fontFamily: "Poppins-Regular",
-          color: "#00B5E0",
-          fontSize: Font.p1,
-          marginLeft: 10,
-        },
-        h3: {
-          fontFamily: "Poppins-Regular",
-          color: "#00B5E0",
-          fontSize: Font.h5,
-          marginLeft: 10,
-        },
-        h4: {
-          fontFamily: "Poppins-Regular",
-          color: "#00B5E0",
-          fontSize: Font.h4,
-          marginLeft: 10,
-        },
-        h5: {
-          fontFamily: "Poppins-Regular",
-          color: "#00B5E0",
-          fontSize: Font.h5,
-          marginLeft: 10,
-        },
-        strong: {
-          color: "#00B5E0",
-        },
-      }}
+      domVisitors={domVisitors}
+      tagsStyles={tagsStyles}
+      customListStyleSpecs={customListStyleSpecs}
+      renderersProps={renderersProps}
     />
   );
 };

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@atlaskit/adf-schema": "^20.1.2",
+    "@dev-event/react-native-accordion": "^2.0.4",
     "@freakycoder/react-native-bounceable": "^0.2.5",
     "@mindtechapps/rn-vimeo-player": "^1.0.4",
     "@react-native-community/cli-platform-android": "^5.0.1",
@@ -57,7 +58,7 @@
     "react-native-step-indicator": "^1.0.3",
     "react-native-svg": "^12.1.1",
     "react-native-swiper": "^1.6.0",
-    "react-native-vector-icons": "^8.1.0",
+    "react-native-vector-icons": "^9.0.0",
     "react-native-video": "^5.2.0",
     "react-native-video-controls": "^2.8.1",
     "react-native-webview": "^11.15.0",
