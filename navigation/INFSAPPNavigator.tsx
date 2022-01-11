@@ -29,8 +29,7 @@ import UnitVideoTextScreen from "../screens/Courses/UnitVideoTextScreen";
 import UnitTextScreenFirst from "../screens/Courses/UnitTextScreenFirst";
 import TermsAndConditions from "../screens/EntryScreen/TermsAndConditions";
 import QuizForStartUpScreen from "../screens/Quiz/QuizForStartUpScreen";
-import Atkit from "../screens/Courses/Atkit";
-import AdfTohtml, { AdftoHtml } from "../screens/Courses/AdfTohtml";
+import AdfTohtml from "../screens/Courses/AdfTohtml";
 import UnitScreenForCourses from "../screens/Courses/UnitScreenForCourses";
 
 const INFSAPPNavigator = () => {

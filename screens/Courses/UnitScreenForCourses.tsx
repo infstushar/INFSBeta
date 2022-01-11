@@ -15,6 +15,7 @@ import {
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { WithLocalSvg } from "react-native-svg";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import * as Animatable from "react-native-animatable";
 
@@ -85,11 +86,48 @@ const UnitScreenForCourses = (props) => {
         style={[styles.header, isActive ? styles.active : styles.inactive]}
         transition="backgroundColor"
       >
-        <View style={{ flexDirection: "row", marginRight: 10 }}>
-          <Text style={styles.headerText}>{section.order} </Text>
-          <Text style={styles.headerText} numberOfLines={2}>
-            {section.title}
-          </Text>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.headerText}>{section.order} - </Text>
+          <View style={{ marginLeft: 5, marginRight: 30 }}>
+            <Text
+              style={{
+                fontFamily: "Poppins-SemiBold",
+                fontSize: Font.h5,
+                marginRight: 30,
+              }}
+              numberOfLines={2}
+            >
+              {section.title}
+            </Text>
+          </View>
+          {isActive ? (
+            <Icon
+              name="angle-down"
+              size={25}
+              color="#555555"
+              style={{
+                marginTop: 3,
+                position: "absolute",
+                right: 5,
+                top: 5,
+                bottom: 5,
+              }}
+            />
+          ) : (
+            <Icon
+              name="angle-up"
+              size={25}
+              color="#555555"
+              style={{
+                marginTop: 3,
+                marginBottom: 3,
+                position: "absolute",
+                right: 5,
+                top: 5,
+                bottom: 5,
+              }}
+            />
+          )}
         </View>
       </Animatable.View>
     );
@@ -261,26 +299,24 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "#F5FCFF",
-    paddingLeft: 10,
-    marginRight: 20,
+    marginLeft: 10,
+    marginRight: 10,
     marginTop: 10,
   },
   headerText: {
     fontFamily: "Poppins-SemiBold",
     fontSize: Font.h5,
     marginTop: 5,
+    marginLeft: 5,
+  },
+  content: {
+    paddingLeft: 10,
     marginLeft: 10,
     marginRight: 10,
   },
-  content: {
-    paddingLeft: 20,
-    backgroundColor: "#fff",
-  },
-  active: {
-    backgroundColor: "rgba(255,255,255,1)",
-  },
+  active: { backgroundColor: "#FFFFFF" },
   inactive: {
-    backgroundColor: "rgba(245,252,255,1)",
+    backgroundColor: "#EDEDED",
   },
   selectors: {
     marginBottom: 10,

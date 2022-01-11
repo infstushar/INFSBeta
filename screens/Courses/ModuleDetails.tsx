@@ -453,13 +453,17 @@ const ModuleDetails = (props) => {
                 <List.Section>
                   <List.Accordion
                     title={item.title}
-                    style={{ marginTop: 1 }}
+                    style={{
+                      marginTop: 1,
+                      backgroundColor: "#EDEDED",
+                      marginRight: 10,
+                    }}
                     titleStyle={{
                       fontFamily: "Poppins-SemiBold",
                       fontSize: Font.h6,
                       color: "#3E3E3E",
-                      marginRight: 5,
                     }}
+                    titleNumberOfLines={2}
                   >
                     <List.Item
                       title={DATA[0].description}

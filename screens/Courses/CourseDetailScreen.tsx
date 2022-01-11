@@ -413,13 +413,13 @@ const CourseDetailScreen = (props) => {
                       fontFamily: "Poppins-SemiBold",
                       fontSize: Font.h5,
                       color: "#3E3E3E",
-                      paddingLeft: 5,
-                      marginLeft: 5,
-                      marginTop: 5,
+                      margin: 5,
                     }}
+                    numberOfLines={2}
                   >
-                    {item.title}
+                    {item.module_code} - {item.title}
                   </Text>
+
                   <Text
                     style={{
                       fontFamily: "Poppins-Regular",
