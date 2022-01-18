@@ -13,7 +13,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import Font from "../../constants/Font";
 import AdfTohtml from "../Courses/AdfTohtml";
 import { WithLocalSvg } from "react-native-svg";
-import Header from "../../components/HeaderwithBack";
+
 import ListComponent from "../../components/ListComponent";
 
 const { width, height } = Dimensions.get("window");
@@ -29,35 +29,29 @@ const normalize = (size) => {
 };
 
 const UnitTextScreen = (props) => {
-  const [data, setData] = useState([]);
-  const [isLoading, setLoading] = useState(true);
-  const getData = async () => {
-    try {
-      const response = await fetch(
-        `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/lessons/` +
-          props?.route?.params?.slug
-      );
-      const json = await response.json();
-      setData(json);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const [data, setData] = useState([]);
+  // const [isLoading, setLoading] = useState(true);
+  // const getData = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/lessons/` +
+  //         props.source.slug
+  //     );
+  //     const json = await response.json();
+  //     setData(json);
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    getData();
-  }, []);
+  // useEffect(() => {
+  //   console.log("Video" + props.source.slug);
+  //   getData();
+  // }, []);
   return (
     <View style={{ backgroundColor: "#FFFFFF" }}>
-      <Header
-        title={data.title}
-        onPress={() => {
-          props.navigation.goBack(null);
-        }}
-      />
-
       <ScrollView
         contentContainerStyle={{
           paddingBottom: 60,
@@ -66,7 +60,7 @@ const UnitTextScreen = (props) => {
         }}
       >
         <AdfTohtml
-          source={data.content}
+          source={props.source.content}
           bgStyle={{
             backgroundColor: "#F8F8F8",
             marginTop: 20,

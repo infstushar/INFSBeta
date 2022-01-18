@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import dummy from "../../components/dummy";
+
 import Colors from "../../constants/colors";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";

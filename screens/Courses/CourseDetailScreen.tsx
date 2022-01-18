@@ -18,6 +18,7 @@ import Swiper from "react-native-swiper";
 import Header from "../../components/HeaderwithBack";
 import { WithLocalSvg } from "react-native-svg";
 import ListComponent from "../../components/ListComponent";
+import SeeMore from "react-native-see-more-inline";
 
 import { Card, Chip, List } from "react-native-paper";
 import Font from "../../constants/Font";
@@ -25,7 +26,6 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
-import ReadMore from "react-native-read-more-text";
 
 const { width, height } = Dimensions.get("window");
 
@@ -260,7 +260,15 @@ const CourseDetailScreen = (props) => {
           <View style={{ flexDirection: "row" }}>
             <Text style={styles.textStyleForheaderMedium}>{DATA[0].level}</Text>
             <View style={styles.hairline} />
-            <Text style={styles.textStyleForheaderMedium}>Last updated on</Text>
+            <Text
+              style={{
+                fontFamily: "Poppins-Medium",
+                fontSize: Font.p1,
+                color: "#838383",
+              }}
+            >
+              Last updated on{" "}
+            </Text>
             <Text style={styles.textStyleForheaderMedium}>
               {DATA[0].update}
             </Text>
@@ -353,11 +361,12 @@ const CourseDetailScreen = (props) => {
             horizontal
           />*/}
         </View>
+
         <ListComponent
           title={"Here’s what you ‘ll learn"}
           sourceData={data.courseoverview?.what_will_you}
           setViewStyle={{
-            paddingVertical: 15,
+            paddingVertical: 5,
             backgroundColor: "#F8F8F8",
           }}
         />
@@ -366,11 +375,9 @@ const CourseDetailScreen = (props) => {
           title={"This Course Includes"}
           sourceData={data.courseoverview?.includes}
           setViewStyle={{
-            marginTop: 10,
             borderWidth: 1,
             borderColor: "#EAEAEA",
             margin: 15,
-            paddingVertical: 15,
           }}
         />
 
@@ -406,6 +413,7 @@ const CourseDetailScreen = (props) => {
                     borderWidth: 1,
                     borderColor: "#EAEAEA",
                     marginRight: 15,
+                    marginTop: 15,
                   }}
                 >
                   <Text
@@ -419,20 +427,9 @@ const CourseDetailScreen = (props) => {
                   >
                     {item.module_code} - {item.title}
                   </Text>
-
-                  <Text
-                    style={{
-                      fontFamily: "Poppins-Regular",
-                      fontSize: Font.p1,
-                      color: "#838383",
-                      paddingLeft: 5,
-                      marginLeft: 5,
-                      marginTop: 5,
-                    }}
-                    numberOfLines={3}
-                  >
-                    {DATA[0].description}
-                  </Text>
+                  <View style={{ height: 65 }}>
+                    <AdfTohtml source={item.short_description}></AdfTohtml>
+                  </View>
                   <Text
                     style={{
                       color: "blue",
@@ -484,16 +481,14 @@ const CourseDetailScreen = (props) => {
           <ListComponent
             title={"Course Description"}
             sourceData={data.courseoverview?.long_description}
-            setViewStyle={{
-              marginTop: 10,
-            }}
+            setViewStyle={{ margin: 5 }}
           />
         </View>
         <View>
           <ListComponent
             title={"Course Eligibility"}
             sourceData={data.courseoverview?.eligibility}
-            setViewStyle={{ marginTop: 10 }}
+            setViewStyle={{ margin: 5 }}
           />
         </View>
         <View style={{ marginTop: 10 }}>
@@ -507,7 +502,7 @@ const CourseDetailScreen = (props) => {
           >
             Accreditation
           </Text>
-          <View style={{ marginLeft: 15 }}>
+          <View style={{ marginLeft: "20%" }}>
             <View style={{ flexDirection: "row" }}>
               <Image
                 source={require("../../assets/dipp.jpeg")}
@@ -524,7 +519,7 @@ const CourseDetailScreen = (props) => {
                   height: 60,
                   width: 60,
                   resizeMode: "stretch",
-                  marginLeft: 30,
+                  marginLeft: 60,
                 }}
               />
             </View>
@@ -938,7 +933,7 @@ const CourseDetailScreen = (props) => {
               fontFamily: "Poppins-SemiBold",
             }}
           >
-            Start My Learing
+            Start My Learning
           </Text>
         </TouchableOpacity>
       </View>

@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import CardComponentScreent from "../../components/CardCoponentScreent";
 import { ScrollView } from "react-native-gesture-handler";
-
+import AdfTohtml from "../Courses/AdfTohtml";
 import Header from "../../components/Header";
 
 import Font from "../../constants/Font";
@@ -116,7 +116,11 @@ const CourseScreen = (props: {
               <CardComponentScreent
                 Img={Data[1].Img}
                 title={item.title}
-                description={Data[1].description}
+                description={
+                  <AdfTohtml
+                    source={item.courseoverview.short_description}
+                  ></AdfTohtml>
+                }
                 author={item.instructor}
                 price={item.price}
                 studentEnroll={Data[1].studentEnroll}

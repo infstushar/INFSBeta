@@ -22,19 +22,16 @@ export const RenderContent = (props) => {
     }
   };
   useEffect(() => {
-    // console.log(props.section);
     if (props.section) getData(props.section.slug);
   }, []);
 
   if (content) {
     return (
       <View>
-        {content.map((value) => (
+        {content.map((value, index) => (
           <TouchableOpacity
             onPress={() => {
-              if (value.lesson_type === "video")
-                navigation.navigate("UnitVideoTextScreen", value);
-              else navigation.navigate("UnitTextScreen", value);
+              navigation.navigate("LessonScreen", { value, content, index });
             }}
           >
             <View style={{ flexDirection: "row", marginRight: 10 }}>
@@ -72,7 +69,6 @@ export const RenderContent = (props) => {
             </View>
           </TouchableOpacity>
         ))}
-        {/* <Text> Loaded ...</Text> */}
       </View>
     );
   } else return <Text> Loading ...</Text>;

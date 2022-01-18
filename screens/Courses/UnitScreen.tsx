@@ -34,6 +34,7 @@ const normalize = (size) => {
 const UnitScreen = (props) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [content, setContent] = useState([]);
 
   const getData = async () => {
     try {
@@ -43,6 +44,7 @@ const UnitScreen = (props) => {
       );
       const json = await response.json();
       setData(json);
+      setContent(json);
     } catch (error) {
       console.error(error);
     } finally {
@@ -59,7 +61,6 @@ const UnitScreen = (props) => {
   };
   return (
     <View style={{ backgroundColor: "#FFFFFF" }}>
-      {console.warn(data)}
       <Header
         title={props.route.params.title}
         onPress={() => {
@@ -89,49 +90,50 @@ const UnitScreen = (props) => {
       <FlatList
         data={data}
         keyExtractor={({ id }, index) => id}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <View style={{ flexDirection: "row", marginLeft: 20 }}>
-            <Text
-              style={{
-                fontFamily: "Poppins-Medium",
-                fontSize: normalize(17.5),
-                color: "#3E3E3E",
-                marginTop: 20,
-              }}
-            >
-              {item.order} :
-            </Text>
             <TouchableHighlight
               onPress={() => {
                 console.warn(item.lesson_type);
-                if (item.lesson_type === "video")
-                  props.navigation.navigate("UnitVideoTextScreen", item);
-                else props.navigation.navigate("UnitTextScreen", item);
+                props.navigation.navigate("LessonScreen", {
+                  item,
+                  content,
+                  index,
+                });
               }}
-              style={{ width: width - 40, height: 75 }}
             >
-              <View style={{ marginLeft: 15, marginTop: 15 }}>
-                <Text
-                  style={{
-                    marginLeft: 15,
-                    fontFamily: "Poppins-Medium",
-                    fontSize: normalize(17.5),
-                    color: "#3E3E3E",
-                    marginTop: 5,
-                  }}
-                  numberOfLines={2}
-                >
-                  {item.title}
-                </Text>
-                <View style={{ flexDirection: "row" }}>
+              <View
+                style={{ flexDirection: "row", marginRight: 10, marginTop: 10 }}
+              >
+                {item.lesson_type === "video" ? (
                   <WithLocalSvg
-                    width={12}
-                    height={14}
-                    asset={require("../../assets/Iconopen-document.svg")}
-                    style={{ marginLeft: 20 }}
+                    width={16}
+                    height={16}
+                    asset={require("../../assets/Vector.svg")}
+                    style={{ marginTop: 15 }}
                   />
-                  <Text style={{ marginLeft: 5, textTransform: "capitalize" }}>
-                    {item.lesson_type}
+                ) : (
+                  <WithLocalSvg
+                    width={16}
+                    height={16}
+                    asset={require("../../assets/fluent_document-20-filled.svg")}
+                    style={{ marginTop: 15 }}
+                  />
+                )}
+
+                <View style={{ marginLeft: 5, marginRight: 10 }}>
+                  <Text
+                    style={{
+                      marginLeft: 15,
+                      fontFamily: "Poppins-Medium",
+                      fontSize: Font.h5,
+                      color: "#3E3E3E",
+                      marginTop: 9,
+                      marginRight: 10,
+                    }}
+                    numberOfLines={3}
+                  >
+                    {item.title}
                   </Text>
                 </View>
               </View>

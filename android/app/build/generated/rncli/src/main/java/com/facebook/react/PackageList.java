@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 // @react-native-community/masked-view
 import org.reactnative.maskedview.RNCMaskedViewPackage;
+// react-native-bootsplash
+import com.zoontek.rnbootsplash.RNBootSplashPackage;
 // react-native-gesture-handler
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 // react-native-music-control
@@ -77,6 +79,7 @@ public class PackageList {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
       new MainReactPackage(mConfig),
       new RNCMaskedViewPackage(),
+      new RNBootSplashPackage(),
       new RNGestureHandlerPackage(),
       new MusicControl(),
       new ReanimatedPackage(),

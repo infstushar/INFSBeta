@@ -7,20 +7,23 @@
  */
 
 import React, { useState, useEffect } from "react";
-import type { Node } from "react";
-import { useColorScheme } from "react-native";
-
+import { useColorScheme, Platform } from "react-native";
 import { Colors } from "react-native/Libraries/NewAppScreen";
-
 import { fragmentToJSON, defaultSchema as schema } from "@atlaskit/adf-schema";
 import { DOMSerializer } from "prosemirror-model";
 import { env } from "jsdom-jscore-rn";
-
 import { useWindowDimensions } from "react-native";
-import RenderHtml, { ignoredStyles } from "react-native-render-html";
+import RenderHtml, { defaultSystemFonts } from "react-native-render-html";
 import Font from "../../constants/Font";
 import { removeElement, isTag } from "domutils";
 import CounterStyle from "@jsamr/counter-style";
+
+const systemFonts = [
+  ...defaultSystemFonts,
+  "Poppins-Regular",
+  "Poppins-Bold",
+  "Poppins-SemiBold",
+];
 
 const AdfTohtml = (props) => {
   const isDarkMode = useColorScheme() === "dark";
@@ -85,68 +88,69 @@ const AdfTohtml = (props) => {
     },
   };
   const tagsStyles = {
-    body: {
-      padding: 15,
+    body: {},
+
+    ul: {
+      fontFamily: "Poppins-Regular",
+      color: "#3E3E3E",
+      fontSize: Font.p1,
+      marginBottom: -8,
+    },
+    li: {},
+    p: {
+      fontSize: Font.p1,
+      fontFamily: "Poppins-Regular",
+      color: "#838383",
+      marginLeft: 5,
+      marginRight: 10,
+      marginTop: -10,
+    },
+    h2: {
+      fontFamily: "Poppins-Bold",
+      fontSize: Font.h4,
+      marginLeft: 5,
+    },
+    h1: {
+      fontFamily: "Poppins-Bold",
+      fontSize: Font.h1,
+      marginLeft: 5,
+    },
+    h6: {
+      fontFamily: "Poppins-Bold",
+      fontSize: Font.p1,
+      marginLeft: 5,
+    },
+    h3: {
+      color: "#3E3E3E",
+      fontFamily: "Poppins-Medium",
+      fontSize: Font.h5,
+      marginLeft: 5,
+    },
+    h4: {
+      fontFamily: "Poppins-Medium",
+      fontSize: Font.h4,
+      marginLeft: 5,
+    },
+    h5: {
+      fontFamily: "Poppins-SemiBold",
+      fontSize: Font.h5,
+      marginLeft: 5,
+    },
+    strong: {
+      fontFamily: "Poppins-Medium",
+      color: "#3E3E3E",
+    },
+    blockquote: {
+      backgroundColor: "#0000001A",
+      marginTop: 10,
+      paddingTop: 25,
     },
   };
   const renderersProps = {
     ul: {
-      markerBoxStyle: {
-        marginTop: 15,
-      },
+      markerBoxStyle: {},
       markerTextStyle: {
         color: "green",
-      },
-
-      li: {
-        marginTop: 8,
-      },
-      p: {
-        fontSize: Font.p1,
-        fontFamily: "Poppins-Regular",
-        color: "#3E3E3E",
-        marginLeft: 10,
-        marginRight: 10,
-        marginTop: -10,
-      },
-      h2: {
-        fontFamily: "Poppins-Regular",
-        color: "#00B5E0",
-        fontSize: Font.h4,
-        marginLeft: 10,
-      },
-      h1: {
-        fontFamily: "Poppins-Regular",
-        color: "#00B5E0",
-        fontSize: Font.h1,
-        marginLeft: 10,
-      },
-      h6: {
-        fontFamily: "Poppins-Regular",
-        color: "#00B5E0",
-        fontSize: Font.p1,
-        marginLeft: 10,
-      },
-      h3: {
-        fontFamily: "Poppins-Regular",
-        color: "#00B5E0",
-        fontSize: Font.h5,
-        marginLeft: 10,
-      },
-      h4: {
-        fontFamily: "Poppins-Regular",
-        color: "#00B5E0",
-        fontSize: Font.h4,
-        marginLeft: 10,
-      },
-      h5: {
-        fontFamily: "Poppins-Regular",
-        color: "#00B5E0",
-        fontSize: Font.h5,
-        marginLeft: 10,
-      },
-      strong: {
-        color: "#00B5E0",
       },
     },
   };
@@ -154,6 +158,8 @@ const AdfTohtml = (props) => {
   const domVisitors = {
     onElement: onElement,
   };
+
+  console.log("Html Dta" + JSON.stringify(source));
 
   return (
     <RenderHtml
@@ -165,6 +171,7 @@ const AdfTohtml = (props) => {
       tagsStyles={tagsStyles}
       customListStyleSpecs={customListStyleSpecs}
       renderersProps={renderersProps}
+      systemFonts={systemFonts}
     />
   );
 };

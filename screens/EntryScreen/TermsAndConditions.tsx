@@ -108,7 +108,7 @@ class TermsAndConditions extends Component {
 
         <TouchableOpacity
           disabled={!this.state.accepted}
-          onPress={() => alert("Terms and conditions accepted")}
+          onPress={() => this.props.navigation.navigate("Login")}
           style={this.state.accepted ? styles.button : styles.buttonDisabled}
         >
           <Text style={styles.buttonLabel}>Accept</Text>
@@ -129,26 +129,26 @@ const styles = {
   title: {
     fontSize: 22,
     alignSelf: "center",
+    fontFamily: "Poppins-Regular",
   },
   tcP: {
     marginTop: 10,
     marginBottom: 10,
     fontSize: 12,
+    fontFamily: "Poppins-Regular",
   },
-  tcP: {
-    marginTop: 10,
-    fontSize: 12,
-  },
+
   tcL: {
     marginLeft: 10,
     marginTop: 10,
     marginBottom: 10,
     fontSize: 12,
+    fontFamily: "Poppins-Regular",
   },
   tcContainer: {
     marginTop: 15,
     marginBottom: 15,
-    height: height * 0.7,
+    height: height * 0.82,
   },
 
   button: {
@@ -167,6 +167,7 @@ const styles = {
     fontSize: 14,
     color: "#FFF",
     alignSelf: "center",
+    fontFamily: "Poppins-Bold",
   },
 };
 

@@ -62,24 +62,20 @@ const CardCoponentScreent = (props) => {
 
         <View style={{ marginTop: hp("21%"), flexGrow: 1 }}>
           <View>
-            <View style={{ flexDirection: "row" }}>
-              <Text
-                style={{
-                  fontFamily: "Poppins-SemiBold",
-                  fontSize: Font.h5,
-                  color: "#3E3E3E",
-                  lineHeight: 25,
-                  paddingBottom: 10,
-                }}
-              >
-                {props.title}
-              </Text>
-            </View>
-            <View style={{ width: wp("80%"), height: hp("8.6%") }}>
-              <Text numberOfLines={3} style={styles.cardTextStyleForRegular}>
-                {props.description}
-              </Text>
-            </View>
+            <Text
+              style={{
+                fontFamily: "Poppins-SemiBold",
+                fontSize: Font.h5,
+                color: "#3E3E3E",
+                lineHeight: 25,
+                paddingBottom: 10,
+              }}
+            >
+              {props.title}
+            </Text>
+            <View style={{ height: "35%" }}>{props.description}</View>
+
+            {/* <View style={{ width: 350, height: 70 }}></View> */}
             <View style={{ flexDirection: "row", paddingTop: 5 }}>
               <Image
                 source={require("../assets/abc.jpeg")}

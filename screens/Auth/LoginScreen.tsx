@@ -166,6 +166,7 @@ const LoginScreen = (props: {
                       style={{
                         fontFamily: "Poppins-Regular",
                         marginLeft: 5,
+                        marginTop: 5,
                         fontSize: Font.h5,
                         color: "#838383",
                       }}
@@ -194,6 +195,7 @@ const LoginScreen = (props: {
                       style={{
                         fontFamily: "Poppins-Regular",
                         marginLeft: 5,
+                        marginTop: 5,
                         color: "#838383",
                         fontSize: Font.h5,
                       }}
@@ -406,6 +408,7 @@ const LoginScreen = (props: {
                 backgroundColor: "transparent",
                 fontFamily: "Poppins-Regular",
                 color: "#B7B7B7",
+                marginLeft: 2,
                 fontSize: Font.p1,
               }}
               placeholderTextColor="#B7B7B7"
@@ -440,6 +443,7 @@ const LoginScreen = (props: {
                 backgroundColor: "transparent",
                 fontFamily: "Poppins-Regular",
                 color: "black",
+                marginLeft: 2,
                 fontSize: Font.p1,
               }}
               placeholderTextColor="#B7B7B7"
@@ -477,6 +481,7 @@ const LoginScreen = (props: {
                 backgroundColor: "transparent",
                 fontFamily: "Poppins-Regular",
                 color: "#B7B7B7",
+                marginLeft: 2,
                 fontSize: Font.p1,
               }}
               placeholderTextColor="#B7B7B7"
@@ -493,7 +498,7 @@ const LoginScreen = (props: {
           <Text
             style={{
               color: "#838383",
-              fontSize: Font.h5,
+              fontSize: Font.h6,
               alignContent: "center",
               fontFamily: "Poppins-Medium",
               lineHeight: 26,

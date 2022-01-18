@@ -234,8 +234,8 @@ const ModuleDetails = (props) => {
         />
       </View>
       <ScrollView>
-        <View style={{ marginLeft: 15, marginBottom: 10 }}>
-          <View style={{ flexDirection: "row", marginTop: 10 }}>
+        <View style={{ marginBottom: 10 }}>
+          <View style={{ flexDirection: "row", marginTop: 10, marginLeft: 10 }}>
             <WithLocalSvg
               width={12}
               height={12}
@@ -270,9 +270,9 @@ const ModuleDetails = (props) => {
               fontSize: Font.h4,
               color: "#3E3E3E",
               paddingBottom: 10,
+              marginLeft: 10,
             }}
           >
-            {console.warn(data.title)}
             {data.title}
           </Text>
           <View style={{ flexDirection: "row" }}>
@@ -281,6 +281,7 @@ const ModuleDetails = (props) => {
                 fontFamily: "Poppins-Medium",
                 fontSize: Font.p1,
                 color: "#3E3E3E",
+                marginLeft: 10,
               }}
             >
               {DATA[0].level}
@@ -318,7 +319,7 @@ const ModuleDetails = (props) => {
               {DATA[0].lang}
             </Text>
           </View>
-          <View style={{ flexDirection: "row", paddingTop: 5 }}>
+          <View style={{ flexDirection: "row", paddingTop: 5, marginLeft: 10 }}>
             <Image
               source={require("../../assets/abc.jpeg")}
               style={{
@@ -357,7 +358,7 @@ const ModuleDetails = (props) => {
               {data.instructor}
             </Text>
           </View>
-          <View style={{ flexDirection: "row", marginTop: 10 }}>
+          <View style={{ flexDirection: "row", marginTop: 10, marginLeft: 10 }}>
             <WithLocalSvg
               width={28}
               height={18}
@@ -395,7 +396,7 @@ const ModuleDetails = (props) => {
               </Text>
             </View>
           </View>
-          <View style={{ marginBottom: 10 }}>
+          <View style={{ marginBottom: 10, marginLeft: 10 }}>
             <FlatList
               data={DATA[0].tag}
               renderItem={renderItem}
@@ -408,6 +409,7 @@ const ModuleDetails = (props) => {
               fontSize: Font.h5,
               fontFamily: "Poppins-Medium",
               color: "#3E3E3E",
+              marginLeft: 10,
             }}
           >
             What you ‘ll learn
@@ -416,6 +418,7 @@ const ModuleDetails = (props) => {
             style={{
               paddingVertical: 15,
               backgroundColor: "#F8F8F8",
+              marginLeft: 10,
             }}
           >
             <FlatList
@@ -430,6 +433,7 @@ const ModuleDetails = (props) => {
                 color: "#3E3E3E",
                 fontFamily: "Poppins-Medium",
                 fontSize: Font.h5,
+                marginLeft: 10,
               }}
             >
               Module Content
@@ -439,6 +443,7 @@ const ModuleDetails = (props) => {
                 color: "#838383",
                 fontFamily: "Poppins-Regular",
                 fontSize: Font.p1,
+                marginLeft: 10,
               }}
             >
               12 Units | 30 hrs of videos / Slides
@@ -457,6 +462,7 @@ const ModuleDetails = (props) => {
                       marginTop: 1,
                       backgroundColor: "#EDEDED",
                       marginRight: 10,
+                      marginLeft: 10,
                     }}
                     titleStyle={{
                       fontFamily: "Poppins-SemiBold",
@@ -472,6 +478,7 @@ const ModuleDetails = (props) => {
                         fontSize: Font.p1,
                         color: "#3E3E3E",
                         marginRight: 5,
+                        marginLeft: 10,
                       }}
                       titleNumberOfLines={3}
                     />
@@ -485,7 +492,7 @@ const ModuleDetails = (props) => {
             <ListComponent
               title={"Module Description"}
               sourceData={data.short_description}
-              setViewStyle={{ marginTop: 10 }}
+              setViewStyle={{ marginTop: 10, marginLeft: 10 }}
             />
           </View>
           <View>
@@ -494,7 +501,8 @@ const ModuleDetails = (props) => {
                 color: "#3E3E3E",
                 marginTop: 5,
                 fontSize: Font.h5,
-                fontFamily: "Poppins-SemiBold",
+                fontFamily: "Poppins-Medium",
+                marginLeft: 15,
               }}
             >
               Module Eligibility
@@ -503,8 +511,8 @@ const ModuleDetails = (props) => {
               style={{
                 fontSize: Font.p1,
                 fontFamily: "Poppins-Regular",
-                paddingVertical: 10,
 
+                marginLeft: 15,
                 color: "#838383",
               }}
             >

@@ -198,7 +198,8 @@ const IntroSliderScreen = (props: {
 
           <RoundedButton
             onPress={() => {
-              props.navigation.navigate("Preference", { login: false });
+              //props.navigation.navigate("Preference", { login: false });
+              props.navigation.navigate("Login", { login: true });
             }}
             title="Get Started"
             textVisible={true}

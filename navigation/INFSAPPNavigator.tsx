@@ -31,6 +31,7 @@ import TermsAndConditions from "../screens/EntryScreen/TermsAndConditions";
 import QuizForStartUpScreen from "../screens/Quiz/QuizForStartUpScreen";
 import AdfTohtml from "../screens/Courses/AdfTohtml";
 import UnitScreenForCourses from "../screens/Courses/UnitScreenForCourses";
+import LessonScreen from "../screens/Courses/LessonScreen";
 
 const INFSAPPNavigator = () => {
   const Stack = createStackNavigator();
@@ -81,6 +82,15 @@ const INFSAPPNavigator = () => {
           <Stack.Screen
             name="UnitScreenForCourses"
             component={UnitScreenForCourses}
+            options={{
+              headerShown: false,
+              headerTitleStyle: { fontFamily: "Poppins-Regular" },
+              headerBackTitleStyle: { fontFamily: "Poppins-Regular" },
+            }}
+          />
+          <Stack.Screen
+            name="LessonScreen"
+            component={LessonScreen}
             options={{
               headerShown: false,
               headerTitleStyle: { fontFamily: "Poppins-Regular" },

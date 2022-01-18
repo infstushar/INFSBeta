@@ -94,6 +94,7 @@ const UnitScreenForCourses = (props) => {
                 fontFamily: "Poppins-SemiBold",
                 fontSize: Font.h5,
                 marginRight: 30,
+                marginTop: 3,
               }}
               numberOfLines={2}
             >
@@ -102,7 +103,7 @@ const UnitScreenForCourses = (props) => {
           </View>
           {isActive ? (
             <Icon
-              name="angle-down"
+              name="angle-up"
               size={25}
               color="#555555"
               style={{
@@ -115,7 +116,7 @@ const UnitScreenForCourses = (props) => {
             />
           ) : (
             <Icon
-              name="angle-up"
+              name="angle-down"
               size={25}
               color="#555555"
               style={{
@@ -155,11 +156,24 @@ const UnitScreenForCourses = (props) => {
   return (
     <View style={{ backgroundColor: "#FFFFFF" }}>
       <Header
-        title={props?.route?.params?.title}
+        title={props?.route?.params?.module_code}
         onPress={() => {
           props.navigation.goBack(null);
         }}
       />
+      <Text
+        style={{
+          marginTop: 15,
+          fontFamily: "Poppins-Bold",
+          fontSize: Font.h4,
+          color: "#00B5E0",
+          paddingBottom: 10,
+          marginLeft: 15,
+        }}
+        numberOfLines={2}
+      >
+        {props?.route?.params?.title}
+      </Text>
       {/* <View style={{ flexDirection: "row", marginTop: 15, marginLeft: 20 }}>
         <WithLocalSvg
           width={21}
@@ -292,7 +306,7 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: "center",
-    fontFamily: "Poppins-SemiBold",
+    fontFamily: "Poppins-Medium",
     fontSize: Font.h5,
     margin: 10,
     marginTop: 5,
