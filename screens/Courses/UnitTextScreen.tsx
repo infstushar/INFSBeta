@@ -51,10 +51,9 @@ const UnitTextScreen = (props) => {
   //   getData();
   // }, []);
   return (
-    <View style={{ backgroundColor: "#FFFFFF" }}>
+    <View style={{ backgroundColor: "#FFFFFF", height: height }}>
       <ScrollView
         contentContainerStyle={{
-          paddingBottom: 60,
           marginLeft: 15,
           marginRight: 10,
         }}
@@ -65,10 +64,10 @@ const UnitTextScreen = (props) => {
             backgroundColor: "#F8F8F8",
             marginTop: 20,
             paddingVertical: 15,
-
             marginLeft: 15,
           }}
         ></AdfTohtml>
+        <View style={{ height: 120 }} />
       </ScrollView>
     </View>
   );

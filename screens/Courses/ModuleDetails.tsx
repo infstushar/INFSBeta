@@ -295,14 +295,13 @@ const ModuleDetails = (props) => {
                 paddingLeft: 5,
               }}
             >
-              Last updated on
+              Last updated on :{" "}
             </Text>
             <Text
               style={{
                 fontFamily: "Poppins-Medium",
                 fontSize: Font.p1,
                 color: "#3E3E3E",
-                paddingLeft: 5,
               }}
             >
               {DATA[0].update}
@@ -438,16 +437,16 @@ const ModuleDetails = (props) => {
             >
               Module Content
             </Text>
-            <Text
+            {/* <Text
               style={{
                 color: "#838383",
                 fontFamily: "Poppins-Regular",
                 fontSize: Font.p1,
-                marginLeft: 10,
+                marginLeft: 12,
               }}
             >
-              12 Units | 30 hrs of videos / Slides
-            </Text>
+              {data.units.length} Units
+            </Text> */}
             <View style={styles.horizontalline} />
           </View>
           <FlatList
@@ -459,13 +458,12 @@ const ModuleDetails = (props) => {
                   <List.Accordion
                     title={item.title}
                     style={{
-                      marginTop: 1,
                       backgroundColor: "#EDEDED",
                       marginRight: 10,
                       marginLeft: 10,
                     }}
                     titleStyle={{
-                      fontFamily: "Poppins-SemiBold",
+                      fontFamily: "Poppins-Medium",
                       fontSize: Font.h6,
                       color: "#3E3E3E",
                     }}

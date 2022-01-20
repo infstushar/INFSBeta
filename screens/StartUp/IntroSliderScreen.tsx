@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   ScrollView,
@@ -9,6 +9,7 @@ import {
   PixelRatio,
 } from "react-native";
 import { WithLocalSvg } from "react-native-svg";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import RoundedButton from "../../components/RoundedButton";
 import OnboardingScreen1 from "./OnboardingScreen1";
 import OnboardingScreen2 from "./OnboardingScreen2";
@@ -24,6 +25,13 @@ const normalize = (size) => {
     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
   }
 };
+const storeData = async (value) => {
+  try {
+    await AsyncStorage.setItem("@isNavigatedFirstTime", value);
+  } catch (e) {
+    // saving error
+  }
+};
 
 const IntroSliderScreen = (props: {
   navigation: { navigate: (arg0: string, arg1: Object) => void };
@@ -34,6 +42,9 @@ const IntroSliderScreen = (props: {
   const [isSkipAndNext, setIsSkipAndNext] = useState(false);
 
   const { currentPage: pageIndex } = sliderState;
+  useEffect(() => {
+    storeData("yes");
+  }, []);
 
   const nextArrowHandler = (page: number) => {
     let gotoPage = 1;
@@ -144,7 +155,7 @@ const IntroSliderScreen = (props: {
               ))}
             </View>
 
-            <View style={{ marginTop: 5 }}>
+            {/* <View style={{ marginTop: 5 }}>
               <Text style={styles.accountText}>Already have an account?</Text>
               <View style={{ justifyContent: "center", alignItems: "center" }}>
                 <Text
@@ -156,7 +167,7 @@ const IntroSliderScreen = (props: {
                   Login here
                 </Text>
               </View>
-            </View>
+            </View> */}
           </View>
         </View>
       </ScrollView>
@@ -200,6 +211,7 @@ const IntroSliderScreen = (props: {
             onPress={() => {
               //props.navigation.navigate("Preference", { login: false });
               props.navigation.navigate("Login", { login: true });
+              //storeData(0);
             }}
             title="Get Started"
             textVisible={true}

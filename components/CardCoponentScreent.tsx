@@ -73,9 +73,14 @@ const CardCoponentScreent = (props) => {
             >
               {props.title}
             </Text>
-            <View style={{ height: "35%" }}>{props.description}</View>
+            {props.description ? (
+              <View style={{ height: "35%" }}>
+                <Text style={styles.cardTextStyleForRegular} numberOfLines={3}>
+                  {props.description}
+                </Text>
+              </View>
+            ) : null}
 
-            {/* <View style={{ width: 350, height: 70 }}></View> */}
             <View style={{ flexDirection: "row", paddingTop: 5 }}>
               <Image
                 source={require("../assets/abc.jpeg")}
@@ -191,7 +196,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 20,
     width: wp("94%"),
-    height: hp("59%"),
+    height: hp("60%"),
     flexGrow: 1,
   },
   imageContainer: {

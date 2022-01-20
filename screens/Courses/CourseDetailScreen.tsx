@@ -267,7 +267,7 @@ const CourseDetailScreen = (props) => {
                 color: "#838383",
               }}
             >
-              Last updated on{" "}
+              Last updated on :{" "}
             </Text>
             <Text style={styles.textStyleForheaderMedium}>
               {DATA[0].update}
@@ -386,7 +386,7 @@ const CourseDetailScreen = (props) => {
             style={{
               color: "#3E3E3E",
               marginLeft: 15,
-              fontFamily: "Poppins-SemiBold",
+              fontFamily: "Poppins-Medium",
               fontSize: Font.h5,
             }}
           >
@@ -416,23 +416,46 @@ const CourseDetailScreen = (props) => {
                     marginTop: 15,
                   }}
                 >
-                  <Text
-                    style={{
-                      fontFamily: "Poppins-SemiBold",
-                      fontSize: Font.h5,
-                      color: "#3E3E3E",
-                      margin: 5,
-                    }}
-                    numberOfLines={2}
-                  >
-                    {item.module_code} - {item.title}
-                  </Text>
+                  <View style={{ flexDirection: "row" }}>
+                    {item.module_code ? (
+                      <Text
+                        style={{
+                          fontFamily: "Poppins-Medium",
+                          fontSize: Font.h6,
+                          color: "#3E3E3E",
+                          marginTop: 5,
+                          marginLeft: 5,
+                        }}
+                      >
+                        {item.module_code} -
+                      </Text>
+                    ) : null}
+                    <View
+                      style={{
+                        height: 45,
+                        marginRight: 30,
+                        marginTop: 5,
+                        marginLeft: 5,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "Poppins-Medium",
+                          fontSize: Font.h6,
+                          color: "#3E3E3E",
+                        }}
+                        numberOfLines={2}
+                      >
+                        {item.title}
+                      </Text>
+                    </View>
+                  </View>
                   <View style={{ height: 65 }}>
                     <AdfTohtml source={item.short_description}></AdfTohtml>
                   </View>
                   <Text
                     style={{
-                      color: "blue",
+                      color: "#00B5E0",
                       fontFamily: "Poppins-Regular",
                       fontSize: Font.p1,
                       marginLeft: width - 170,
@@ -481,14 +504,14 @@ const CourseDetailScreen = (props) => {
           <ListComponent
             title={"Course Description"}
             sourceData={data.courseoverview?.long_description}
-            setViewStyle={{ margin: 5 }}
+            setViewStyle={{ margin: 10 }}
           />
         </View>
         <View>
           <ListComponent
             title={"Course Eligibility"}
             sourceData={data.courseoverview?.eligibility}
-            setViewStyle={{ margin: 5 }}
+            setViewStyle={{ marginTop: 5, marginLeft: 10 }}
           />
         </View>
         <View style={{ marginTop: 10 }}>
@@ -497,7 +520,7 @@ const CourseDetailScreen = (props) => {
               color: "#3E3E3E",
               marginLeft: 15,
               fontSize: Font.h5,
-              fontFamily: "Poppins-SemiBold",
+              fontFamily: "Poppins-Medium",
             }}
           >
             Accreditation

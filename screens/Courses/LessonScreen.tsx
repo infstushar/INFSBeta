@@ -56,7 +56,7 @@ const LessonSreen = (props) => {
   return (
     <View>
       <Header
-        title={`Unit ${data.order}`}
+        title={`Lesson ${data.order}`}
         onPress={() => {
           props.navigation.goBack(null);
         }}

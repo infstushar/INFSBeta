@@ -117,9 +117,8 @@ const CourseScreen = (props: {
                 Img={Data[1].Img}
                 title={item.title}
                 description={
-                  <AdfTohtml
-                    source={item.courseoverview.short_description}
-                  ></AdfTohtml>
+                  item.courseoverview?.short_description?.content[0]?.content[0]
+                    ?.text
                 }
                 author={item.instructor}
                 price={item.price}

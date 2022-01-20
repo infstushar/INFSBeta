@@ -16,8 +16,6 @@ import getVideoId from "get-video-id";
 import { ScrollView } from "react-native-gesture-handler";
 import Font from "../../constants/Font";
 import { WithLocalSvg } from "react-native-svg";
-import { WebView } from "react-native-webview";
-import ReactPlayer from "react-player/vimeo";
 
 import { VimeoPlayer } from "@mindtechapps/rn-vimeo-player";
 //import VideoPlayer from "react-native-video-controls";
@@ -54,7 +52,7 @@ const UnitVideoTextScreen = (props) => {
             marginTop: 15,
           }}
         >
-          Unit - {props.source.title}
+          {props.source.title}
         </Text>
       </View>
     </View>

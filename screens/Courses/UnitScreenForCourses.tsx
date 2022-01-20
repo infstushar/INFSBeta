@@ -91,7 +91,7 @@ const UnitScreenForCourses = (props) => {
           <View style={{ marginLeft: 5, marginRight: 30 }}>
             <Text
               style={{
-                fontFamily: "Poppins-SemiBold",
+                fontFamily: "Poppins-Medium",
                 fontSize: Font.h5,
                 marginRight: 30,
                 marginTop: 3,
@@ -154,7 +154,7 @@ const UnitScreenForCourses = (props) => {
   };
 
   return (
-    <View style={{ backgroundColor: "#FFFFFF" }}>
+    <View style={{ backgroundColor: "#FFFFFF", height: height }}>
       <Header
         title={props?.route?.params?.module_code}
         onPress={() => {
@@ -167,7 +167,6 @@ const UnitScreenForCourses = (props) => {
           fontFamily: "Poppins-Bold",
           fontSize: Font.h4,
           color: "#00B5E0",
-          paddingBottom: 10,
           marginLeft: 15,
         }}
         numberOfLines={2}
@@ -318,7 +317,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   headerText: {
-    fontFamily: "Poppins-SemiBold",
+    fontFamily: "Poppins-Medium",
     fontSize: Font.h5,
     marginTop: 5,
     marginLeft: 5,

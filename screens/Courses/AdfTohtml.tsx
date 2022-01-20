@@ -89,6 +89,11 @@ const AdfTohtml = (props) => {
   };
   const tagsStyles = {
     body: {},
+    ol: {
+      fontFamily: "Poppins-Regular",
+      color: "#3E3E3E",
+      fontSize: Font.p1,
+    },
 
     ul: {
       fontFamily: "Poppins-Regular",

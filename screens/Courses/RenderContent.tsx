@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity } from "react-native";
 import Font from "../../constants/Font";
 import { WithLocalSvg } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
+import { ScrollView } from "react-native-gesture-handler";
 
 export const RenderContent = (props) => {
   const [content, setContent] = useState([]);

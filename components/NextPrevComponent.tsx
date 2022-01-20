@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -8,15 +8,8 @@ import {
 } from "react-native";
 const { width, height } = Dimensions.get("window");
 import Font from "../constants/Font";
-import { useNavigation } from "@react-navigation/native";
-import { FlatList } from "react-native-gesture-handler";
-
-let countOfData = 0;
 
 const NextPrevComponent = (props) => {
-  const [isLoading, setLoading] = useState(true);
-  const navigation = useNavigation();
-
   const Next = () => {
     props.modifyIndex("next");
   };
@@ -88,7 +81,7 @@ const NextPrevComponent = (props) => {
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 1,
                 shadowRadius: 3,
-                marginLeft: 40,
+                marginLeft: props.currentIndex !== 0 ? 40 : width / 2 + 20,
               }
             : { display: "none" }
         }

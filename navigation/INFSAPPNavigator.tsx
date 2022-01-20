@@ -32,9 +32,26 @@ import QuizForStartUpScreen from "../screens/Quiz/QuizForStartUpScreen";
 import AdfTohtml from "../screens/Courses/AdfTohtml";
 import UnitScreenForCourses from "../screens/Courses/UnitScreenForCourses";
 import LessonScreen from "../screens/Courses/LessonScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+let isNavigatedFirstTime = true;
+
+const getData = async () => {
+  try {
+    const value = await AsyncStorage.getItem("@isNavigatedFirstTime");
+    if (value === "yes") {
+      isNavigatedFirstTime = false;
+    } else {
+      isNavigatedFirstTime = true;
+    }
+  } catch (e) {
+    // error reading value
+  }
+};
 
 const INFSAPPNavigator = () => {
   const Stack = createStackNavigator();
+  getData();
   return (
     <PaperProvider>
       <NavigationContainer>
@@ -45,6 +62,13 @@ const INFSAPPNavigator = () => {
             options={{ headerShown: false }}
           />*/}
 
+          {/* {isNavigatedFirstTime ? (
+            <Stack.Screen
+              name="Intro"
+              component={IntroSliderScreen}
+              options={{ headerShown: false }}
+            />
+          ) : null} */}
           <Stack.Screen
             name="Login"
             component={LoginScreen}
@@ -53,11 +77,6 @@ const INFSAPPNavigator = () => {
               headerTitleStyle: { fontFamily: "Poppins-Regular" },
               headerBackTitleStyle: { fontFamily: "Poppins-Regular" },
             }}
-          />
-          <Stack.Screen
-            name="Intro"
-            component={IntroSliderScreen}
-            options={{ headerShown: false }}
           />
 
           <Stack.Screen
@@ -242,7 +261,7 @@ const INFSAPPNavigator = () => {
               headerBackTitleStyle: { fontFamily: "Poppins-Regular" },
             }}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="UnitTextScreenFirst"
             component={UnitTextScreenFirst}
             options={{
@@ -250,7 +269,7 @@ const INFSAPPNavigator = () => {
               headerTitleStyle: { fontFamily: "Poppins-Regular" },
               headerBackTitleStyle: { fontFamily: "Poppins-Regular" },
             }}
-          />
+          /> */}
           <Stack.Screen
             name="StudentDecision"
             component={OpenQuizTaskScreen}
