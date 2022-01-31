@@ -56,9 +56,6 @@ const UnitScreen = (props) => {
     getData();
   }, []);
 
-  const displayText = () => {
-    return data.map((item, id) => {});
-  };
   return (
     <View style={{ backgroundColor: "#FFFFFF" }}>
       <Header
@@ -88,7 +85,7 @@ const UnitScreen = (props) => {
       </View> */}
 
       <FlatList
-        data={data}
+        data={data.records}
         keyExtractor={({ id }, index) => id}
         renderItem={({ item, index }) => (
           <View style={{ flexDirection: "row", marginLeft: 20 }}>

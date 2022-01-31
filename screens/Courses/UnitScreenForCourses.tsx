@@ -141,13 +141,6 @@ const UnitScreenForCourses = (props) => {
         style={[styles.content, isActive ? styles.active : styles.inactive]}
         transition="backgroundColor"
       >
-        {/* <Animatable.Text
-          animation={isActive ? "bounceIn" : undefined}
-          style={{ textAlign: "left", marginRight: 30 }}
-        >
-          <RenderContent section={section} />
-        </Animatable.Text> */}
-
         <RenderContent section={section} />
       </Animatable.View>
     );
@@ -161,6 +154,7 @@ const UnitScreenForCourses = (props) => {
           props.navigation.goBack(null);
         }}
       />
+
       <Text
         style={{
           marginTop: 15,
@@ -173,118 +167,30 @@ const UnitScreenForCourses = (props) => {
       >
         {props?.route?.params?.title}
       </Text>
-      {/* <View style={{ flexDirection: "row", marginTop: 15, marginLeft: 20 }}>
-        <WithLocalSvg
-          width={21}
-          height={21}
-          asset={require("../../assets/Chatbox.svg")}
-        />
-        <Text
-          style={{
-            fontFamily: "Poppins-SemiBold",
-            fontSize: normalize(14),
-            color: "#00B5E0",
-            paddingBottom: 10,
-            marginLeft: 10,
-            textDecorationLine: "underline",
-          }}
-        >
-          Discussion Forum
-        </Text>
-      </View> */}
-
-      {/* <FlatList
-        data={data}
-        keyExtractor={({ id }, index) => id}
-        renderItem={({ item }) => (
-          <View style={{ flexDirection: "row", marginLeft: 10 }}>
-            {/* <Text
-              style={{
-                marginLeft: 5,
-                fontFamily: "Poppins-Medium",
-                fontSize: normalize(17.5),
-                color: "#3E3E3E",
-                marginTop: 20,
-              }}
-            >
-              {item.order} :
-            </Text>
-
-
-            <TouchableHighlight
-              onPress={() => {
-                props.navigation.navigate("UnitScreen", item);
-              }}
-              style={{ width: width - 40, height: 90 }}
-            >
-              <View
-                style={{
-                  marginTop: 15,
-                }}
-              >
-                <Text
-                  style={{
-                    marginLeft: 15,
-                    fontFamily: "Poppins-Medium",
-                    fontSize: normalize(17.5),
-                    color: "#3E3E3E",
-                    marginTop: 5,
-                  }}
-                >
-                  {item.title}
-                </Text>
-                <Text
-                  style={{
-                    textDecorationLine: "underline",
-                    fontFamily: "Poppins-Medium",
-                    fontSize: 15,
-                    color: "#3E3E3E",
-                    marginLeft: 20,
-                  }}
-                >
-                  Unit {item.order}
-                </Text>
-              </View>
-            </TouchableHighlight> */}
-      {/* <TouchableOpacity onPress={toggleExpanded}>
-              <View style={styles.header}>
-                <Text style={styles.headerText}>{item.title}</Text>
-              </View>
-            </TouchableOpacity>
-
-            <Collapsible collapsed={collapsed} align="center">
-              <View style={styles.content}>
-                <Text style={{ textAlign: "center" }}>
-                  This is a dummy text of Single Collapsible View
-                </Text>
-              </View>
-            </Collapsible> */}
-
-      {/*//}</View>
-        )}
-      /> */}
       <ScrollView>
-        <Accordion
-          activeSections={activeSections}
-          // For any default active section
-          sections={data}
-          // Title and content of accordion
-          touchableComponent={TouchableOpacity}
-          // Which type of touchable component you want
-          // It can be the following Touchables
-          // TouchableHighlight, TouchableNativeFeedback
-          // TouchableOpacity , TouchableWithoutFeedback
-          expandMultiple={multipleSelect}
-          // If you want to expand multiple at a time
-          renderHeader={renderHeader}
-          // Header Component(View) to render
-          renderContent={renderContent}
-          // Content Component(View) to render
-          duration={400}
-          // Duration for Collapse and expand
-          onChange={setSections}
-          // Setting the state of active sections
-        />
+        {data && data.records ? (
+          <Accordion
+            activeSections={activeSections}
+            // For any default active section
+            sections={data.records}
+            // Title and content of accordion
+            touchableComponent={TouchableOpacity}
+            // Which type of touchable component you want
+            // It can be the following Touchables
+            // TouchableHighlight, TouchableNativeFeedback
+            // TouchableOpacity , TouchableWithoutFeedback
+            expandMultiple={multipleSelect}
+            // If you want to expand multiple at a time
+            renderHeader={renderHeader}
+            // Header Component(View) to render
+            renderContent={renderContent}
+            // Content Component(View) to render
+            duration={400}
+            // Duration for Collapse and expand
+            onChange={setSections}
+            // Setting the state of active sections
+          />
+        ) : null}
       </ScrollView>
     </View>
   );

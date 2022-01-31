@@ -33,25 +33,23 @@ import AdfTohtml from "../screens/Courses/AdfTohtml";
 import UnitScreenForCourses from "../screens/Courses/UnitScreenForCourses";
 import LessonScreen from "../screens/Courses/LessonScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { baseProps } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
 
-let isNavigatedFirstTime = true;
-
-const getData = async () => {
-  try {
-    const value = await AsyncStorage.getItem("@isNavigatedFirstTime");
-    if (value === "yes") {
-      isNavigatedFirstTime = false;
-    } else {
-      isNavigatedFirstTime = true;
+const INFSAPPNavigator = (props) => {
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("@isNavigatedFirstTime");
+      // console.log("VALUE  " + props.isIntroScreen);
+      // setIsFirst(value === null);
+    } catch (e) {
+      // error reading value
     }
-  } catch (e) {
-    // error reading value
-  }
-};
-
-const INFSAPPNavigator = () => {
+  };
   const Stack = createStackNavigator();
-  getData();
+  React.useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <PaperProvider>
       <NavigationContainer>
@@ -62,13 +60,13 @@ const INFSAPPNavigator = () => {
             options={{ headerShown: false }}
           />*/}
 
-          {/* {isNavigatedFirstTime ? (
+          {props.isIntroScreen ? (
             <Stack.Screen
               name="Intro"
               component={IntroSliderScreen}
               options={{ headerShown: false }}
             />
-          ) : null} */}
+          ) : null}
           <Stack.Screen
             name="Login"
             component={LoginScreen}
@@ -197,7 +195,7 @@ const INFSAPPNavigator = () => {
             name="QuizForStartUpScreen"
             component={QuizForStartUpScreen}
             options={{
-              headerShown: true,
+              headerShown: false,
               headerTitleStyle: { fontFamily: "Poppins-Regular" },
               headerBackTitleStyle: { fontFamily: "Poppins-Regular" },
             }}

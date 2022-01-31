@@ -1,20 +1,19 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Touchable } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
 
-const dummy = (props: {
-  navigation: { navigate: (arg0: string, arg1: Object) => void };
-}) => {
+const dummy = (props) => {
   return (
     <View
       style={{
         flexDirection: "column",
-        alignItems: "flex-end",
-        justifyContent: "flex-end",
+        alignItems: "center",
+        justifyContent: "center",
         flex: 1,
       }}
     >
-      <Button
+      {/* <Button
         onPress={() => {
           props.navigation.navigate("ResetPassword", { login: false });
         }}
@@ -27,7 +26,25 @@ const dummy = (props: {
         }}
       >
         LogOut
-      </Button>
+
+      </Button> */}
+      <Text
+        style={{
+          fontFamily: "Poppins-SemiBold",
+          fontSize: 17,
+          color: "#00B5E0",
+        }}
+      >
+        {" "}
+        Upcomming event ...
+      </Text>
+      <TouchableOpacity
+        onPress={() => {
+          props.navigation.navigate("Quiz");
+        }}
+      >
+        <Text>Quiz</Text>
+      </TouchableOpacity>
     </View>
   );
 };

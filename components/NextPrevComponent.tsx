@@ -39,7 +39,7 @@ const NextPrevComponent = (props) => {
                 marginTop: 20,
                 marginBottom: 30,
                 borderRadius: 29,
-                backgroundColor: "#EDEDED",
+                backgroundColor: "#00B5E0",
                 shadowColor: "#00000029",
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 1,
@@ -56,12 +56,12 @@ const NextPrevComponent = (props) => {
           style={{
             flex: 1,
             textAlign: "center",
-            color: "#838383",
+            color: "#FFFFFF",
             fontSize: Font.h6,
-            fontFamily: "Poppins-Regular",
+            fontFamily: "Poppins-SemiBold",
           }}
         >
-          Previous Lesson
+          Previous
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -99,7 +99,7 @@ const NextPrevComponent = (props) => {
             fontFamily: "Poppins-SemiBold",
           }}
         >
-          Next Lesson
+          Next
         </Text>
       </TouchableOpacity>
     </View>

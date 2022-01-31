@@ -54,13 +54,14 @@ const LessonSreen = (props) => {
   };
 
   return (
-    <View>
+    <View style={{ backgroundColor: "#FFFFFF" }}>
       <Header
         title={`Lesson ${data.order}`}
         onPress={() => {
           props.navigation.goBack(null);
         }}
       />
+
       {data.lesson_type === "video" ? (
         <UnitVideoTextScreen source={data} />
       ) : (

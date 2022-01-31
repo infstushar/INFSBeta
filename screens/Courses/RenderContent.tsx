@@ -15,7 +15,7 @@ export const RenderContent = (props) => {
           unit
       );
       const json = await response.json();
-      setContent(json);
+      setContent(json.records);
     } catch (error) {
       console.error(error);
     } finally {
@@ -26,7 +26,9 @@ export const RenderContent = (props) => {
     if (props.section) getData(props.section.slug);
   }, []);
 
-  if (content) {
+  if (content !== undefined && Object.keys(content).length !== 0) {
+    console.log("data content  " + JSON.stringify(content));
+
     return (
       <View>
         {content.map((value, index) => (

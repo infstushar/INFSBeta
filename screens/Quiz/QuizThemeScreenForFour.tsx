@@ -6,6 +6,7 @@ import {
   ScrollView,
   Dimensions,
   Platform,
+  FlatList,
   PixelRatio,
 } from "react-native";
 import { Button, ProgressBar } from "react-native-paper";
@@ -29,22 +30,19 @@ const QuizThemeScreenForFour = (props) => {
       <View>
         <View style={styles.questionContainer}>
           <Text style={styles.questionTextStyle} numberOfLines={3}>
-            {props.question}
+            {props.data.question}
           </Text>
         </View>
 
-        <View style={styles.answerContainer}>
-          <Text style={styles.answerTextStyle}>Regular physical activity</Text>
-        </View>
-        <View style={styles.answerContainer}>
-          <Text style={styles.answerTextStyle}>Eating nutritious food</Text>
-        </View>
-        <View style={styles.answerContainer}>
-          <Text style={styles.answerTextStyle}>Talking to a friend</Text>
-        </View>
-        <View style={styles.answerContainer}>
-          <Text style={styles.answerTextStyle}>All of these</Text>
-        </View>
+        <FlatList
+          data={props.data.answer}
+          keyExtractor={({ id }, index) => id}
+          renderItem={({ item }) => (
+            <View style={styles.answerContainer}>
+              <Text style={styles.answerTextStyle}>{item}</Text>
+            </View>
+          )}
+        />
       </View>
     </View>
   );

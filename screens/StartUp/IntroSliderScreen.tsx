@@ -25,13 +25,6 @@ const normalize = (size) => {
     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
   }
 };
-const storeData = async (value) => {
-  try {
-    await AsyncStorage.setItem("@isNavigatedFirstTime", value);
-  } catch (e) {
-    // saving error
-  }
-};
 
 const IntroSliderScreen = (props: {
   navigation: { navigate: (arg0: string, arg1: Object) => void };
@@ -40,11 +33,16 @@ const IntroSliderScreen = (props: {
 
   const scrollViewRef = useRef<ScrollView>(null);
   const [isSkipAndNext, setIsSkipAndNext] = useState(false);
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem("@isNavigatedFirstTime", value);
+    } catch (e) {
+      // saving error
+    }
+  };
 
   const { currentPage: pageIndex } = sliderState;
-  useEffect(() => {
-    storeData("yes");
-  }, []);
+  useEffect(() => {}, []);
 
   const nextArrowHandler = (page: number) => {
     let gotoPage = 1;
@@ -211,7 +209,8 @@ const IntroSliderScreen = (props: {
             onPress={() => {
               //props.navigation.navigate("Preference", { login: false });
               props.navigation.navigate("Login", { login: true });
-              //storeData(0);
+
+              storeData("0");
             }}
             title="Get Started"
             textVisible={true}

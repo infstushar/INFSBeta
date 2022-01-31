@@ -109,7 +109,7 @@ const CourseScreen = (props: {
     return (
       <View style={{ flex: 1 }}>
         <FlatList
-          data={data}
+          data={data.records}
           keyExtractor={({ id }, index) => id}
           renderItem={({ item }) => (
             <View style={styles.screen}>

@@ -58,6 +58,7 @@ const UnitTextScreen = (props) => {
           marginRight: 10,
         }}
       >
+        <View style={{ height: 5 }} />
         <AdfTohtml
           source={props.source.content}
           bgStyle={{
@@ -67,7 +68,7 @@ const UnitTextScreen = (props) => {
             marginLeft: 15,
           }}
         ></AdfTohtml>
-        <View style={{ height: 120 }} />
+        <View style={{ height: 200 }}></View>
       </ScrollView>
     </View>
   );

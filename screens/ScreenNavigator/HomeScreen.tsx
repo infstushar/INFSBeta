@@ -8,6 +8,7 @@ import CourseScreen from "./CourseScreen";
 import PathGeneration from "../../screens/PathGeneration";
 import ProfileScreen from "../ScreenNavigator/ProfileScreen";
 import { WithLocalSvg } from "react-native-svg";
+import dummy from "../../components/dummy";
 
 const Tab = createMaterialBottomTabNavigator();
 function DetailsScreen() {
@@ -41,7 +42,7 @@ const BottomTabs = () => {
     >
       <Tab.Screen
         name="Path"
-        component={PathGeneration}
+        component={dummy}
         options={{
           title: "Path",
           tabBarIcon: ({ color }) => (
@@ -68,9 +69,10 @@ const BottomTabs = () => {
           ),
         }}
       />
+
       <Tab.Screen
         name="Profile"
-        component={HomeStackScreen}
+        component={dummy}
         options={{
           title: "Profile",
           tabBarIcon: ({ color }) => (

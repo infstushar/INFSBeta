@@ -8,6 +8,7 @@ import {
   View,
   Text,
   ImageBackground,
+  StatusBar,
 } from "react-native";
 import {
   heightPercentageToDP as hp,
@@ -25,6 +26,7 @@ const Header = (props) => {
       resizeMode="cover"
       style={{ width: wp("100%") }}
     >
+      <StatusBar hidden></StatusBar>
       <Appbar.Header style={{ backgroundColor: "transparent" }}>
         <View style={{ flexDirection: "row" }}>
           <Text

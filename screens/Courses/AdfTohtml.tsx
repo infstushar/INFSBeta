@@ -29,7 +29,6 @@ const AdfTohtml = (props) => {
   const isDarkMode = useColorScheme() === "dark";
   const [str, setStr] = useState("");
   const [source, setSource] = useState("");
-  console.log(props.source);
 
   // default schema from Atlassian adf-schema is same as prosemirror-model schema
   //create an DOM serializer from adf-schema
@@ -163,8 +162,6 @@ const AdfTohtml = (props) => {
   const domVisitors = {
     onElement: onElement,
   };
-
-  console.log("Html Dta" + JSON.stringify(source));
 
   return (
     <RenderHtml

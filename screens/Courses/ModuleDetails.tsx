@@ -215,7 +215,6 @@ const ModuleDetails = (props) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-      {console.log("data" + JSON.stringify(data))}
       <Header
         title={data.title}
         onPress={() => {
