@@ -18,7 +18,6 @@ import Swiper from "react-native-swiper";
 import Header from "../../components/HeaderwithBack";
 import { WithLocalSvg } from "react-native-svg";
 import ListComponent from "../../components/ListComponent";
-import SeeMore from "react-native-see-more-inline";
 
 import { Card, Chip, List } from "react-native-paper";
 import Font from "../../constants/Font";

@@ -90,17 +90,19 @@ const AdfTohtml = (props) => {
     body: {},
     ol: {
       fontFamily: "Poppins-Regular",
-      color: "#3E3E3E",
+      color: "#838383",
       fontSize: Font.p1,
     },
 
     ul: {
       fontFamily: "Poppins-Regular",
-      color: "#3E3E3E",
+      color: "#838383",
       fontSize: Font.p1,
       marginBottom: -8,
     },
-    li: {},
+    li: {
+      marginTop: 5,
+    },
     p: {
       fontSize: Font.p1,
       fontFamily: "Poppins-Regular",
@@ -162,7 +164,7 @@ const AdfTohtml = (props) => {
   const domVisitors = {
     onElement: onElement,
   };
-
+  console.log("Source" + JSON.stringify(source));
   return (
     <RenderHtml
       contentWidth={width}

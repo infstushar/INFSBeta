@@ -46,6 +46,11 @@
 		<string>fonts/Poppins-Medium.ttf</string>
 		<string>MaterialIcons.ttf</string>
 		<string>MaterialCommunityIcons.ttf</string>
+    <string>FontAwesome.ttf</string>
+           <string>FontAwesome5_Brands.ttf</string>
+           <string>FontAwesome5_Regular.ttf</string>
+           <string>FontAwesome5_Solid.ttf</string>
+           <string>Foundation.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
