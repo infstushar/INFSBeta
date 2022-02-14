@@ -19,12 +19,12 @@ import RenderHtml from "react-native-render-html";
 //import json2html from "json-to-html";
 import Header from "../../components/HeaderwithBack";
 import { WithLocalSvg } from "react-native-svg";
-import LessonContent from "./LessonContent";
+
 import * as Animatable from "react-native-animatable";
 import AdfToHtml from "./AdfTohtml";
 import ListComponent from "../../components/ListComponent";
-import AccordionForModule from "./AccordionForModule";
-import { Item } from "react-native-paper/lib/typescript/components/List/List";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import AxiosInstance from "../Auth/AxiosInstance";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -128,17 +128,27 @@ const ModuleDetails = (props) => {
   const [expanded, setExpanded] = useState(true);
 
   const handlePress = () => setExpanded(!expanded);
-
+  var bearer = "Bearer " + AsyncStorage.getItem("userToken");
   const [isLoading, setLoading] = useState(true);
 
   const getData = async () => {
     try {
-      const response = await fetch(
-        `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/modules/` +
-          props?.route?.params?.id
+      let response = await AxiosInstance.get(
+        `/modules/${props?.route?.params?.id}`
       );
-      const json = await response.json();
-      setData(json);
+      // try {
+      //   const response = await fetch(
+      //     `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/modules/` +
+      //       props?.route?.params?.id,
+      //     {
+      //       method: "GET",
+      //       headers: {
+      //         Authorization: bearer,
+      //       },
+      //     }
+      //   );
+      //   const json = await response.json();
+      setData(response.data);
     } catch (error) {
       console.error(error);
     } finally {

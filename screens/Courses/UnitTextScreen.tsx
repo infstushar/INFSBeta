@@ -6,15 +6,10 @@ import {
   Dimensions,
   PixelRatio,
   Platform,
-  TouchableOpacity,
-  Image,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Font from "../../constants/Font";
 import AdfTohtml from "../Courses/AdfTohtml";
-import { WithLocalSvg } from "react-native-svg";
-
-import ListComponent from "../../components/ListComponent";
 
 const { width, height } = Dimensions.get("window");
 
@@ -27,35 +22,28 @@ const normalize = (size) => {
     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
   }
 };
+const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+  const paddingToBottom = 20;
+  return (
+    layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom
+  );
+};
 
 const UnitTextScreen = (props) => {
-  // const [data, setData] = useState([]);
-  // const [isLoading, setLoading] = useState(true);
-  // const getData = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/lessons/` +
-  //         props.source.slug
-  //     );
-  //     const json = await response.json();
-  //     setData(json);
-  //   } catch (error) {
-  //     console.error(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  const [accepted, setAccepted] = useState(false);
 
-  // useEffect(() => {
-  //   console.log("Video" + props.source.slug);
-  //   getData();
-  // }, []);
   return (
     <View style={{ backgroundColor: "#FFFFFF", height: height }}>
       <ScrollView
         contentContainerStyle={{
           marginLeft: 15,
           marginRight: 10,
+        }}
+        onScroll={({ nativeEvent }) => {
+          if (isCloseToBottom(nativeEvent)) {
+            setAccepted(true);
+          }
         }}
       >
         <View style={{ height: 5 }} />
@@ -68,6 +56,7 @@ const UnitTextScreen = (props) => {
             marginLeft: 15,
           }}
         ></AdfTohtml>
+
         <View style={{ height: 200 }}></View>
       </ScrollView>
     </View>

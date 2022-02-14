@@ -21,10 +21,10 @@ const NextPrevComponent = (props) => {
     <View
       style={{
         backgroundColor: "#FFFFFF",
-        flexDirection: "row",
         position: "absolute",
         top: height - 80,
         width: width,
+        flexDirection: "row",
       }}
     >
       <TouchableOpacity
@@ -86,7 +86,6 @@ const NextPrevComponent = (props) => {
             : { display: "none" }
         }
         onPress={() => {
-          //if (currentIndex < countOfData)
           Next();
         }}
       >

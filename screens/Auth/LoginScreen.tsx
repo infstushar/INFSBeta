@@ -8,21 +8,48 @@ import {
   Alert,
   Dimensions,
   Modal,
+  TextInput,
 } from "react-native";
 import Colors from "../../constants/colors";
 import Card from "../../components/Card";
-
-import { TextInput, ActivityIndicator } from "react-native-paper";
+import axios from "axios";
+import { ActivityIndicator } from "react-native-paper";
 import { WithLocalSvg } from "react-native-svg";
 import RoundedButton from "../../components/RoundedButton";
 import Font from "../../constants/Font";
+
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import * as Animatable from "react-native-animatable";
+import { AuthContext, updateToken } from "../../components/Context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
+const Users = [
+  {
+    id: 1,
+    email: "user1@email.com",
+    username: "user1",
+    password: "password",
+    userToken: "token123",
+  },
+  {
+    id: 2,
+    email: "user2@email.com",
+    username: "user2",
+    password: "pass1234",
+    userToken: "token12345",
+  },
+  {
+    id: 3,
+    email: "testuser@email.com",
+    username: "testuser",
+    password: "testpass",
+    userToken: "testtoken",
+  },
+];
 
 const LoginScreen = (props: {
   route: any;
@@ -40,6 +67,7 @@ const LoginScreen = (props: {
     //       setIsSignUpClicked(false);
     //     }
     //   }
+
     setIsLoginlicked(true);
     setIsSignUpClicked(false);
   }, []);
@@ -51,19 +79,116 @@ const LoginScreen = (props: {
   const Login = () => {
     const [radioData, setRadioData] = useState(["Remember Me"]);
     const [radioChecked, setRadioChecked] = useState(0);
+    const [data, setData] = useState({
+      username: "",
+      password: "",
+      check_textInputChange: false,
+      secureTextEntry: true,
+      isValidUser: true,
+      isValidPassword: true,
+    });
+    // const [username, setUserName] = useState("");
+    // const [password, setPassword] = useState("");
 
-    const [username, setUserName] = useState("");
-    const [password, setPassword] = useState("");
+    const { signIn } = React.useContext(AuthContext);
     useEffect(() => {
       setRadioChecked(-1);
+
+      let tenMinutes = 1000 * 60 * 10;
+
+      let interval = setInterval(() => {
+        updateToken();
+      }, tenMinutes);
+      return () => clearInterval(interval);
     }, []);
+
+    const loginHandle = async (userName, password) => {
+      try {
+        const response = await axios.post(
+          `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/api/token/`,
+          {
+            username: userName,
+            password: password,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.status === 200) {
+          signIn(response.data);
+        } else {
+          throw new Error("An error has occurred");
+        }
+      } catch (error) {
+        Alert.alert("username or password is not right", "", [
+          { text: "ok", onPress: () => props.navigation.navigate("login") },
+        ]);
+      }
+    };
+
+    const textInputChange = (val) => {
+      if (val.trim().length >= 4) {
+        setData({
+          ...data,
+          username: val,
+          check_textInputChange: true,
+          isValidUser: true,
+        });
+      } else {
+        setData({
+          ...data,
+          username: val,
+          check_textInputChange: false,
+          isValidUser: false,
+        });
+      }
+    };
+
+    const handlePasswordChange = (val) => {
+      if (val.trim().length >= 8) {
+        setData({
+          ...data,
+          password: val,
+          isValidPassword: true,
+        });
+      } else {
+        setData({
+          ...data,
+          password: val,
+          isValidPassword: false,
+        });
+      }
+    };
+
+    const updateSecureTextEntry = () => {
+      setData({
+        ...data,
+        secureTextEntry: !data.secureTextEntry,
+      });
+    };
+
+    const handleValidUser = (val) => {
+      if (val.trim().length >= 4) {
+        setData({
+          ...data,
+          isValidUser: true,
+        });
+      } else {
+        setData({
+          ...data,
+          isValidUser: false,
+        });
+      }
+    };
 
     return (
       <View style={{ marginBottom: 30 }}>
         <View style={{ marginHorizontal: 20 }}>
           <View
             style={{
-              height: 45,
+              height: 50,
               borderRadius: 15,
               borderWidth: 1,
               flexDirection: "row",
@@ -80,24 +205,42 @@ const LoginScreen = (props: {
               asset={require("../../assets/Iconawesome-user.svg")}
             />
             <TextInput
-              value={username}
-              keyboardType="email-address"
-              onChangeText={(name) => setUserName(name)}
+              value={data.username}
+              //keyboardType="email-address"
+              onChangeText={(val) => textInputChange(val)}
               placeholder="UserName / Email"
               style={{
                 width: "90%",
                 backgroundColor: "transparent",
-                color: "#B7B7B7",
                 fontSize: Font.p1,
+                color: "#B7B7B7",
+                fontFamily: "Poppins-Regular",
+                height: 50,
               }}
               placeholderTextColor="#B7B7B7"
+              onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
             />
           </View>
         </View>
+
+        {data.isValidUser ? null : (
+          <Animatable.View animation="fadeInLeft" duration={500}>
+            <Text
+              style={{
+                color: "red",
+                fontSize: Font.p2,
+                fontFamily: "Poppins-Regular",
+                marginLeft: 20,
+              }}
+            >
+              Username must be 4 characters long.
+            </Text>
+          </Animatable.View>
+        )}
         <View style={{ marginTop: 10, marginHorizontal: 20 }}>
           <View
             style={{
-              height: 45,
+              height: 50,
               borderRadius: 15,
               borderWidth: 1,
               flexDirection: "row",
@@ -114,23 +257,38 @@ const LoginScreen = (props: {
               asset={require("../../assets/Iconawesome-lock.svg")}
             />
             <TextInput
-              value={password}
-              secureTextEntry
-              keyboardType="email-address"
-              onChangeText={(name) => setPassword(name)}
+              value={data.password}
+              secureTextEntry={true}
+              //keyboardType="email-address"
+              onChangeText={(val) => handlePasswordChange(val)}
               placeholder="Password"
               style={{
                 width: "90%",
                 backgroundColor: "transparent",
-                color: "#B7B7B7",
                 fontSize: Font.p1,
+                color: "#B7B7B7",
+                fontFamily: "Poppins-Regular",
+                height: 50,
               }}
               placeholderTextColor="#B7B7B7"
             />
           </View>
+          {data.isValidPassword ? null : (
+            <Animatable.View animation="fadeInLeft" duration={500}>
+              <Text
+                style={{
+                  color: "red",
+                  fontSize: Font.p2,
+                  fontFamily: "Poppins-Regular",
+                }}
+              >
+                Password must be 8 characters long.
+              </Text>
+            </Animatable.View>
+          )}
         </View>
 
-        <View style={{ marginTop: 20, marginHorizontal: 5 }}>
+        {/* <View style={{ marginTop: 20, marginHorizontal: 5 }}>
           {radioData.map((data, key) => {
             return (
               <View key={key}>
@@ -208,7 +366,7 @@ const LoginScreen = (props: {
               </View>
             );
           })}
-        </View>
+        </View> */}
         <View
           style={{
             flexDirection: "row",
@@ -251,7 +409,9 @@ const LoginScreen = (props: {
         </View>
         <RoundedButton
           onPress={() => {
-            props.navigation.navigate("Home");
+            //signIn();
+            //props.navigation.navigate("Home");
+            loginHandle(data.username, data.password);
           }}
           title="Login"
           textVisible={true}

@@ -26,10 +26,12 @@
     "@types/parse5": "^6.0.3",
     "@types/tough-cookie": "^4.0.1",
     "accordion-collapse-react-native": "^1.1.0",
+    "axios": "^0.25.0",
     "d3-shape": "^3.0.1",
     "domutils": "^1.7.0",
     "get-video-id": "^3.4.3",
     "jsdom-jscore-rn": "latest",
+    "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "md-to-adf": "^0.6.4",
     "memoize-one": "^5.2.1",
@@ -48,7 +50,6 @@
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-html-parser": "^0.1.0",
-    "react-native-multiple-choice": "^0.0.8",
     "react-native-music-control": "^1.4.0",
     "react-native-onboarding-swiper": "^1.1.4",
     "react-native-paper": "^4.9.1",
@@ -71,7 +72,8 @@
     "react-player": "^2.9.0",
     "react-show-more-text": "^1.5.0",
     "svg-path-properties": "^1.0.11",
-    "uuid": "^3.4.0"
+    "uuid": "^3.4.0",
+    "volkeno-react-native-quiz-multiple-choice": "^1.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

@@ -19,12 +19,14 @@ import Header from "../../components/HeaderwithBack";
 import { WithLocalSvg } from "react-native-svg";
 import ListComponent from "../../components/ListComponent";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Card, Chip, List } from "react-native-paper";
 import Font from "../../constants/Font";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import AxiosInstance from "../Auth/AxiosInstance";
 
 const { width, height } = Dimensions.get("window");
 
@@ -88,12 +90,21 @@ const CourseDetailScreen = (props) => {
 
   const getData = async () => {
     try {
-      const response = await fetch(
-        `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/courses/` +
-          props?.route?.params?.slug
+      let response = await AxiosInstance.get(
+        `/courses/${props?.route?.params?.slug}`
       );
-      const json = await response.json();
-      setData(json);
+      // const response = await fetch(
+      //   `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/courses/` +
+      //     props?.route?.params?.slug,
+      //   {
+      //     method: "GET",
+      //     headers: {
+      //       Authorization: bearer,
+      //     },
+      //   }
+      // );
+      //const json = await response.json();
+      setData(response.data);
     } catch (error) {
       console.error(error);
     } finally {

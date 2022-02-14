@@ -164,13 +164,13 @@ const AdfTohtml = (props) => {
   const domVisitors = {
     onElement: onElement,
   };
-  console.log("Source" + JSON.stringify(source));
+
   return (
     <RenderHtml
       contentWidth={width}
       source={source}
       classesStyles={{}}
-      baseStyle={{}}
+      baseStyle={{ marginTop: 2 }}
       domVisitors={domVisitors}
       tagsStyles={tagsStyles}
       customListStyleSpecs={customListStyleSpecs}

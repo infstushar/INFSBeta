@@ -19,8 +19,7 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { WithLocalSvg } from "react-native-svg";
 import Font from "../../constants/Font";
-import { Element } from "domhandler";
-import { indexOf } from "lodash";
+import AxiosInstance from "../Auth/AxiosInstance";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 415;
@@ -28,58 +27,59 @@ const scale = width / 415;
 const DATA = [
   {
     id: "1",
-    questionType: "singlechoice",
+    answer_type: "single_select",
     question:
       "What are some of the things you can do to help support your health?",
-    answer1: "Regular physical activity",
-    answer2: "Eating nutritious food",
-    answer3: "Talking to a friend",
-    answer4: "All of these",
-    correctAnswer: ["answer1"],
+    option_1: "Regular physical activity",
+    option_2: "Eating nutritious food",
+    option_3: "Talking to a friend",
+    option_4: "All of these",
+    correct_answer: ["option_1"],
   },
   {
     id: "2",
-    questionType: "boolean",
+    answer_type: "boolean",
     question: "2",
-    answer1: "Yes",
-    answer2: "No",
+    option_1: "Yes",
+    option_2: "No",
 
-    correctAnswer: ["answer1"],
+    correct_answer: ["option_1"],
   },
   {
     id: "3",
-    questionType: "singlechoice",
+    answer_type: "singlechoice",
     question: "3",
-    answer1: "Regular physical activity",
-    answer2: "Eating nutritious food",
-    answer3: "Talking to a friend",
-    answer4: "All of these",
-    correctAnswer: ["answer3"],
+    option_1: "Regular physical activity",
+    option_2: "Eating nutritious food",
+    option_3: "Talking to a friend",
+    option_4: "All of these",
+    correct_answer: ["option_3"],
   },
   {
     id: "4",
-    questionType: "multichoice",
+    answer_type: "multichoice",
     question: "what?",
-    answer1: "Regular physical activity",
-    answer2: "Eating nutritious food",
-    answer3: "Talking to a friend",
-    answer4: "All of these",
-    correctAnswer: ["answer2"],
+    option_1: "Regular physical activity",
+    option_2: "Eating nutritious food",
+    option_3: "Talking to a friend",
+    option_4: "All of these",
+    correct_answer: ["option_1", "option_2"],
   },
   {
     id: "5",
-    questionType: "singlechoice",
+    answer_type: "singlechoice",
     question: "5",
-    answer1: "Regular physical activity",
-    answer2: "Eating nutritious food",
-    answer3: "Talking to a friend",
-    answer4: "All of these",
-    correctAnswer: ["answer1"],
+    option_1: "Regular physical activity",
+    option_2: "Eating nutritious food",
+    option_3: "Talking to a friend",
+    option_4: "All of these",
+    correct_answer: ["option_1"],
   },
 ];
 
 const QuizForStartUpScreen = (props) => {
-  const allQuestions = DATA;
+  //const allQuestions = DATA;
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentOptionSelected, setCurrentOptionSelected] = useState(null);
   const [optionSelected, setOptionSelected] = useState([null]);
@@ -88,18 +88,48 @@ const QuizForStartUpScreen = (props) => {
   const [score, setScore] = useState(0);
   const [showNextButton, setShowNextButton] = useState(false);
   const [showScoreModal, setShowScoreModal] = useState(false);
+  var [isPress1, setIsPress1] = useState(false);
+  var [isPress2, setIsPress2] = useState(false);
+  var [isPress3, setIsPress3] = useState(false);
+  var [isPress4, setIsPress4] = useState(false);
+  const [data, setData] = useState([]);
+  const getData = async () => {
+    try {
+      let response = await AxiosInstance.get(
+        `quiz?unit=${props?.route?.params?.parent_entity_id}`
+      );
+      // const response = await fetch(
+      //   `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/quiz?unit=` +
+      //     props?.route?.params?.parent_entity_id
+      // );
+      // const json = await response.json();
+      setData(response.data.records);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      //   setLoading(false);
+    }
+  };
+  useEffect(() => {
+    getData();
+    console.log(JSON.stringify(data[0]));
+  }, []);
+  const allQuestions = data[0] ? data[0].mcqs : DATA;
+  //const allQuestions = data[0].mcqs;
 
   const validateAnswer = (selectedOption) => {
     let correct_option =
-      allQuestions[currentQuestionIndex]["correctAnswer"][0] === "answer1"
-        ? allQuestions[currentQuestionIndex]["answer1"]
-        : allQuestions[currentQuestionIndex]["correctAnswer"][0] === "answer2"
-        ? allQuestions[currentQuestionIndex]["answer2"]
-        : allQuestions[currentQuestionIndex]["correctAnswer"][0] === "answer3"
-        ? allQuestions[currentQuestionIndex]["answer3"]
-        : allQuestions[currentQuestionIndex]["answer4"];
+      allQuestions[currentQuestionIndex]["correct_answer"][0] === "option_1"
+        ? allQuestions[currentQuestionIndex]["option_1"]
+        : allQuestions[currentQuestionIndex]["correct_answer"][0] === "option_2"
+        ? allQuestions[currentQuestionIndex]["option_2"]
+        : allQuestions[currentQuestionIndex]["correct_answer"][0] === "option_3"
+        ? allQuestions[currentQuestionIndex]["option_3"]
+        : allQuestions[currentQuestionIndex]["option_4"];
 
     setCurrentOptionSelected(selectedOption);
+    setOptionSelected(selectedOption);
+
     setCorrectOption(correct_option);
     setIsOptionsDisabled(true);
 
@@ -109,28 +139,13 @@ const QuizForStartUpScreen = (props) => {
     setShowNextButton(true);
   };
 
-  const validateMultiChoiceAnswer = (selectedOption) => {
-    requiredMediaByName(selectedOption)
-      ? removeElment(selectedOption)
-      : optionSelected.push(selectedOption);
-    console.log("optionSelected" + optionSelected);
-    setShowNextButton(true);
-  };
-  const requiredMediaByName = (name) => {
-    return optionSelected.find((item) => item === name);
-  };
-  const removeElment = (element) => {
-    const index = optionSelected.indexOf(element);
-    console.log("index + " + index);
-    optionSelected.splice(index, element);
-  };
-
   const handleNext = () => {
     if (currentQuestionIndex == allQuestions.length - 1) {
       setShowScoreModal(true);
     } else {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setCurrentOptionSelected(null);
+      setOptionSelected(null);
       setCorrectOption(null);
       setIsOptionsDisabled(false);
       setShowNextButton(false);
@@ -143,22 +158,26 @@ const QuizForStartUpScreen = (props) => {
   };
 
   const handleQuit = () => {
-    props.navigation.navigate("Login");
+    // props.navigation.navigate("Login");
+    Alert.alert(
+      "Do you want to save data before quit?",
+      "", // <- this part is optional, you can pass an empty string
+      [
+        {
+          text: "Yes",
+          onPress: () => {
+            Alert.alert("Data saved", "", [
+              { text: "ok", onPress: () => props.navigation.navigate("Quiz") },
+            ]);
+          },
+        },
+        { text: "No", onPress: () => props.navigation.navigate("Quiz") },
+      ]
+    );
   };
 
   const restartQuiz = () => {
-    setShowScoreModal(false);
-    setCurrentQuestionIndex(0);
-    setScore(0);
-    setCurrentOptionSelected(null);
-    setCorrectOption(null);
-    setIsOptionsDisabled(false);
-    setShowNextButton(false);
-    Animated.timing(progress, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: false,
-    }).start();
+    props.navigation.navigate("Quiz");
   };
 
   const renderQuestion = () => {
@@ -207,7 +226,6 @@ const QuizForStartUpScreen = (props) => {
           }}
         >
           {allQuestions[currentQuestionIndex].question}
-          {console.log(currentQuestionIndex)}
         </Text>
       </View>
     );
@@ -309,51 +327,189 @@ const QuizForStartUpScreen = (props) => {
   const renderMultipleOptions = (optionArray) => {
     return (
       <View>
-        {optionArray.map((option) =>
-          option ? (
-            <TouchableOpacity
-              onPress={() => validateMultiChoiceAnswer(option)}
-              // disabled={isOptionsDisabled}
-              key={option}
-              style={{
-                borderWidth: 1,
-                borderColor: option == optionSelected ? "#00B5E0" : "#E6E7E9",
-                backgroundColor: "#FFFFFF",
-                height: 50,
-                borderRadius: 15,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                paddingHorizontal: 20,
-                marginVertical: 10,
-                shadowColor: "#00000029",
-                shadowOffset: { width: -2, height: 4 },
-                shadowOpacity: 0.2,
-                shadowRadius: 4,
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: "Poppins-Medium",
-                  fontSize: Font.h6,
-                  color: "#555555",
-                }}
-              >
-                {option}
-              </Text>
-            </TouchableOpacity>
-          ) : null
-        )}
+        <TouchableOpacity
+          onPress={(prev) => {
+            setIsPress1(true);
+            optionSelected.push(optionArray[0]);
+            setShowNextButton(true);
+          }}
+          disabled={isOptionsDisabled}
+          key={optionArray[0]}
+          style={{
+            borderWidth: 1,
+            borderColor: isPress1 ? "#00B5E0" : "#E6E7E9",
+            backgroundColor: "#FFFFFF",
+            height: 50,
+            borderRadius: 15,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingHorizontal: 20,
+            marginVertical: 10,
+            shadowColor: "#00000029",
+            shadowOffset: { width: -2, height: 4 },
+            shadowOpacity: 0.2,
+            shadowRadius: 4,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "Poppins-Medium",
+              fontSize: Font.h6,
+              color: "#555555",
+            }}
+          >
+            {optionArray[0]}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setIsPress2(true);
+            optionSelected.push(optionArray[1]);
+            setShowNextButton(true);
+          }}
+          disabled={isOptionsDisabled}
+          key={optionArray[1]}
+          style={{
+            borderWidth: 1,
+            borderColor: isPress2 ? "#00B5E0" : "#E6E7E9",
+            backgroundColor: "#FFFFFF",
+            height: 50,
+            borderRadius: 15,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingHorizontal: 20,
+            marginVertical: 10,
+            shadowColor: "#00000029",
+            shadowOffset: { width: -2, height: 4 },
+            shadowOpacity: 0.2,
+            shadowRadius: 4,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "Poppins-Medium",
+              fontSize: Font.h6,
+              color: "#555555",
+            }}
+          >
+            {optionArray[1]}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setIsPress3(true);
+            optionSelected.push(optionArray[2]);
+            setShowNextButton(true);
+          }}
+          disabled={isOptionsDisabled}
+          key={optionArray[2]}
+          style={{
+            borderWidth: 1,
+            borderColor: isPress3 ? "#00B5E0" : "#E6E7E9",
+            backgroundColor: "#FFFFFF",
+            height: 50,
+            borderRadius: 15,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingHorizontal: 20,
+            marginVertical: 10,
+            shadowColor: "#00000029",
+            shadowOffset: { width: -2, height: 4 },
+            shadowOpacity: 0.2,
+            shadowRadius: 4,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "Poppins-Medium",
+              fontSize: Font.h6,
+              color: "#555555",
+            }}
+          >
+            {optionArray[2]}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setIsPress4(true);
+            optionSelected.push(optionArray[3]);
+            setShowNextButton(true);
+          }}
+          disabled={isOptionsDisabled}
+          key={optionArray[3]}
+          style={{
+            borderWidth: 1,
+            borderColor: isPress4 ? "#00B5E0" : "#E6E7E9",
+            backgroundColor: "#FFFFFF",
+            height: 50,
+            borderRadius: 15,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingHorizontal: 20,
+            marginVertical: 10,
+            shadowColor: "#00000029",
+            shadowOffset: { width: -2, height: 4 },
+            shadowOpacity: 0.2,
+            shadowRadius: 4,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "Poppins-Medium",
+              fontSize: Font.h6,
+              color: "#555555",
+            }}
+          >
+            {optionArray[3]}
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   };
+  let correctArray = [];
+  const compareResult = () => {
+    allQuestions[currentQuestionIndex].correct_answer.map((val) => {
+      val === "option_1"
+        ? correctArray.push(allQuestions[currentQuestionIndex].option_1)
+        : val === "option_2"
+        ? correctArray.push(allQuestions[currentQuestionIndex].option_2)
+        : val === "option_3"
+        ? correctArray.push(allQuestions[currentQuestionIndex].option_3)
+        : val === "option_4"
+        ? correctArray.push(allQuestions[currentQuestionIndex].option_4)
+        : null;
+    });
+  };
 
+  const handleSubmit = () => {
+    compareResult();
+    Alert.alert(
+      `correct answer-${correctArray}`,
+      `Your answer - ${optionSelected}`,
+      [
+        {
+          text: "Ok",
+          onPress: () => {
+            handleNext();
+          },
+        },
+      ]
+    );
+  };
   const renderNextButton = () => {
     // if (showNextButton) {
     return (
       <View>
         <TouchableOpacity
-          onPress={handleNext}
+          onPress={
+            allQuestions[currentQuestionIndex].answer_type === "multichoice"
+              ? handleSubmit
+              : handleNext
+          }
           disabled={showNextButton ? false : true}
           style={{
             marginTop: 20,
@@ -370,7 +526,7 @@ const QuizForStartUpScreen = (props) => {
             shadowRadius: 3,
           }}
         >
-          {allQuestions[currentQuestionIndex].questionType === "multichoice" ? (
+          {allQuestions[currentQuestionIndex].answer_type === "multichoice" ? (
             <Text
               style={{
                 fontFamily: "Poppins-Medium",
@@ -461,10 +617,10 @@ const QuizForStartUpScreen = (props) => {
     );
   };
   const optionArray = [
-    allQuestions[currentQuestionIndex]?.answer1,
-    allQuestions[currentQuestionIndex]?.answer2,
-    allQuestions[currentQuestionIndex]?.answer3,
-    allQuestions[currentQuestionIndex]?.answer4,
+    allQuestions[currentQuestionIndex]?.option_1,
+    allQuestions[currentQuestionIndex]?.option_2,
+    allQuestions[currentQuestionIndex]?.option_3,
+    allQuestions[currentQuestionIndex]?.option_4,
   ];
   return (
     //
@@ -520,7 +676,7 @@ const QuizForStartUpScreen = (props) => {
 
         {/* Options */}
 
-        {allQuestions[currentQuestionIndex]?.questionType === "multichoice"
+        {allQuestions[currentQuestionIndex]?.answer_type === "multichoice"
           ? renderMultipleOptions(optionArray)
           : renderOptions(optionArray)}
 
@@ -544,21 +700,27 @@ const QuizForStartUpScreen = (props) => {
           <View
             style={{
               flex: 1,
-              backgroundColor: "#252c4a",
+              backgroundColor: "white",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
             <View
               style={{
-                backgroundColor: "#252c4a",
+                backgroundColor: "white",
                 width: "90%",
                 borderRadius: 20,
                 padding: 20,
                 alignItems: "center",
               }}
             >
-              <Text style={{ fontSize: 30, fontWeight: "bold" }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  color: score > allQuestions.length / 2 ? "green" : "red",
+                }}
+              >
                 {score > allQuestions.length / 2 ? "Congratulations!" : "Oops!"}
               </Text>
 
@@ -593,7 +755,7 @@ const QuizForStartUpScreen = (props) => {
                 style={{
                   backgroundColor: "#3498db",
                   padding: 20,
-                  width: "100%",
+                  width: "40%",
                   borderRadius: 20,
                 }}
               >
@@ -601,7 +763,8 @@ const QuizForStartUpScreen = (props) => {
                   style={{
                     textAlign: "center",
                     color: "white",
-                    fontSize: 20,
+                    fontSize: 17,
+                    fontWeight: "bold",
                   }}
                 >
                   Quit Quiz
@@ -660,19 +823,19 @@ export default QuizForStartUpScreen;
 //       "Talking to a friend",
 //       "All of these",
 //     ],
-//     correctAnswer: "All of these",
+//     correct_answer: "All of these",
 //   },
 //   {
 //     id: "2",
 //     question: "2",
 //     answer: ["Yes", "No"],
-//     correctAnswer: "No",
+//     correct_answer: "No",
 //   },
 //   {
 //     id: "3",
 //     question: "3",
 //     answer: ["1", "2", "3", "All of these"],
-//     correctAnswer: "2",
+//     correct_answer: "2",
 //   },
 //   {
 //     id: "4",
@@ -683,7 +846,7 @@ export default QuizForStartUpScreen;
 //       "Talking to a friend",
 //       "All of these",
 //     ],
-//     correctAnswer: "All of these",
+//     correct_answer: "All of these",
 //   },
 //   {
 //     id: "4",
@@ -694,7 +857,7 @@ export default QuizForStartUpScreen;
 //       "Talking to a friend",
 //       "All of these",
 //     ],
-//     correctAnswer: "All of these",
+//     correct_answer: "All of these",
 //   },
 // ];
 
@@ -709,7 +872,7 @@ export default QuizForStartUpScreen;
 //   const [showScoreModal, setShowScoreModal] = useState(false);
 
 //   const validateAnswer = (selectedOption) => {
-//     let correct_option = allQuestions[currentQuestionIndex]["correctAnswer"];
+//     let correct_option = allQuestions[currentQuestionIndex]["correct_answer"];
 //     setCurrentOptionSelected(selectedOption);
 //     setCorrectOption(correct_option);
 //     setIsOptionsDisabled(true);
@@ -802,7 +965,7 @@ export default QuizForStartUpScreen;
 //           }}
 //         >
 //           {allQuestions[currentQuestionIndex].question}
-//           {console.log(currentQuestionIndex)}
+//
 //         </Text>
 //       </View>
 //     );

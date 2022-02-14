@@ -16,9 +16,9 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { WithLocalSvg } from "react-native-svg";
 import Icon from "react-native-vector-icons/FontAwesome";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Animatable from "react-native-animatable";
-
+import AxiosInstance from "../Auth/AxiosInstance";
 import Header from "../../components/HeaderwithBack";
 import Accordion from "react-native-collapsible/Accordion";
 import Font from "../../constants/Font";
@@ -41,31 +41,72 @@ const countOfData = 0;
 const UnitScreenForCourses = (props) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-
+  const [workbookcontent, setWorkbookContent] = useState([]);
   const [activeSections, setActiveSections] = useState([]);
   const [collapsed, setCollapsed] = useState(true);
   const [multipleSelect, setMultipleSelect] = useState(false);
+  var bearer = "Bearer " + AsyncStorage.getItem("userToken");
 
   const getData = async () => {
     try {
-      const response = await fetch(
+      let response = await AxiosInstance.get(
         props?.route?.params?.id
-          ? `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/units?module=` +
-              props?.route?.params?.id
-          : `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/units?module=` +
-              props?.route?.params?.slug
+          ? `units?module=${props?.route?.params?.id}`
+          : `units?module=${props?.route?.params?.slug}`
       );
-      const json = await response.json();
-      setData(json);
+      // const response = await fetch(
+      //   props?.route?.params?.id
+      //     ? `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/units?module=` +
+      //         props?.route?.params?.id
+      //     : `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/units?module=` +
+      //         props?.route?.params?.slug,
+      //   {
+      //     method: "GET",
+      //     headers: {
+      //       Authorization: bearer,
+      //     },
+      //   }
+      // );
+      // const json = await response.json();
+      setData(response.data);
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
   };
+  const getWorkbookData = async () => {
+    try {
+      let response = await AxiosInstance.get(
+        props?.route?.params?.id
+          ? `/workbook?module=${props?.route?.params?.id}`
+          : `/workbook?module=${props?.route?.params?.slug}`
+      );
+      // const response = await fetch(
+      //   props?.route?.params?.id
+      //     ? `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/workbook?module=` +
+      //         props?.route?.params?.id
+      //     : `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/workbook?module=` +
+      //         props?.route?.params?.slug,
+      //   {
+      //     method: "GET",
+      //     headers: {
+      //       Authorization: bearer,
+      //     },
+      //   }
+      // );
+      // const json = await response.json();
+      setWorkbookContent(response.data.records);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      //   setLoading(false);
+    }
+  };
 
   useEffect(() => {
     getData();
+    getWorkbookData();
   }, []);
 
   const toggleExpanded = () => {
@@ -107,7 +148,6 @@ const UnitScreenForCourses = (props) => {
               size={25}
               color="#555555"
               style={{
-                marginTop: 3,
                 position: "absolute",
                 right: 5,
                 top: 5,
@@ -120,7 +160,6 @@ const UnitScreenForCourses = (props) => {
               size={25}
               color="#555555"
               style={{
-                marginTop: 3,
                 marginBottom: 3,
                 position: "absolute",
                 right: 5,
@@ -190,6 +229,39 @@ const UnitScreenForCourses = (props) => {
             onChange={setSections}
             // Setting the state of active sections
           />
+        ) : null}
+
+        {workbookcontent ? (
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate("Workbook", workbookcontent[0]);
+            }}
+          >
+            <View
+              style={{
+                marginLeft: 10,
+                marginRight: 10,
+                marginTop: 10,
+                height: 50,
+              }}
+            >
+              <View style={styles.inactive}>
+                <Text
+                  style={{
+                    marginLeft: 15,
+                    fontFamily: "Poppins-Medium",
+                    fontSize: Font.h5,
+                    color: "#3E3E3E",
+                    marginTop: 9,
+                    marginRight: 10,
+                  }}
+                  numberOfLines={3}
+                >
+                  Workbook
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
         ) : null}
       </ScrollView>
     </View>

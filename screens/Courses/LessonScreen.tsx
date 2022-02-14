@@ -15,23 +15,37 @@ import { FlatList } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import NextPrevComponent from "../../components/NextPrevComponent";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import AxiosInstance from "../Auth/AxiosInstance";
+
 const { width, height } = Dimensions.get("window");
 
 const LessonSreen = (props) => {
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [index, setIndex] = useState(props?.route?.params?.index);
+  var bearer = "Bearer " + AsyncStorage.getItem("userToken");
   const navigation = useNavigation();
   const contentLength = props?.route?.params?.content.length;
 
   const getData = async () => {
     try {
-      const response = await fetch(
-        `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/lessons/` +
-          props?.route?.params?.content[index].slug
+      let response = await AxiosInstance.get(
+        `/lessons/${props?.route?.params?.content[index].slug}`
       );
-      const json = await response.json();
-      setData(json);
+      // try {
+      // const response = await fetch(
+      //   `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/lessons/` +
+      //     props?.route?.params?.content[index].slug,
+      //   {
+      //     method: "GET",
+      //     headers: {
+      //       Authorization: bearer,
+      //     },
+      //   }
+      // );
+      // const json = await response.json();
+      setData(response.data);
     } catch (error) {
       console.error(error);
     } finally {

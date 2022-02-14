@@ -2,8 +2,10 @@ import React from "react";
 import { View, Text, StyleSheet, Touchable } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
+import { AuthContext } from "./Context";
 
 const dummy = (props) => {
+  const { signOut } = React.useContext(AuthContext);
   return (
     <View
       style={{
@@ -44,6 +46,14 @@ const dummy = (props) => {
         }}
       >
         <Text>Quiz</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
+          signOut();
+        }}
+      >
+        <Text>Sign Out</Text>
       </TouchableOpacity>
     </View>
   );
