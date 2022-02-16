@@ -23,7 +23,7 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import * as Animatable from "react-native-animatable";
-import { AuthContext, updateToken } from "../../components/Context";
+import { AuthContext } from "../../components/Context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
@@ -93,13 +93,6 @@ const LoginScreen = (props: {
     const { signIn } = React.useContext(AuthContext);
     useEffect(() => {
       setRadioChecked(-1);
-
-      let tenMinutes = 1000 * 60 * 10;
-
-      let interval = setInterval(() => {
-        updateToken();
-      }, tenMinutes);
-      return () => clearInterval(interval);
     }, []);
 
     const loginHandle = async (userName, password) => {

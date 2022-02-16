@@ -30,7 +30,7 @@ AxiosInstance.interceptors.request.use(async (req) => {
     console.log("No token available");
   }
 
-  console.log("authTokens - " + JSON.stringify(req));
+  // console.log("authTokens - " + JSON.stringify(req));
 
   const user = jwt_decode(JSON.stringify(authTokens));
 
@@ -43,7 +43,7 @@ AxiosInstance.interceptors.request.use(async (req) => {
       refresh: refreshTokens,
     });
 
-    console.log("response refresh", JSON.stringify(response));
+    //console.log("response refresh", JSON.stringify(response));
 
     AsyncStorage.setItem("userToken", response.data.access);
     req.headers.Authorization = `Bearer ${response.data.access}`;

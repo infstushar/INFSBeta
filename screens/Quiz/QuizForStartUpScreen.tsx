@@ -15,11 +15,12 @@ import {
   SafeAreaView,
   Alert,
 } from "react-native";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { WithLocalSvg } from "react-native-svg";
 import Font from "../../constants/Font";
 import AxiosInstance from "../Auth/AxiosInstance";
+import { AsyncLocalStorage } from "async_hooks";
 
 const { width, height } = Dimensions.get("window");
 const scale = width / 415;
@@ -98,11 +99,7 @@ const QuizForStartUpScreen = (props) => {
       let response = await AxiosInstance.get(
         `quiz?unit=${props?.route?.params?.parent_entity_id}`
       );
-      // const response = await fetch(
-      //   `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/quiz?unit=` +
-      //     props?.route?.params?.parent_entity_id
-      // );
-      // const json = await response.json();
+
       setData(response.data.records);
     } catch (error) {
       console.error(error);
@@ -112,30 +109,57 @@ const QuizForStartUpScreen = (props) => {
   };
   useEffect(() => {
     getData();
-    console.log(JSON.stringify(data[0]));
   }, []);
+
   const allQuestions = data[0] ? data[0].mcqs : DATA;
+  //let postData = [];
+
   //const allQuestions = data[0].mcqs;
 
-  const validateAnswer = (selectedOption) => {
-    let correct_option =
-      allQuestions[currentQuestionIndex]["correct_answer"][0] === "option_1"
-        ? allQuestions[currentQuestionIndex]["option_1"]
-        : allQuestions[currentQuestionIndex]["correct_answer"][0] === "option_2"
-        ? allQuestions[currentQuestionIndex]["option_2"]
-        : allQuestions[currentQuestionIndex]["correct_answer"][0] === "option_3"
-        ? allQuestions[currentQuestionIndex]["option_3"]
-        : allQuestions[currentQuestionIndex]["option_4"];
+  const validateAnswer = async (selectedOption) => {
+    const correct_option = allQuestions[currentQuestionIndex]?.options[0]
+      .correct
+      ? allQuestions[currentQuestionIndex]?.options[0].option
+      : allQuestions[currentQuestionIndex]?.options[1].correct
+      ? allQuestions[currentQuestionIndex]?.options[1].option
+      : allQuestions[currentQuestionIndex]?.options[2].correct
+      ? allQuestions[currentQuestionIndex]?.options[2].option
+      : allQuestions[currentQuestionIndex]?.options[3].option;
 
     setCurrentOptionSelected(selectedOption);
     setOptionSelected(selectedOption);
-
     setCorrectOption(correct_option);
     setIsOptionsDisabled(true);
-
+    let status = 0;
     if (selectedOption == correct_option) {
       setScore(score + 1);
+      status = 1;
     }
+    //let postData = [];
+    const existingData = await AsyncStorage.getItem("quizPostData");
+    // console.log("existingData -" + existingData);
+    let newProduct = JSON.parse(existingData);
+    if (!newProduct) newProduct = [];
+
+    const newQuizData = {
+      key: allQuestions[currentQuestionIndex].pk,
+      answers: [selectedOption],
+      status: status,
+    };
+
+    newProduct.push(newQuizData);
+    //postData?.push(newQuizData);
+    try {
+      await AsyncStorage.setItem(
+        "quizPostData",
+        JSON.stringify(newProduct)
+      ).then(() => {
+        console.log("It was saved successfully");
+      });
+    } catch (e) {
+      console.log("not success");
+    }
+    // console.log(JSON.stringify(postData));
     setShowNextButton(true);
   };
 
@@ -159,6 +183,7 @@ const QuizForStartUpScreen = (props) => {
 
   const handleQuit = () => {
     // props.navigation.navigate("Login");
+
     Alert.alert(
       "Do you want to save data before quit?",
       "", // <- this part is optional, you can pass an empty string
@@ -167,16 +192,66 @@ const QuizForStartUpScreen = (props) => {
           text: "Yes",
           onPress: () => {
             Alert.alert("Data saved", "", [
-              { text: "ok", onPress: () => props.navigation.navigate("Quiz") },
+              {
+                text: "ok",
+                onPress: async () => {
+                  const finalData = await AsyncStorage.getItem("quizPostData");
+                  console.log("finalData -" + finalData);
+
+                  const postData = {
+                    quiz: data[0].slug,
+                    status: "completed",
+                    score: score,
+                    questions: finalData,
+                  };
+
+                  try {
+                    let response = await AxiosInstance.post(
+                      `/quiz/submit`,
+                      postData
+                    );
+                    if (response.status == 0) {
+                      console.log("Status updated successfully");
+                    } else {
+                      console.log("Status updated unsuccessfull");
+                    }
+                  } catch (e) {
+                    console.log(e);
+                  }
+
+                  props.navigation.navigate("Quiz");
+                },
+              },
             ]);
           },
         },
         { text: "No", onPress: () => props.navigation.navigate("Quiz") },
       ]
     );
+    AsyncStorage.removeItem("quizPostData");
   };
 
-  const restartQuiz = () => {
+  const restartQuiz = async () => {
+    const finalData = await AsyncStorage.getItem("quizPostData");
+
+    const postData = {
+      quiz: data[0].slug,
+      status: "completed",
+      score: score,
+      questions: finalData,
+    };
+
+    try {
+      let response = await AxiosInstance.post(`/quiz/submit`, postData);
+      if (response.status == 0) {
+        console.log("Status updated successfully");
+      } else {
+        console.log("Status updated unsuccessfull");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    await AsyncStorage.removeItem("quizPostData");
     props.navigation.navigate("Quiz");
   };
 
@@ -234,18 +309,18 @@ const QuizForStartUpScreen = (props) => {
   const renderOptions = (optionArray) => {
     return (
       <View>
-        {optionArray.map((option) =>
+        {optionArray?.map((option) =>
           option ? (
             <TouchableOpacity
-              onPress={() => validateAnswer(option)}
+              onPress={() => validateAnswer(option.option)}
               disabled={isOptionsDisabled}
-              key={option}
+              key={option.option}
               style={{
                 borderWidth: 1,
                 borderColor:
-                  option == correctOption
+                  option.option == correctOption
                     ? "#34B94C"
-                    : option == currentOptionSelected
+                    : option.option == currentOptionSelected
                     ? "#ED2020"
                     : "#E6E7E9",
                 backgroundColor: "#FFFFFF",
@@ -274,11 +349,12 @@ const QuizForStartUpScreen = (props) => {
                   color: "#555555",
                 }}
               >
-                {option}
+                {option?.option}
               </Text>
 
               {/* Show Check Or Cross Icon based on correct answer*/}
-              {option == correctOption ? (
+
+              {option.option == correctOption ? (
                 <View
                   style={{
                     width: 30,
@@ -297,7 +373,7 @@ const QuizForStartUpScreen = (props) => {
                     }}
                   />
                 </View>
-              ) : option == currentOptionSelected ? (
+              ) : option.option == currentOptionSelected ? (
                 <View
                   style={{
                     width: 30,
@@ -330,11 +406,11 @@ const QuizForStartUpScreen = (props) => {
         <TouchableOpacity
           onPress={(prev) => {
             setIsPress1(true);
-            optionSelected.push(optionArray[0]);
+            optionSelected.push(optionArray[0].option);
             setShowNextButton(true);
           }}
           disabled={isOptionsDisabled}
-          key={optionArray[0]}
+          key={optionArray[0].option}
           style={{
             borderWidth: 1,
             borderColor: isPress1 ? "#00B5E0" : "#E6E7E9",
@@ -359,17 +435,17 @@ const QuizForStartUpScreen = (props) => {
               color: "#555555",
             }}
           >
-            {optionArray[0]}
+            {optionArray[0].option}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             setIsPress2(true);
-            optionSelected.push(optionArray[1]);
+            optionSelected.push(optionArray[1].option);
             setShowNextButton(true);
           }}
           disabled={isOptionsDisabled}
-          key={optionArray[1]}
+          key={optionArray[1].option}
           style={{
             borderWidth: 1,
             borderColor: isPress2 ? "#00B5E0" : "#E6E7E9",
@@ -400,11 +476,11 @@ const QuizForStartUpScreen = (props) => {
         <TouchableOpacity
           onPress={() => {
             setIsPress3(true);
-            optionSelected.push(optionArray[2]);
+            optionSelected.push(optionArray[2].option);
             setShowNextButton(true);
           }}
           disabled={isOptionsDisabled}
-          key={optionArray[2]}
+          key={optionArray[2].option}
           style={{
             borderWidth: 1,
             borderColor: isPress3 ? "#00B5E0" : "#E6E7E9",
@@ -429,17 +505,17 @@ const QuizForStartUpScreen = (props) => {
               color: "#555555",
             }}
           >
-            {optionArray[2]}
+            {optionArray[2].option}
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             setIsPress4(true);
-            optionSelected.push(optionArray[3]);
+            optionSelected.push(optionArray[3].option);
             setShowNextButton(true);
           }}
           disabled={isOptionsDisabled}
-          key={optionArray[3]}
+          key={optionArray[3].option}
           style={{
             borderWidth: 1,
             borderColor: isPress4 ? "#00B5E0" : "#E6E7E9",
@@ -464,7 +540,7 @@ const QuizForStartUpScreen = (props) => {
               color: "#555555",
             }}
           >
-            {optionArray[3]}
+            {optionArray[3].option}
           </Text>
         </TouchableOpacity>
       </View>
@@ -472,16 +548,8 @@ const QuizForStartUpScreen = (props) => {
   };
   let correctArray = [];
   const compareResult = () => {
-    allQuestions[currentQuestionIndex].correct_answer.map((val) => {
-      val === "option_1"
-        ? correctArray.push(allQuestions[currentQuestionIndex].option_1)
-        : val === "option_2"
-        ? correctArray.push(allQuestions[currentQuestionIndex].option_2)
-        : val === "option_3"
-        ? correctArray.push(allQuestions[currentQuestionIndex].option_3)
-        : val === "option_4"
-        ? correctArray.push(allQuestions[currentQuestionIndex].option_4)
-        : null;
+    allQuestions[currentQuestionIndex].options.map((val) => {
+      val.correct ? correctArray.push(val.option) : null;
     });
   };
 
@@ -616,12 +684,7 @@ const QuizForStartUpScreen = (props) => {
       </View>
     );
   };
-  const optionArray = [
-    allQuestions[currentQuestionIndex]?.option_1,
-    allQuestions[currentQuestionIndex]?.option_2,
-    allQuestions[currentQuestionIndex]?.option_3,
-    allQuestions[currentQuestionIndex]?.option_4,
-  ];
+
   return (
     //
     <SafeAreaView
@@ -641,18 +704,6 @@ const QuizForStartUpScreen = (props) => {
       >
         {/* ProgressBar */}
         <View style={{ flexDirection: "row" }}>
-          {/* <MaterialCommunityIcons
-            name="arrow-left"
-            style={{
-              color: "#3E3E3E",
-              fontSize: 25,
-              marginRight: 20,
-              marginTop: -10,
-            }}
-            onPress={() => {
-              props.navigation.goBack(null);
-            }}
-          /> */}
           <WithLocalSvg
             width={20}
             height={20}
@@ -677,8 +728,8 @@ const QuizForStartUpScreen = (props) => {
         {/* Options */}
 
         {allQuestions[currentQuestionIndex]?.answer_type === "multichoice"
-          ? renderMultipleOptions(optionArray)
-          : renderOptions(optionArray)}
+          ? renderMultipleOptions(allQuestions[currentQuestionIndex]?.options)
+          : renderOptions(allQuestions[currentQuestionIndex]?.options)}
 
         {/* Next Button */}
         <View

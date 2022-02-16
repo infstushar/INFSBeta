@@ -128,7 +128,7 @@ const ModuleDetails = (props) => {
   const [expanded, setExpanded] = useState(true);
 
   const handlePress = () => setExpanded(!expanded);
-  var bearer = "Bearer " + AsyncStorage.getItem("userToken");
+
   const [isLoading, setLoading] = useState(true);
 
   const getData = async () => {

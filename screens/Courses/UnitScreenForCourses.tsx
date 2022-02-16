@@ -45,7 +45,6 @@ const UnitScreenForCourses = (props) => {
   const [activeSections, setActiveSections] = useState([]);
   const [collapsed, setCollapsed] = useState(true);
   const [multipleSelect, setMultipleSelect] = useState(false);
-  var bearer = "Bearer " + AsyncStorage.getItem("userToken");
 
   const getData = async () => {
     try {
@@ -68,9 +67,15 @@ const UnitScreenForCourses = (props) => {
       //   }
       // );
       // const json = await response.json();
+      await AsyncStorage.setItem(
+        "moduleSlug",
+        props?.route?.params?.id
+          ? props?.route?.params?.id
+          : props?.route?.params?.slug
+      );
       setData(response.data);
     } catch (error) {
-      console.error(error);
+      console.error("type; " + error);
     } finally {
       setLoading(false);
     }
@@ -98,7 +103,7 @@ const UnitScreenForCourses = (props) => {
       // const json = await response.json();
       setWorkbookContent(response.data.records);
     } catch (error) {
-      console.error(error);
+      console.error("workbook Error:-" + error);
     } finally {
       //   setLoading(false);
     }
@@ -109,6 +114,7 @@ const UnitScreenForCourses = (props) => {
     getWorkbookData();
   }, []);
 
+  //const moduleTitle = data?.records[0]?.parent_entity_id;
   const toggleExpanded = () => {
     // Toggling the state of single Collapsible
     setCollapsed(!collapsed);

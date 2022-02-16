@@ -104,6 +104,11 @@ const CourseDetailScreen = (props) => {
       //   }
       // );
       //const json = await response.json();
+      await AsyncStorage.setItem("courseSlug", props?.route?.params?.slug).then(
+        () => {
+          console.log("course saved successfully");
+        }
+      );
       setData(response.data);
     } catch (error) {
       console.error(error);
@@ -114,7 +119,7 @@ const CourseDetailScreen = (props) => {
   useEffect(() => {
     getData();
   }, []);
-
+  const courseTitle = data.title;
   const checkData = (item) => {
     // const lengnth = Object.keys(data.modules).length;
     // if (lengnth === 0) return 0;

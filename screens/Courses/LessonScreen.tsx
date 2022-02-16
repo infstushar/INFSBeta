@@ -11,11 +11,10 @@ import UnitTextScreen from "./UnitTextScreen";
 import UnitVideoTextScreen from "./UnitVideoTextScreen";
 import Header from "../../components/HeaderwithBack";
 import Font from "../../constants/Font";
-import { FlatList } from "react-native-gesture-handler";
+
 import { useNavigation } from "@react-navigation/native";
 import NextPrevComponent from "../../components/NextPrevComponent";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import AxiosInstance from "../Auth/AxiosInstance";
 
 const { width, height } = Dimensions.get("window");
@@ -24,7 +23,7 @@ const LessonSreen = (props) => {
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [index, setIndex] = useState(props?.route?.params?.index);
-  var bearer = "Bearer " + AsyncStorage.getItem("userToken");
+
   const navigation = useNavigation();
   const contentLength = props?.route?.params?.content.length;
 
@@ -85,6 +84,8 @@ const LessonSreen = (props) => {
         modifyIndex={modifyIndex}
         length={contentLength}
         currentIndex={index}
+        content={data}
+        unitSlug={props?.route?.params?.unitSlug}
       />
     </View>
   );

@@ -5,11 +5,12 @@ import { WithLocalSvg } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import AxiosInstance from "../Auth/AxiosInstance";
 
 export const RenderContent = (props) => {
   const [content, setContent] = useState([]);
-  var bearer = "Bearer " + AsyncStorage.getItem("userToken");
+  const [completion, setCompletion] = useState([]);
   const [quizContent, setQuizContent] = useState([]);
   const navigation = useNavigation();
   const getData = async (unit) => {
@@ -27,6 +28,19 @@ export const RenderContent = (props) => {
       // );
       // const json = await response.json();
       setContent(response.data.records);
+    } catch (error) {
+      console.error("lesson error-" + error);
+    } finally {
+      //   setLoading(false);
+    }
+  };
+  const getCompletionData = async () => {
+    const courseSlug = await AsyncStorage.getItem("courseSlug");
+    try {
+      console.log("courseSlug - " + courseSlug);
+      let response = await AxiosInstance.get(`/catalog-tracking/${courseSlug}`);
+      setCompletion(response.data.response);
+      console.log("Completion - " + completion);
     } catch (error) {
       console.error(error);
     } finally {
@@ -49,7 +63,7 @@ export const RenderContent = (props) => {
       // const json = await response.json();
       setQuizContent(response.data.records);
     } catch (error) {
-      console.error(error);
+      console.error("Quiz error-" + error);
     } finally {
       //   setLoading(false);
     }
@@ -60,35 +74,36 @@ export const RenderContent = (props) => {
       getData(props.section.slug);
       getQuizData(props.section.slug);
     }
+    getCompletionData();
   }, []);
 
+  // const moduleTitle = props.module;
+
+  const unitSlug = props.section.slug;
   if (content !== undefined && Object.keys(content).length !== 0) {
     return (
       <View>
         {content.map((value, index) => (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("LessonScreen", { value, content, index });
+              navigation.navigate("LessonScreen", {
+                value,
+                content,
+                index,
+                unitSlug,
+              });
             }}
           >
             <View style={{ flexDirection: "row", marginRight: 10 }}>
-              {value.lesson_type === "video" ? (
+              <View style={{ width: "10%" }}>
                 <WithLocalSvg
                   width={16}
                   height={16}
-                  asset={require("../../assets/Vector.svg")}
-                  style={{ marginTop: 15 }}
+                  asset={require("../../assets/tick.svg")}
+                  style={{ marginTop: 15, marginLeft: 15 }}
                 />
-              ) : (
-                <WithLocalSvg
-                  width={16}
-                  height={16}
-                  asset={require("../../assets/fluent_document-20-filled.svg")}
-                  style={{ marginTop: 15 }}
-                />
-              )}
-
-              <View style={{ marginLeft: 5, marginRight: 10 }}>
+              </View>
+              <View style={{ marginLeft: 10, width: "75%" }}>
                 <Text
                   style={{
                     marginLeft: 15,
@@ -103,6 +118,23 @@ export const RenderContent = (props) => {
                   {value.title}
                 </Text>
               </View>
+              <View style={{ marginLeft: 5, marginRight: 5 }}>
+                {value.lesson_type === "video" ? (
+                  <WithLocalSvg
+                    width={16}
+                    height={16}
+                    asset={require("../../assets/Vector.svg")}
+                    style={{ marginTop: 15, marginLeft: 15 }}
+                  />
+                ) : (
+                  <WithLocalSvg
+                    width={16}
+                    height={16}
+                    asset={require("../../assets/fluent_document-20-filled.svg")}
+                    style={{ marginTop: 15, marginLeft: 15 }}
+                  />
+                )}
+              </View>
             </View>
           </TouchableOpacity>
         ))}
@@ -113,14 +145,15 @@ export const RenderContent = (props) => {
             }}
           >
             <View style={{ flexDirection: "row", marginRight: 10 }}>
-              <WithLocalSvg
-                width={16}
-                height={16}
-                asset={require("../../assets/fluent_document-20-filled.svg")}
-                style={{ marginTop: 15 }}
-              />
-
-              <View style={{ marginLeft: 5, marginRight: 10 }}>
+              <View style={{ width: "10%" }}>
+                <WithLocalSvg
+                  width={16}
+                  height={16}
+                  asset={require("../../assets/tick.svg")}
+                  style={{ marginTop: 15, marginLeft: 15 }}
+                />
+              </View>
+              <View style={{ marginLeft: 10, width: "75%" }}>
                 <Text
                   style={{
                     marginLeft: 15,
@@ -134,6 +167,14 @@ export const RenderContent = (props) => {
                 >
                   Quiz
                 </Text>
+              </View>
+              <View style={{ marginLeft: 5, marginRight: 5 }}>
+                <WithLocalSvg
+                  width={16}
+                  height={16}
+                  asset={require("../../assets/fluent_document-20-filled.svg")}
+                  style={{ marginTop: 15, marginLeft: 15 }}
+                />
               </View>
             </View>
           </TouchableOpacity>

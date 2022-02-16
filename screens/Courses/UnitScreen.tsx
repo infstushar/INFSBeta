@@ -16,10 +16,10 @@ import CollapseView from "../../components/CollapseView";
 import { ScrollView } from "react-native-gesture-handler";
 import { WithLocalSvg } from "react-native-svg";
 import Header from "../../components/HeaderwithBack";
-import { Checkbox } from "react-native-paper";
-import { updateToken } from "../../components/Context";
+
 import Font from "../../constants/Font";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AxiosInstance from "../Auth/AxiosInstance";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 const scale = width / 415;
@@ -36,24 +36,27 @@ const UnitScreen = (props) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [content, setContent] = useState([]);
-  var bearer = "Bearer " + AsyncStorage.getItem("userToken");
+
   const getData = async () => {
     try {
-      const response = await fetch(
-        `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/lessons?unit=` +
-          props?.route?.params?.slug,
-        {
-          method: "GET",
-          headers: {
-            Authorization: bearer,
-          },
-        }
+      let response = await AxiosInstance.get(
+        `/lessons?unit=${props?.route?.params?.slug}`
       );
-      const json = await response.json();
-      setData(json);
-      setContent(json);
+      // const response = await fetch(
+      //   `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/lessons?unit=` +
+      //     props?.route?.params?.slug,
+      //   {
+      //     method: "GET",
+      //     headers: {
+      //       Authorization: bearer,
+      //     },
+      //   }
+      // );
+      // const json = await response.json();
+      setData(response.data);
+      setContent(response.data);
     } catch (error) {
-      console.error(error);
+      console.error("lesson error-" + error);
     } finally {
       setLoading(false);
     }
@@ -61,7 +64,6 @@ const UnitScreen = (props) => {
 
   useEffect(() => {
     getData();
-    updateToken();
   }, []);
 
   return (

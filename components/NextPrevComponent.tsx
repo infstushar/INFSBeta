@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,8 +8,44 @@ import {
 } from "react-native";
 const { width, height } = Dimensions.get("window");
 import Font from "../constants/Font";
+import AxiosInstance from "../screens/Auth/AxiosInstance";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const NextPrevComponent = (props) => {
+  const postLessonUpdate = async () => {
+    const courseSlug = await AsyncStorage.getItem("courseSlug");
+    const moduleSlug = await AsyncStorage.getItem("moduleSlug");
+    // console.log("courseSlug +" + courseSlug);
+    // console.log("moduleSlug +" + moduleSlug);
+    // console.log(
+    //   "moduleSlug New +" + (await AsyncStorage.getItem("moduleSlug"))
+    // );
+    // console.log("props.unitSlug +" + props.unitSlug);
+    // console.log("props.content.slug +" + props.content.slug);
+    // const newcourseSlug = JSON.parse(courseSlug);
+    // const newmoduleSlug = JSON.parse(moduleSlug);
+
+    let postData = {
+      course: courseSlug,
+      module: moduleSlug,
+      unit: props.unitSlug,
+      lesson: props.content.slug,
+      lesson_status: 1,
+    };
+
+    try {
+      let response = await AxiosInstance.post(`/update-lesson`, postData);
+      if (response.status == 200) {
+        console.log("marked as read");
+      } else {
+        console.log("marked unsuccessfull");
+      }
+    } catch (e) {
+      console.log("Error -" + e);
+    }
+  };
+
   const Next = () => {
     props.modifyIndex("next");
   };
@@ -87,6 +123,7 @@ const NextPrevComponent = (props) => {
         }
         onPress={() => {
           Next();
+          postLessonUpdate();
         }}
       >
         <Text

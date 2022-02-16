@@ -91,14 +91,14 @@ const INFSAPPNavigator = (props) => {
     () => ({
       signIn: async (data) => {
         const userToken = String(data.access);
-        console.log("userToken - " + userToken);
+        //console.log("userToken - " + userToken);
 
         try {
           await AsyncStorage.setItem("userToken", userToken);
           await AsyncStorage.setItem("refreshToken", data.refresh);
-          let token = await AsyncStorage.getItem("userToken");
+          //let token = await AsyncStorage.getItem("userToken");
 
-          console.log("storage userToken - " + token);
+          //console.log("storage userToken - " + token);
         } catch (e) {
           console.log(e);
         }
