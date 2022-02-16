@@ -13,6 +13,10 @@ export const RenderContent = (props) => {
   const [completion, setCompletion] = useState([]);
   const [quizContent, setQuizContent] = useState([]);
   const navigation = useNavigation();
+  const [courseSlug, setCourseSlug] = useState();
+  const [moduleSlug, setModuleSlug] = useState();
+  const [completedLessons, setCompletedLessons] = useState();
+
   const getData = async (unit) => {
     try {
       let response = await AxiosInstance.get(`/lessons?unit=${unit}`);
@@ -34,17 +38,24 @@ export const RenderContent = (props) => {
       //   setLoading(false);
     }
   };
+
+  useEffect(() => {
+    console.log("useeffect called");
+    if (completion) getCompletedLessons();
+  }, [completion]);
+
   const getCompletionData = async () => {
-    const courseSlug = await AsyncStorage.getItem("courseSlug");
+    const courseTemp = await AsyncStorage.getItem("courseSlug");
+    const moduleTemp = await AsyncStorage.getItem("moduleSlug");
+    setCourseSlug(courseTemp);
+    setModuleSlug(moduleTemp);
+
     try {
       console.log("courseSlug - " + courseSlug);
       let response = await AxiosInstance.get(`/catalog-tracking/${courseSlug}`);
       setCompletion(response.data.response);
-      console.log("Completion - " + completion);
     } catch (error) {
       console.error(error);
-    } finally {
-      //   setLoading(false);
     }
   };
   const getQuizData = async (unit) => {
@@ -76,10 +87,48 @@ export const RenderContent = (props) => {
     }
     getCompletionData();
   }, []);
+  const unitSlug = props.section.slug;
+  const getCompletedLessons = () => {
+    var tempVar =
+      completion && completion !== undefined
+        ? completion[courseSlug] && completion[courseSlug] !== undefined
+          ? completion[courseSlug][moduleSlug] &&
+            completion[courseSlug][moduleSlug] !== undefined
+            ? completion[courseSlug][moduleSlug][unitSlug] &&
+              completion[courseSlug][moduleSlug][unitSlug] !== undefined
+              ? completion[courseSlug][moduleSlug][unitSlug][
+                  "completed_lessons"
+                ]
+              : null
+            : null
+          : null
+        : null;
+
+    //setCompletedLessons(10);
+    // completion && completion !== undefined
+    // ? completion[courseSlug] && completion[courseSlug] !== undefined
+    //   ? completion[courseSlug][moduleSlug] &&
+    //     completion[courseSlug][moduleSlug] !== undefined
+    //     ? completion[courseSlug][moduleSlug][unitSlug] &&
+    //       completion[courseSlug][moduleSlug][unitSlug] !== undefined
+    //       ? completion[courseSlug][moduleSlug][unitSlug][
+    //           "completed_lessons"
+    //         ]
+    //       : null
+    //     : null
+    //   : null
+
+    // : null;
+    console.log("tempVar -" + tempVar);
+
+    console.log("tempVar type -" + typeof tempVar);
+    //return tempVar;
+  };
 
   // const moduleTitle = props.module;
+  let completed;
+  let completedNew;
 
-  const unitSlug = props.section.slug;
   if (content !== undefined && Object.keys(content).length !== 0) {
     return (
       <View>
@@ -95,6 +144,41 @@ export const RenderContent = (props) => {
             }}
           >
             <View style={{ flexDirection: "row", marginRight: 10 }}>
+              {console.log("course = " + courseSlug)}
+              {console.log("module = " + moduleSlug)}
+              {console.log("unit = " + unitSlug)}
+              {/* {console.log(
+                "completion.courseSlug = " +
+                  JSON.stringify(
+                    // completion
+                    //   ? completion[courseSlug]
+                    //     ? completion[courseSlug][moduleSlug]
+                    //       ? completion[courseSlug][moduleSlug][unitSlug]
+                    //       : null
+                    //     : null
+                    //   : null
+                    completion && completion !== undefined
+                      ? completion[courseSlug] &&
+                        completion[courseSlug] !== undefined
+                        ? completion[courseSlug][moduleSlug] &&
+                          completion[courseSlug][moduleSlug] !== undefined
+                          ? completion[courseSlug][moduleSlug][unitSlug] &&
+                            completion[courseSlug][moduleSlug][unitSlug] !==
+                              undefined
+                            ? completion[courseSlug][moduleSlug][unitSlug][
+                                "completed_lessons"
+                              ]
+                            : null
+                          : null
+                        : null
+                      : null
+                  )
+              )} */}
+              {/* {(completed = getCompletedLessons())}
+              {console.log("completed - " + completed)} */}
+              {/* {(completedNew = completed.split(","))}
+              {console.log("completedNew - " + completedNew)} */}
+
               <View style={{ width: "10%" }}>
                 <WithLocalSvg
                   width={16}

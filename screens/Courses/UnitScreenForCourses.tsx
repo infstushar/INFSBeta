@@ -45,7 +45,9 @@ const UnitScreenForCourses = (props) => {
   const [activeSections, setActiveSections] = useState([]);
   const [collapsed, setCollapsed] = useState(true);
   const [multipleSelect, setMultipleSelect] = useState(false);
-
+  const [completedLessons, setCompletedLessons] = useState();
+  const [completion, setCompletion] = useState([]);
+  const [courseSlug, setCourseSlug] = useState();
   const getData = async () => {
     try {
       let response = await AxiosInstance.get(
@@ -108,10 +110,22 @@ const UnitScreenForCourses = (props) => {
       //   setLoading(false);
     }
   };
+  const getCompletionData = async () => {
+    const courseTemp = await AsyncStorage.getItem("courseSlug");
+    setCourseSlug(courseTemp);
+    try {
+      console.log("courseSlug - " + courseSlug);
+      let response = await AxiosInstance.get(`/catalog-tracking/${courseSlug}`);
+      setCompletion(response.data.response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     getData();
     getWorkbookData();
+    getCompletionData();
   }, []);
 
   //const moduleTitle = data?.records[0]?.parent_entity_id;
@@ -186,7 +200,7 @@ const UnitScreenForCourses = (props) => {
         style={[styles.content, isActive ? styles.active : styles.inactive]}
         transition="backgroundColor"
       >
-        <RenderContent section={section} />
+        <RenderContent section={section} completion={completion} />
       </Animatable.View>
     );
   };
