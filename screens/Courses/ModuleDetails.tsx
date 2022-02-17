@@ -552,6 +552,7 @@ const ModuleDetails = (props) => {
             marginLeft: width * 0.28,
           }}
           onPress={() => {
+            data["course"] = props?.route?.params?.course;
             props.navigation.navigate("UnitScreenForCourses", data);
             //props.navigation.navigate("Example");
           }}

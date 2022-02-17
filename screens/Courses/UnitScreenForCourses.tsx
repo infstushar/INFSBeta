@@ -11,6 +11,7 @@ import {
   FlatList,
   StatusBar,
   Switch,
+  Image,
   TouchableOpacity,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -24,6 +25,7 @@ import Accordion from "react-native-collapsible/Accordion";
 import Font from "../../constants/Font";
 
 import { RenderContent } from "./RenderContent";
+import { SSL_OP_NETSCAPE_CA_DN_BUG } from "constants";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -36,7 +38,6 @@ const normalize = (size) => {
     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
   }
 };
-const countOfData = 0;
 
 const UnitScreenForCourses = (props) => {
   const [isLoading, setLoading] = useState(true);
@@ -45,9 +46,15 @@ const UnitScreenForCourses = (props) => {
   const [activeSections, setActiveSections] = useState([]);
   const [collapsed, setCollapsed] = useState(true);
   const [multipleSelect, setMultipleSelect] = useState(false);
-  const [completedLessons, setCompletedLessons] = useState();
+  const [completionLesson, setCompletionLesson] = useState([]);
   const [completion, setCompletion] = useState([]);
   const [courseSlug, setCourseSlug] = useState();
+
+  const courseId = props?.route?.params?.course;
+  const moduleId = props?.route?.params?.id
+    ? props?.route?.params?.id
+    : props?.route?.params?.slug;
+
   const getData = async () => {
     try {
       let response = await AxiosInstance.get(
@@ -82,6 +89,7 @@ const UnitScreenForCourses = (props) => {
       setLoading(false);
     }
   };
+
   const getWorkbookData = async () => {
     try {
       let response = await AxiosInstance.get(
@@ -89,20 +97,7 @@ const UnitScreenForCourses = (props) => {
           ? `/workbook?module=${props?.route?.params?.id}`
           : `/workbook?module=${props?.route?.params?.slug}`
       );
-      // const response = await fetch(
-      //   props?.route?.params?.id
-      //     ? `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/workbook?module=` +
-      //         props?.route?.params?.id
-      //     : `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/workbook?module=` +
-      //         props?.route?.params?.slug,
-      //   {
-      //     method: "GET",
-      //     headers: {
-      //       Authorization: bearer,
-      //     },
-      //   }
-      // );
-      // const json = await response.json();
+
       setWorkbookContent(response.data.records);
     } catch (error) {
       console.error("workbook Error:-" + error);
@@ -111,14 +106,47 @@ const UnitScreenForCourses = (props) => {
     }
   };
   const getCompletionData = async () => {
-    const courseTemp = await AsyncStorage.getItem("courseSlug");
-    setCourseSlug(courseTemp);
     try {
-      console.log("courseSlug - " + courseSlug);
-      let response = await AxiosInstance.get(`/catalog-tracking/${courseSlug}`);
+      //   console.log("courseSlug - " + courseSlug);
+      let response = await AxiosInstance.get(`/catalog-tracking/${courseId}`);
       setCompletion(response.data.response);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const getCompletedLessons = (unitId) => {
+    if (completion)
+      console.log(
+        JSON.stringify(completion) +
+          " module " +
+          moduleId +
+          " courseID " +
+          courseId +
+          " unitid " +
+          unitId
+      );
+    var tempVar =
+      completion && completion !== undefined
+        ? completion[courseId] && completion[courseId] !== undefined
+          ? completion[courseId][moduleId] &&
+            completion[courseId][moduleId] !== undefined
+            ? completion[courseId][moduleId][unitId] &&
+              completion[courseId][moduleId][unitId] !== undefined
+              ? completion[courseId][moduleId][unitId]["completed_lessons"]
+              : null
+            : null
+          : null
+        : null;
+
+    // if (tempVar !== null) {
+    //   props.section["completedLessons"].push(tempVar);
+    //   console.log("Id Props 1- " + JSON.stringify(props));
+    // }
+    if (tempVar !== null) {
+      //console.log(unitId + " completed lessons : " + JSON.stringify(tempVar));
+      setCompletionLesson(tempVar);
+      return tempVar;
     }
   };
 
@@ -194,16 +222,24 @@ const UnitScreenForCourses = (props) => {
   };
 
   const renderContent = (section, _, isActive) => {
+    // console.log("section.slug -" + section.slug);
+    let completionLesson = getCompletedLessons(section.slug);
     return (
       <Animatable.View
         duration={400}
         style={[styles.content, isActive ? styles.active : styles.inactive]}
         transition="backgroundColor"
       >
-        <RenderContent section={section} completion={completion} />
+        <RenderContent
+          section={section}
+          course={courseId}
+          module={moduleId}
+          completiondata={completionLesson}
+        />
       </Animatable.View>
     );
   };
+  //console.log("lesson - " + completionLesson);
 
   return (
     <View style={{ backgroundColor: "#FFFFFF", height: height }}>
@@ -266,19 +302,25 @@ const UnitScreenForCourses = (props) => {
               }}
             >
               <View style={styles.inactive}>
-                <Text
-                  style={{
-                    marginLeft: 15,
-                    fontFamily: "Poppins-Medium",
-                    fontSize: Font.h5,
-                    color: "#3E3E3E",
-                    marginTop: 9,
-                    marginRight: 10,
-                  }}
-                  numberOfLines={3}
-                >
-                  Workbook
-                </Text>
+                <View style={{ flexDirection: "row", height: "100%" }}>
+                  <Image
+                    source={require("../../assets/image.png")}
+                    style={{ marginTop: 15, marginLeft: 10 }}
+                  />
+                  <Text
+                    style={{
+                      marginLeft: 15,
+                      fontFamily: "Poppins-Medium",
+                      fontSize: Font.h5,
+                      color: "#3E3E3E",
+                      marginTop: 9,
+                      marginRight: 10,
+                    }}
+                    numberOfLines={3}
+                  >
+                    Workbook
+                  </Text>
+                </View>
               </View>
             </View>
           </TouchableOpacity>

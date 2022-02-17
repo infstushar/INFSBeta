@@ -478,8 +478,10 @@ const CourseDetailScreen = (props) => {
                     onPress={() => {
                       if (checkData(data.course_type) === 1)
                         return props.navigation.navigate("UnitScreen", data);
-                      else
+                      else {
+                        item["course"] = data.slug;
                         return props.navigation.navigate("ModuleDetails", item);
+                      }
                     }}
                   >
                     Learn more.....
@@ -955,11 +957,13 @@ const CourseDetailScreen = (props) => {
           onPress={() => {
             if (checkData(data.course_type) === 1)
               return props.navigation.navigate("UnitScreen", data);
-            else
+            else {
+              data.modules[0]["course"] = data.slug;
               return props.navigation.navigate(
                 "UnitScreenForCourses",
                 data.modules[0]
               );
+            }
           }}
         >
           <Text

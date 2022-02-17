@@ -199,16 +199,17 @@ const LoginScreen = (props: {
             />
             <TextInput
               value={data.username}
-              //keyboardType="email-address"
+              keyboardType="email-address"
               onChangeText={(val) => textInputChange(val)}
               placeholder="UserName / Email"
               style={{
                 width: "90%",
                 backgroundColor: "transparent",
                 fontSize: Font.p1,
-                color: "#B7B7B7",
+                color: "black",
                 fontFamily: "Poppins-Regular",
                 height: 50,
+                marginLeft: 5,
               }}
               placeholderTextColor="#B7B7B7"
               onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
@@ -252,16 +253,17 @@ const LoginScreen = (props: {
             <TextInput
               value={data.password}
               secureTextEntry={true}
-              //keyboardType="email-address"
+              keyboardType="email-address"
               onChangeText={(val) => handlePasswordChange(val)}
               placeholder="Password"
               style={{
                 width: "90%",
                 backgroundColor: "transparent",
                 fontSize: Font.p1,
-                color: "#B7B7B7",
+                color: "black",
                 fontFamily: "Poppins-Regular",
                 height: 50,
+                marginLeft: 5,
               }}
               placeholderTextColor="#B7B7B7"
             />

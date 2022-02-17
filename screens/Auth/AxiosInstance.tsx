@@ -2,6 +2,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import dayjs from "dayjs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { result } from "lodash";
 
 const baseURL =
   "http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000";
@@ -20,14 +21,14 @@ const AxiosInstance = axios.create({
 
 AxiosInstance.interceptors.request.use(async (req) => {
   let authTokens = await AsyncStorage.getItem("userToken");
-
+  // console.log("authTokens + " + authTokens);
   if (authTokens) {
     // authTokens = AsyncStorage.getItem("userToken")
     //   ? AsyncStorage.getItem("userToken")
     //   : null;
     req.headers.Authorization = `Bearer ${authTokens}`;
   } else {
-    console.log("No token available");
+    //console.log("No token available");
   }
 
   // console.log("authTokens - " + JSON.stringify(req));
@@ -37,7 +38,7 @@ AxiosInstance.interceptors.request.use(async (req) => {
   const isExpired = dayjs.unix(user.exp).diff(dayjs()) < 1;
 
   if (isExpired) {
-    console.log("Token is expired and intited call for refresh");
+    // console.log("Token is expired and intited call for refresh");
     let refreshTokens = await AsyncStorage.getItem("refreshToken");
     const response = await axios.post(`${baseURL}/api/token/refresh/`, {
       refresh: refreshTokens,
@@ -48,9 +49,14 @@ AxiosInstance.interceptors.request.use(async (req) => {
     AsyncStorage.setItem("userToken", response.data.access);
     req.headers.Authorization = `Bearer ${response.data.access}`;
   } else {
-    console.log("Token is not expired ");
+    // console.log("Token is not expired ");
   }
   return req;
+});
+
+AxiosInstance.interceptors.response.use(async (res) => {
+  //console.log(`response + ${JSON.stringify(res)}`);
+  return res;
 });
 
 export default AxiosInstance;
