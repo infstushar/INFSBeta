@@ -1,21 +1,18 @@
 import * as React from "react";
 import { Appbar } from "react-native-paper";
-import {
-  TouchableOpacity,
-  View,
-  Text,
-  ImageBackground,
-  StatusBar,
-} from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import { View, Text, ImageBackground, StatusBar } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { WithLocalSvg } from "react-native-svg";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import Font from "../constants/Font";
+import { AuthContext } from "./Context";
 
 const HeaderwithBack = (props) => {
+  const { signOut } = React.useContext(AuthContext);
   return (
     <ImageBackground
       source={require("../assets/Background3x.png")}
@@ -50,6 +47,21 @@ const HeaderwithBack = (props) => {
               {props.title}
             </Text>
           </View>
+          {/* <TouchableOpacity
+            onPress={() => {
+              signOut();
+            }}
+          >
+            <Icon
+              name="logout"
+              size={25}
+              color="white"
+              style={{
+                marginLeft: wp("20%"),
+                marginTop: 7,
+              }}
+            />
+          </TouchableOpacity> */}
 
           {/* <WithLocalSvg
             width={18}

@@ -209,7 +209,7 @@ const CourseScreen = (props: {
       >
         <FilterScreen onPress={() => setModalVisible(!modalVisible)} />
       </Modal>
-      <View style={{ flexDirection: "row", marginTop: 5 }}>
+      {/* <View style={{ flexDirection: "row", marginTop: 5 }}>
         <View
           style={{
             borderRadius: 25,
@@ -327,9 +327,9 @@ const CourseScreen = (props: {
               </Text>
             </TouchableOpacity>
           )}
-        </View>
+        </View> */}
 
-        {/* <TouchableOpacity
+      {/* <TouchableOpacity
           style={{
             width: 40,
             backgroundColor: "#00B5E0",
@@ -348,9 +348,10 @@ const CourseScreen = (props: {
             asset={require("../../assets/filterNew.svg")}
           />
         </TouchableOpacity> */}
-      </View>
+      {/* </View> */}
 
-      {isAllCoursesClicked ? <AllCourses /> : <EnrolledCourses />}
+      {/* {isAllCoursesClicked ? <AllCourses /> : <EnrolledCourses />} */}
+      <AllCourses />
     </View>
   );
 };

@@ -153,7 +153,7 @@ const CardCoponentScreent = (props) => {
           </View>
         </View>
 
-        <View style={{ flexDirection: "row", marginTop: 5, marginBottom: 15 }}>
+        {/* <View style={{ flexDirection: "row", marginTop: 5, marginBottom: 15 }}>
           <Chip
             style={styles.chipContainerStyle}
             textStyle={styles.tagtextStyle}
@@ -178,7 +178,7 @@ const CardCoponentScreent = (props) => {
           >
             Health
           </Chip>
-        </View>
+        </View> */}
         <View style={{ height: height * 0.5 }}></View>
       </Card.Content>
     </Card>

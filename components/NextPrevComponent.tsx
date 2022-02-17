@@ -13,6 +13,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const NextPrevComponent = (props) => {
+  useEffect(() => {
+    if (props.currentIndex !== props.length - 1) {
+      //postLessonUpdate();
+    }
+  }, [props.currentIndex]);
+
   const postLessonUpdate = async () => {
     const courseSlug = await AsyncStorage.getItem("courseSlug");
     const moduleSlug = await AsyncStorage.getItem("moduleSlug");

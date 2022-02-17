@@ -43,6 +43,7 @@ const Workbook = (props) => {
           style={{ marginLeft: 10, marginRight: 10, marginBottom: 50 }}
         >
           <AdfTohtml source={data[0].short_description}></AdfTohtml>
+          <View style={{ height: 100 }}></View>
         </ScrollView>
       ) : null}
     </View>

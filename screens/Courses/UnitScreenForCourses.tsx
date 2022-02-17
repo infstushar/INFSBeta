@@ -23,21 +23,21 @@ import AxiosInstance from "../Auth/AxiosInstance";
 import Header from "../../components/HeaderwithBack";
 import Accordion from "react-native-collapsible/Accordion";
 import Font from "../../constants/Font";
+import { useIsFocused } from "@react-navigation/native";
 
 import { RenderContent } from "./RenderContent";
-import { SSL_OP_NETSCAPE_CA_DN_BUG } from "constants";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 const scale = width / 415;
-const normalize = (size) => {
-  const newSize = size * scale;
-  if (Platform.OS == "ios") {
-    return Math.round(PixelRatio.roundToNearestPixel(newSize));
-  } else {
-    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
-  }
-};
+// const normalize = (size) => {
+//   const newSize = size * scale;
+//   if (Platform.OS == "ios") {
+//     return Math.round(PixelRatio.roundToNearestPixel(newSize));
+//   } else {
+//     return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
+//   }
+// };
 
 const UnitScreenForCourses = (props) => {
   const [isLoading, setLoading] = useState(true);
@@ -62,26 +62,15 @@ const UnitScreenForCourses = (props) => {
           ? `units?module=${props?.route?.params?.id}`
           : `units?module=${props?.route?.params?.slug}`
       );
-      // const response = await fetch(
-      //   props?.route?.params?.id
-      //     ? `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/units?module=` +
-      //         props?.route?.params?.id
-      //     : `http://ec2-15-207-115-51.ap-south-1.compute.amazonaws.com:8000/units?module=` +
-      //         props?.route?.params?.slug,
-      //   {
-      //     method: "GET",
-      //     headers: {
-      //       Authorization: bearer,
-      //     },
-      //   }
-      // );
-      // const json = await response.json();
+
       await AsyncStorage.setItem(
         "moduleSlug",
         props?.route?.params?.id
           ? props?.route?.params?.id
           : props?.route?.params?.slug
       );
+
+      console.log("unit API call for UnitScreenForCourse");
       setData(response.data);
     } catch (error) {
       console.error("type; " + error);
@@ -99,6 +88,9 @@ const UnitScreenForCourses = (props) => {
       );
 
       setWorkbookContent(response.data.records);
+      console.log(
+        "workbook API call for UnitScreenForCourse" + workbookcontent
+      );
     } catch (error) {
       console.error("workbook Error:-" + error);
     } finally {
@@ -108,24 +100,21 @@ const UnitScreenForCourses = (props) => {
   const getCompletionData = async () => {
     try {
       //   console.log("courseSlug - " + courseSlug);
-      let response = await AxiosInstance.get(`/catalog-tracking/${courseId}`);
-      setCompletion(response.data.response);
+      await AxiosInstance.get(`/catalog-tracking/${courseId}`).then(
+        (response) => {
+          setCompletion(response.data.response);
+          console.log(
+            "Completion API call for UnitScreenForCourse" +
+              JSON.stringify(response.data)
+          );
+        }
+      );
     } catch (error) {
       console.error(error);
     }
   };
 
   const getCompletedLessons = (unitId) => {
-    if (completion)
-      console.log(
-        JSON.stringify(completion) +
-          " module " +
-          moduleId +
-          " courseID " +
-          courseId +
-          " unitid " +
-          unitId
-      );
     var tempVar =
       completion && completion !== undefined
         ? completion[courseId] && completion[courseId] !== undefined
@@ -153,7 +142,12 @@ const UnitScreenForCourses = (props) => {
   useEffect(() => {
     getData();
     getWorkbookData();
-    getCompletionData();
+
+    const willFocusSubscription = props.navigation.addListener("focus", () => {
+      getCompletionData();
+    });
+
+    return willFocusSubscription;
   }, []);
 
   //const moduleTitle = data?.records[0]?.parent_entity_id;
@@ -175,15 +169,24 @@ const UnitScreenForCourses = (props) => {
         style={[styles.header, isActive ? styles.active : styles.inactive]}
         transition="backgroundColor"
       >
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.headerText}>{section.order} - </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            marginTop: 8,
+            height: 50,
+            marginBottom: 15,
+          }}
+        >
+          {/* <Text style={styles.headerText}>{section.order} - </Text> */}
           <View style={{ marginLeft: 5, marginRight: 30 }}>
             <Text
               style={{
-                fontFamily: "Poppins-Medium",
-                fontSize: Font.h5,
                 marginRight: 30,
-                marginTop: 3,
+                marginTop: 5,
+                fontFamily: "Poppins-Regular",
+                fontSize: Font.h6,
+                marginLeft: 5,
+                color: "#3E3E3E",
               }}
               numberOfLines={2}
             >
@@ -239,8 +242,10 @@ const UnitScreenForCourses = (props) => {
       </Animatable.View>
     );
   };
-  //console.log("lesson - " + completionLesson);
 
+  //console.log("lesson - " + completionLesson);
+  if (completion)
+    console.log("Completion at render" + JSON.stringify(completion));
   return (
     <View style={{ backgroundColor: "#FFFFFF", height: height }}>
       <Header
@@ -302,19 +307,23 @@ const UnitScreenForCourses = (props) => {
               }}
             >
               <View style={styles.inactive}>
-                <View style={{ flexDirection: "row", height: "100%" }}>
-                  <Image
+                <View
+                  style={{
+                    flexDirection: "row",
+                    height: "100%",
+                  }}
+                >
+                  {/* <Image
                     source={require("../../assets/image.png")}
                     style={{ marginTop: 15, marginLeft: 10 }}
-                  />
+                  /> */}
                   <Text
                     style={{
-                      marginLeft: 15,
-                      fontFamily: "Poppins-Medium",
-                      fontSize: Font.h5,
+                      marginTop: 10,
+                      fontFamily: "Poppins-Regular",
+                      fontSize: Font.h6,
+                      marginLeft: 10,
                       color: "#3E3E3E",
-                      marginTop: 9,
-                      marginRight: 10,
                     }}
                     numberOfLines={3}
                   >
@@ -345,22 +354,25 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: "center",
-    fontFamily: "Poppins-Medium",
-    fontSize: Font.h5,
+    fontFamily: "Poppins-Regular",
+    fontSize: Font.h6,
     margin: 10,
     marginTop: 5,
   },
   header: {
-    backgroundColor: "#F5FCFF",
+    backgroundColor: "#EDEDED",
     marginLeft: 10,
     marginRight: 10,
     marginTop: 10,
+    height: 60,
+    alignContent: "center",
   },
   headerText: {
-    fontFamily: "Poppins-Medium",
-    fontSize: Font.h5,
+    fontFamily: "Poppins-Regular",
+    fontSize: Font.h6,
     marginTop: 5,
     marginLeft: 5,
+    color: "#3E3E3E",
   },
   content: {
     paddingLeft: 10,

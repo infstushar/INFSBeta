@@ -12,18 +12,15 @@ import {
   PixelRatio,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import Swiper from "react-native-swiper";
+
 import Font from "../../constants/Font";
 import { Chip, List, Card } from "react-native-paper";
-import RenderHtml from "react-native-render-html";
-//import json2html from "json-to-html";
+
 import Header from "../../components/HeaderwithBack";
 import { WithLocalSvg } from "react-native-svg";
 
-import * as Animatable from "react-native-animatable";
-import AdfToHtml from "./AdfTohtml";
 import ListComponent from "../../components/ListComponent";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import AxiosInstance from "../Auth/AxiosInstance";
 
 const width = Dimensions.get("window").width;

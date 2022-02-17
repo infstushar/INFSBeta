@@ -16,12 +16,15 @@ const AxiosInstance = axios.create({
   headers: {
     Authorization: `Bearer ${authTokens}`,
     "Content-Type": "application/json",
+    "Cache-Control": "no-cache",
+    Pragma: "no-cache",
+    Expires: "0",
   },
 });
 
 AxiosInstance.interceptors.request.use(async (req) => {
   let authTokens = await AsyncStorage.getItem("userToken");
-  // console.log("authTokens + " + authTokens);
+  console.log("authTokens + " + authTokens);
   if (authTokens) {
     // authTokens = AsyncStorage.getItem("userToken")
     //   ? AsyncStorage.getItem("userToken")
@@ -52,11 +55,6 @@ AxiosInstance.interceptors.request.use(async (req) => {
     // console.log("Token is not expired ");
   }
   return req;
-});
-
-AxiosInstance.interceptors.response.use(async (res) => {
-  //console.log(`response + ${JSON.stringify(res)}`);
-  return res;
 });
 
 export default AxiosInstance;

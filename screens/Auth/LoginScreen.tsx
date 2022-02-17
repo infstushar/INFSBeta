@@ -253,7 +253,7 @@ const LoginScreen = (props: {
             <TextInput
               value={data.password}
               secureTextEntry={true}
-              keyboardType="email-address"
+              //keyboardType="email-address"
               onChangeText={(val) => handlePasswordChange(val)}
               placeholder="Password"
               style={{

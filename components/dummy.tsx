@@ -38,15 +38,15 @@ const dummy = (props) => {
         }}
       >
         {" "}
-        Upcomming event ...
+        Upcoming event ...
       </Text>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => {
           props.navigation.navigate("Quiz");
         }}
       >
         <Text>Quiz</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <TouchableOpacity
         onPress={() => {
