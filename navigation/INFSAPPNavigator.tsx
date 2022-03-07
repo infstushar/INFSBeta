@@ -11,6 +11,8 @@ import {
   ActivityIndicator,
   Provider as PaperProvider,
 } from "react-native-paper";
+
+import SignUpScreen from "../screens/Auth/SignUpScreen";
 import HomeScreen from "../screens/ScreenNavigator/HomeScreen";
 import Icon from "react-native-vector-icons/Ionicons";
 import PreferenceScreen from "../screens/StartUp/PreferenceScreen";
@@ -40,6 +42,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { baseProps } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlers";
 import { AuthContext } from "../components/Context";
 import Workbook from "../screens/Courses/Workbook";
+import CustomHeaderScreen from "../screens/Courses/CustomHeaderScreen";
+import UnitLesson from "../screens/Courses/UnitLesson";
+import ContentDetail from "../components/ContentDetail";
+import ModuleListComponent from "../components/ModuleListComponent";
 
 const INFSAPPNavigator = (props) => {
   // const [isLoading, setIsLoading] = useState(true);
@@ -198,8 +204,27 @@ const INFSAPPNavigator = (props) => {
               }}
             />
             <Stack.Screen
+              name="ContentDetail"
+              component={ContentDetail}
+              options={{
+                headerShown: false,
+                headerTitleStyle: { fontFamily: "Poppins-Regular" },
+                headerBackTitleStyle: { fontFamily: "Poppins-Regular" },
+              }}
+            />
+
+            <Stack.Screen
               name="Workbook"
               component={Workbook}
+              options={{
+                headerShown: false,
+                headerTitleStyle: { fontFamily: "Poppins-Regular" },
+                headerBackTitleStyle: { fontFamily: "Poppins-Regular" },
+              }}
+            />
+            <Stack.Screen
+              name="ModuleListComponent"
+              component={ModuleListComponent}
               options={{
                 headerShown: false,
                 headerTitleStyle: { fontFamily: "Poppins-Regular" },
@@ -234,9 +259,37 @@ const INFSAPPNavigator = (props) => {
                 headerBackTitleStyle: { fontFamily: "Poppins-Regular" },
               }}
             />
+
+            <Stack.Screen
+              name="SignUpScreen"
+              component={SignUpScreen}
+              options={{
+                headerShown: false,
+                headerTitleStyle: { fontFamily: "Poppins-Regular" },
+                headerBackTitleStyle: { fontFamily: "Poppins-Regular" },
+              }}
+            />
             <Stack.Screen
               name="AdfTohtml"
               component={AdfTohtml}
+              options={{
+                headerShown: false,
+                headerTitleStyle: { fontFamily: "Poppins-Regular" },
+                headerBackTitleStyle: { fontFamily: "Poppins-Regular" },
+              }}
+            />
+            <Stack.Screen
+              name="CustomHeaderScreen"
+              component={CustomHeaderScreen}
+              options={{
+                headerShown: false,
+                headerTitleStyle: { fontFamily: "Poppins-Regular" },
+                headerBackTitleStyle: { fontFamily: "Poppins-Regular" },
+              }}
+            />
+            <Stack.Screen
+              name="UnitLesson"
+              component={UnitLesson}
               options={{
                 headerShown: false,
                 headerTitleStyle: { fontFamily: "Poppins-Regular" },

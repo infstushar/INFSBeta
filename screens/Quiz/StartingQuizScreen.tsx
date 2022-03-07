@@ -45,7 +45,7 @@ const StartingQuizScreen = (props) => {
           <View style={{ alignItems: "flex-start", marginTop: "30%" }}>
             <WithLocalSvg
               width={"100%"}
-              height={300}
+              height={"50%"}
               asset={require("../../assets/quiz.svg")}
             />
           </View>

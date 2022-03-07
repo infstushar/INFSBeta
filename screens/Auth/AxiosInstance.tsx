@@ -24,7 +24,7 @@ const AxiosInstance = axios.create({
 
 AxiosInstance.interceptors.request.use(async (req) => {
   let authTokens = await AsyncStorage.getItem("userToken");
-  console.log("authTokens + " + authTokens);
+  //console.log("authTokens + " + authTokens);
   if (authTokens) {
     // authTokens = AsyncStorage.getItem("userToken")
     //   ? AsyncStorage.getItem("userToken")

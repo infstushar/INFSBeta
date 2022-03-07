@@ -14,8 +14,8 @@ import axios from "axios";
 
 const NextPrevComponent = (props) => {
   useEffect(() => {
-    if (props.currentIndex !== props.length - 1) {
-      //postLessonUpdate();
+    if (props.currentIndex !== props.length) {
+      postLessonUpdate();
     }
   }, [props.currentIndex]);
 
@@ -57,6 +57,9 @@ const NextPrevComponent = (props) => {
   };
   const Prev = () => {
     props.modifyIndex("prev");
+  };
+  const Quiz = () => {
+    props.modifyIndex("quiz");
   };
 
   return (
@@ -106,44 +109,77 @@ const NextPrevComponent = (props) => {
           Previous
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={
-          props.currentIndex !== props.length - 1
-            ? {
-                flexDirection: "row",
-                height: 40,
-                width: "35%",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginTop: 20,
-                marginBottom: 30,
-                borderRadius: 29,
-                backgroundColor: "#00B5E0",
-                shadowColor: "#00000029",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 1,
-                shadowRadius: 3,
-                marginLeft: props.currentIndex !== 0 ? 40 : width / 2 + 20,
-              }
-            : { display: "none" }
-        }
-        onPress={() => {
-          Next();
-          postLessonUpdate();
-        }}
-      >
-        <Text
+      {props.currentIndex !== props.length - 1 ? (
+        <TouchableOpacity
           style={{
-            flex: 1,
-            textAlign: "center",
-            color: "#FFFFFF",
-            fontSize: Font.h6,
-            fontFamily: "Poppins-SemiBold",
+            flexDirection: "row",
+            height: 40,
+            width: "35%",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: 20,
+            marginBottom: 30,
+            borderRadius: 29,
+            backgroundColor: "#00B5E0",
+            shadowColor: "#00000029",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 1,
+            shadowRadius: 3,
+            marginLeft: props.currentIndex !== 0 ? 40 : width / 2 + 20,
+          }}
+          onPress={() => {
+            Next();
+            postLessonUpdate();
           }}
         >
-          Next
-        </Text>
-      </TouchableOpacity>
+          <Text
+            style={{
+              flex: 1,
+              textAlign: "center",
+              color: "#FFFFFF",
+              fontSize: Font.h6,
+              fontFamily: "Poppins-SemiBold",
+            }}
+          >
+            Next
+          </Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={{
+            flexDirection: "row",
+            height: 40,
+            width: "35%",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: 20,
+            marginBottom: 30,
+            borderRadius: 29,
+            backgroundColor: "#00B5E0",
+            shadowColor: "#00000029",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 1,
+            shadowRadius: 3,
+            marginLeft: props.currentIndex !== 0 ? 40 : width / 2 + 20,
+          }}
+          onPress={() => {
+            Quiz();
+            postLessonUpdate();
+          }}
+        >
+          <Text
+            style={{
+              flex: 1,
+              textAlign: "center",
+              color: "#FFFFFF",
+              fontSize: Font.h6,
+              fontFamily: "Poppins-SemiBold",
+            }}
+          >
+            Next
+          </Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

@@ -60,9 +60,16 @@ const LessonSreen = (props) => {
     if (action === "next") {
       let newIndex = index + 1;
       if (newIndex < contentLength) setIndex(newIndex);
-    } else {
+    } else if (action === "prev") {
       let newIndex = index - 1;
       if (newIndex >= 0) setIndex(newIndex);
+    } else {
+      props?.route?.params?.quizContent[0]
+        ? props.navigation.navigate(
+            "Quiz",
+            props?.route?.params?.quizContent[0]
+          )
+        : console.log("not selected");
     }
   };
 

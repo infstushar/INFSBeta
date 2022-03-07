@@ -89,13 +89,13 @@ const AdfTohtml = (props) => {
   const tagsStyles = {
     body: {},
     ol: {
-      fontFamily: "Poppins-Regular",
+      fontFamily: "Roboto-Regular",
       color: "#838383",
       fontSize: Font.p1,
     },
 
     ul: {
-      fontFamily: "Poppins-Regular",
+      fontFamily: "Roboto-Regular",
       color: "#838383",
       fontSize: Font.p1,
       marginBottom: -8,
@@ -105,45 +105,45 @@ const AdfTohtml = (props) => {
     },
     p: {
       fontSize: Font.p1,
-      fontFamily: "Poppins-Regular",
+      fontFamily: "Roboto-Regular",
       color: "#838383",
       marginLeft: 5,
       marginRight: 10,
       marginTop: -10,
     },
     h2: {
-      fontFamily: "Poppins-Bold",
+      fontFamily: "Roboto-Bold",
       fontSize: Font.h4,
       marginLeft: 5,
     },
     h1: {
-      fontFamily: "Poppins-Bold",
+      fontFamily: "Roboto-Bold",
       fontSize: Font.h1,
       marginLeft: 5,
     },
     h6: {
-      fontFamily: "Poppins-Bold",
+      fontFamily: "Roboto-Bold",
       fontSize: Font.p1,
       marginLeft: 5,
     },
     h3: {
-      color: "#3E3E3E",
-      fontFamily: "Poppins-Medium",
+      color: "#364F65",
+      fontFamily: "Roboto-Medium",
       fontSize: Font.h5,
       marginLeft: 5,
     },
     h4: {
-      fontFamily: "Poppins-Medium",
+      fontFamily: "Roboto-Medium",
       fontSize: Font.h4,
       marginLeft: 5,
     },
     h5: {
-      fontFamily: "Poppins-SemiBold",
+      fontFamily: "Roboto-SemiBold",
       fontSize: Font.h5,
       marginLeft: 5,
     },
     strong: {
-      fontFamily: "Poppins-Medium",
+      fontFamily: "Roboto-Medium",
       color: "#3E3E3E",
     },
     blockquote: {
@@ -156,7 +156,7 @@ const AdfTohtml = (props) => {
     ul: {
       markerBoxStyle: {},
       markerTextStyle: {
-        color: "green",
+        color: "#364F65",
       },
     },
   };
@@ -164,6 +164,7 @@ const AdfTohtml = (props) => {
   const domVisitors = {
     onElement: onElement,
   };
+  console.log("Image in lesson + " + JSON.stringify(source));
 
   return (
     <RenderHtml

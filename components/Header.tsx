@@ -21,33 +21,39 @@ const { width, height } = Dimensions.get("window");
 
 const Header = (props) => {
   return (
-    <ImageBackground
-      source={require("../assets/Background3x.png")}
-      resizeMode="cover"
-      style={{ width: wp("100%") }}
-    >
-      <StatusBar hidden></StatusBar>
-      <Appbar.Header style={{ backgroundColor: "transparent" }}>
-        <View style={{ flexDirection: "row" }}>
-          <Text
-            style={{
-              fontSize: Font.h2,
-              fontFamily: "Poppins-SemiBold",
-              color: "#FFFFFF",
-              marginLeft: 10,
-            }}
-          >
-            {props.title}
-          </Text>
-          {/* <WithLocalSvg
+    // <ImageBackground
+    //   source={require("../assets/Background3x.png")}
+    //   resizeMode="cover"
+    //   style={{ width: wp("100%") }}
+    // >
+    // <StatusBar hidden></StatusBar>
+    <Appbar.Header style={{ backgroundColor: "#FFFFFF" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "flex-start",
+          marginLeft: 150,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 18,
+            fontFamily: "Roboto-Medium",
+            color: "#4D6276",
+            fontWeight: "200",
+          }}
+        >
+          {props.title}
+        </Text>
+        {/* <WithLocalSvg
             width={18}
             height={18}
             asset={require("../assets/Notification.svg")}
             style={{ marginLeft: wp("50%"), marginTop: 15 }}
           /> */}
-        </View>
-      </Appbar.Header>
-    </ImageBackground>
+      </View>
+    </Appbar.Header>
+    // </ImageBackground>
   );
 };
 

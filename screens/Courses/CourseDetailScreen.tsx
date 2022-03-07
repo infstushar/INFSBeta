@@ -10,6 +10,7 @@ import {
   StatusBar,
   Platform,
   PixelRatio,
+  Modal,
 } from "react-native";
 import CourseContentScreen from "../../components/CourseContentScreen";
 import { ScrollView } from "react-native-gesture-handler";
@@ -18,7 +19,7 @@ import Swiper from "react-native-swiper";
 import Header from "../../components/HeaderwithBack";
 import { WithLocalSvg } from "react-native-svg";
 import ListComponent from "../../components/ListComponent";
-
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Card, Chip, List } from "react-native-paper";
 import Font from "../../constants/Font";
@@ -27,6 +28,7 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import AxiosInstance from "../Auth/AxiosInstance";
+import ContentDetail from "../../components/ContentDetail";
 
 const { width, height } = Dimensions.get("window");
 
@@ -87,6 +89,7 @@ const DATA = [
 const CourseDetailScreen = (props) => {
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const getData = async () => {
     try {
@@ -117,7 +120,9 @@ const CourseDetailScreen = (props) => {
     }
   };
   useEffect(() => {
-    getData();
+    const willFocusSubscription = props.navigation.addListener("focus", () => {
+      getData();
+    });
   }, []);
   const courseTitle = data.title;
   const checkData = (item) => {
@@ -147,6 +152,9 @@ const CourseDetailScreen = (props) => {
       {item.tag}
     </Chip>
   );
+  const dataModalSlide = (title, content) => {
+    return <ContentDetail title={title} content={content} />;
+  };
   const renderItemforCourseContent = ({ item }) => (
     <View style={styles.column}>
       <View style={styles.row}>
@@ -215,22 +223,29 @@ const CourseDetailScreen = (props) => {
           props.navigation.goBack(null);
         }}
       />
-      <View
-        style={{
-          width: width,
-          height: 200,
-        }}
-      >
-        <Image
-          source={require("../../assets/banner5.jpeg")}
-          style={{ width: width, height: "100%" }}
-        />
-      </View>
       <ScrollView
         style={{ flexGrow: 1, marginBottom: 5 }}
         contentInsetAdjustmentBehavior="automatic"
       >
-        <View style={{ marginLeft: 15, marginBottom: 10 }}>
+        <View
+          style={{
+            width: width,
+            height: 200,
+          }}
+        >
+          <Image
+            source={require("../../assets/banner5.jpeg")}
+            style={{
+              width: "95%",
+              height: "100%",
+              borderRadius: 10,
+
+              margin: 10,
+            }}
+          />
+        </View>
+
+        <View style={{ marginLeft: 15, marginBottom: 10, marginVertical: 5 }}>
           <View style={{ flexDirection: "row", marginTop: 10 }}>
             <WithLocalSvg
               width={12}
@@ -242,7 +257,7 @@ const CourseDetailScreen = (props) => {
               style={{
                 fontFamily: "Poppins-Medium",
                 fontSize: Font.p1,
-                color: "#3E3E3E",
+                color: "#364F65",
                 marginLeft: 10,
               }}
             >
@@ -253,7 +268,7 @@ const CourseDetailScreen = (props) => {
                 textDecorationLine: "underline",
                 fontFamily: "Poppins-Medium",
                 fontSize: Font.p1,
-                color: "#3E3E3E",
+                color: "#364F65",
                 marginLeft: 5,
               }}
             >
@@ -264,7 +279,7 @@ const CourseDetailScreen = (props) => {
             style={{
               fontFamily: "Poppins-SemiBold",
               fontSize: Font.h4,
-              color: "#3E3E3E",
+              color: "#364F65",
               paddingBottom: 10,
 
               marginTop: 10,
@@ -321,7 +336,7 @@ const CourseDetailScreen = (props) => {
               style={{
                 fontFamily: "Poppins-Medium",
                 fontSize: Font.p1,
-                color: "#3E3E3E",
+                color: "#364F65",
                 paddingLeft: 5,
                 marginLeft: 5,
                 marginTop: 5,
@@ -343,7 +358,7 @@ const CourseDetailScreen = (props) => {
                 paddingLeft: 5,
                 fontFamily: "Poppins-Medium",
                 fontSize: Font.p1,
-                color: "#3E3E3E",
+                color: "#364F65",
                 marginTop: 5,
               }}
             >
@@ -360,7 +375,7 @@ const CourseDetailScreen = (props) => {
                 style={{
                   fontFamily: "Poppins-Medium",
                   fontSize: Font.p1,
-                  color: "#3E3E3E",
+                  color: "#364F65",
                   paddingLeft: 5,
                   paddingTop: 5,
                 }}
@@ -376,17 +391,251 @@ const CourseDetailScreen = (props) => {
             horizontal
           />*/}
         </View>
+        <View style={{ margin: 15 }}>
+          <ListComponent
+            title={"Here’s what you ‘ll learn"}
+            sourceData={data.courseoverview?.what_will_you}
+            setViewStyle={{
+              paddingVertical: 5,
+              backgroundColor: "#F8F8F8",
+            }}
+          />
+        </View>
 
-        <ListComponent
-          title={"Here’s what you ‘ll learn"}
-          sourceData={data.courseoverview?.what_will_you}
-          setViewStyle={{
-            paddingVertical: 5,
-            backgroundColor: "#F8F8F8",
+        <Text
+          style={{
+            color: "#364F65",
+            marginLeft: 15,
+            fontFamily: "Roboto-Medium",
+            fontSize: Font.h5,
+            marginTop: 20,
+            marginBottom: 10,
           }}
-        />
+        >
+          Course insights
+        </Text>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate("ContentDetail", {
+              content: data.courseoverview?.includes,
+              title: "This Course includes",
+            });
+          }}
+          style={{
+            backgroundColor: "#F9FAFB",
+            margin: 10,
+            height: 50,
+            flexDirection: "row",
+          }}
+        >
+          <View
+            style={{
+              borderWidth: 1,
+              height: 24,
+              width: 24,
+              backgroundColor: "#5A819C",
+              marginTop: 12,
+              marginLeft: 8,
+              borderColor: "#cccccc",
+              borderRadius: 4,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "Roboto-Bold",
+                fontSize: 12,
+                fontWeight: "500",
+                color: "#FFFFFF",
+                marginLeft: 7,
+                marginTop: 3,
+                lineHeight: 15,
+              }}
+            >
+              1
+            </Text>
+          </View>
+          <Text
+            style={{
+              marginTop: 20,
+              marginLeft: 10,
+              fontFamily: "Roboto-Medium",
+              //fontFamily: "Poppins-Regular",
+              fontSize: Font.h6,
+              lineHeight: 15,
+              color: "#364F65",
+            }}
+          >
+            Course Includes
+          </Text>
+        </TouchableOpacity>
 
-        <ListComponent
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate("ContentDetail", {
+              content: data.courseoverview?.long_description,
+              title: "Course Description",
+            });
+          }}
+          style={{
+            backgroundColor: "#F9FAFB",
+            margin: 10,
+            height: 50,
+            flexDirection: "row",
+          }}
+        >
+          <View
+            style={{
+              borderWidth: 1,
+              height: 24,
+              width: 24,
+              backgroundColor: "#5A819C",
+              marginTop: 12,
+              marginLeft: 8,
+              borderColor: "#cccccc",
+              borderRadius: 4,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "Roboto-Medium",
+                fontSize: 12,
+                fontWeight: "500",
+                color: "#FFFFFF",
+                marginLeft: 7,
+                marginTop: 3,
+                lineHeight: 15,
+              }}
+            >
+              2
+            </Text>
+          </View>
+          <Text
+            style={{
+              marginTop: 20,
+              marginLeft: 10,
+              fontFamily: "Roboto-Medium",
+              //fontFamily: "Poppins-Regular",
+              fontSize: Font.h6,
+              lineHeight: 15,
+              color: "#364F65",
+            }}
+          >
+            Course Description
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate("ModuleListComponent", {
+              content: data.courseoverview?.eligibility,
+              title: "Modules",
+              data: data,
+            });
+          }}
+          style={{
+            backgroundColor: "#F9FAFB",
+            margin: 10,
+            height: 50,
+            flexDirection: "row",
+          }}
+        >
+          <View
+            style={{
+              borderWidth: 1,
+              height: 24,
+              width: 24,
+              backgroundColor: "#5A819C",
+              marginTop: 12,
+              marginLeft: 8,
+              borderColor: "#cccccc",
+              borderRadius: 4,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "Roboto-Medium",
+                fontSize: 14,
+                fontWeight: "500",
+                color: "#FFFFFF",
+                marginLeft: 7,
+                marginTop: 3,
+                lineHeight: 15,
+              }}
+            >
+              3
+            </Text>
+          </View>
+          <Text
+            style={{
+              marginTop: 20,
+              marginLeft: 10,
+              fontFamily: "Roboto-Medium",
+              //fontFamily: "Poppins-Regular",
+              fontSize: Font.h6,
+              lineHeight: 15,
+              color: "#364F65",
+            }}
+          >
+            Modules
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.navigate("ContentDetail", {
+              content: data.courseoverview?.eligibility,
+              title: "Course Eligibility",
+            });
+          }}
+          style={{
+            backgroundColor: "#F9FAFB",
+            margin: 10,
+            height: 50,
+            flexDirection: "row",
+          }}
+        >
+          <View
+            style={{
+              borderWidth: 1,
+              height: 24,
+              width: 24,
+              backgroundColor: "#5A819C",
+              marginTop: 12,
+              marginLeft: 8,
+              borderColor: "#cccccc",
+              borderRadius: 4,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "Roboto-Medium",
+                fontSize: 12,
+                fontWeight: "500",
+                color: "#FFFFFF",
+                marginLeft: 7,
+                marginTop: 3,
+                lineHeight: 15,
+              }}
+            >
+              4
+            </Text>
+          </View>
+          <Text
+            style={{
+              marginTop: 20,
+              marginLeft: 10,
+              fontFamily: "Roboto-Medium",
+              //fontFamily: "Poppins-Regular",
+              fontSize: Font.h6,
+              lineHeight: 15,
+              color: "#364F65",
+            }}
+          >
+            Course Eligibility
+          </Text>
+        </TouchableOpacity>
+
+        {/* <ListComponent
           title={"This Course Includes"}
           sourceData={data.courseoverview?.includes}
           setViewStyle={{
@@ -394,9 +643,9 @@ const CourseDetailScreen = (props) => {
             borderColor: "#EAEAEA",
             margin: 15,
           }}
-        />
+        /> */}
 
-        <View style={{ marginTop: 10 }}>
+        {/* <View style={{ marginTop: 10 }}>
           <Text
             style={{
               color: "#3E3E3E",
@@ -423,7 +672,7 @@ const CourseDetailScreen = (props) => {
                   }}
                   bgColor="#F8F8F8"
                 /> */}
-                <View
+        {/*<View
                   style={{
                     borderWidth: 1,
                     borderColor: "#EAEAEA",
@@ -490,7 +739,7 @@ const CourseDetailScreen = (props) => {
               </View>
             )}
           />
-        </View>
+        </View> */}
         {/* <TouchableOpacity
           style={{
             flexDirection: "row",
@@ -517,7 +766,7 @@ const CourseDetailScreen = (props) => {
           />
         </TouchableOpacity> */}
 
-        <View>
+        {/* <View>
           <ListComponent
             title={"Course Description"}
             sourceData={data.courseoverview?.long_description}
@@ -530,20 +779,30 @@ const CourseDetailScreen = (props) => {
             sourceData={data.courseoverview?.eligibility}
             setViewStyle={{ marginTop: 5, marginLeft: 10 }}
           />
-        </View>
+        </View> */}
         <View style={{ marginTop: 10 }}>
           <Text
             style={{
-              color: "#3E3E3E",
+              color: "#364F65",
               marginLeft: 15,
               fontSize: Font.h5,
-              fontFamily: "Poppins-Medium",
+              fontFamily: "Roboto-Medium",
+              marginBottom: 10,
+              marginTop: 20,
             }}
           >
             Accreditation
           </Text>
-          <View style={{ marginLeft: "20%" }}>
-            <View style={{ flexDirection: "row" }}>
+          <View
+            style={{
+              borderWidth: 0.2,
+              borderColor: "#364F65",
+              margin: 15,
+              padding: 10,
+              alignItems: "center",
+            }}
+          >
+            <View style={{ flexDirection: "row", margin: 5 }}>
               <Image
                 source={require("../../assets/dipp.jpeg")}
                 style={{
@@ -580,7 +839,7 @@ const CourseDetailScreen = (props) => {
               color: "#3E3E3E",
               marginLeft: 15,
               fontSize: Font.h5,
-              fontFamily: "Poppins-SemiBold",
+              fontFamily: "Roboto-SemiBold",
             }}
           >
             Testimonials
@@ -642,7 +901,7 @@ const CourseDetailScreen = (props) => {
                           color: "#3E3E3E",
                           marginLeft: 15,
                           fontSize: Font.h5,
-                          fontFamily: "Poppins-Medium",
+                          fontFamily: "Roboto-Medium",
                         }}
                       >
                         Virendra Tilekar
@@ -652,7 +911,7 @@ const CourseDetailScreen = (props) => {
                           color: "#3E3E3E",
                           marginLeft: 15,
                           fontSize: Font.p1,
-                          fontFamily: "Poppins-Regular",
+                          fontFamily: "Roboto-Regular",
                         }}
                       >
                         Foundation Course,
@@ -676,7 +935,7 @@ const CourseDetailScreen = (props) => {
                       <Text
                         style={{
                           fontSize: Font.p2,
-                          fontFamily: "Poppins-Medium",
+                          fontFamily: "Roboto-Medium",
                           color: "#FFFFFF",
                         }}
                       >
@@ -695,7 +954,7 @@ const CourseDetailScreen = (props) => {
                   <Text
                     style={{
                       fontSize: Font.p1,
-                      fontFamily: "Poppins-Regular",
+                      fontFamily: "Roboto-Regular",
                       color: "#838383",
                     }}
                   >
@@ -730,7 +989,7 @@ const CourseDetailScreen = (props) => {
                           color: "#3E3E3E",
                           marginLeft: 15,
                           fontSize: Font.h5,
-                          fontFamily: "Poppins-Medium",
+                          fontFamily: "Roboto-Medium",
                         }}
                       >
                         Virendra Tilekar
@@ -740,7 +999,7 @@ const CourseDetailScreen = (props) => {
                           color: "#3E3E3E",
                           marginLeft: 15,
                           fontSize: Font.p1,
-                          fontFamily: "Poppins-Regular",
+                          fontFamily: "Roboto-Regular",
                         }}
                       >
                         Foundation Course,
@@ -764,7 +1023,7 @@ const CourseDetailScreen = (props) => {
                       <Text
                         style={{
                           fontSize: Font.p2,
-                          fontFamily: "Poppins-Medium",
+                          fontFamily: "Roboto-Medium",
                           color: "#FFFFFF",
                         }}
                       >
@@ -782,7 +1041,7 @@ const CourseDetailScreen = (props) => {
                   <Text
                     style={{
                       fontSize: Font.p1,
-                      fontFamily: "Poppins-Regular",
+                      fontFamily: "Roboto-Regular",
                       color: "#838383",
                     }}
                   >
@@ -802,7 +1061,7 @@ const CourseDetailScreen = (props) => {
             color: "#3E3E3E",
             marginLeft: 15,
             fontSize: Font.h5,
-            fontFamily: "Poppins-SemiBold",
+            fontFamily: "Roboto-SemiBold",
             marginTop: 10,
           }}
         >
@@ -815,7 +1074,7 @@ const CourseDetailScreen = (props) => {
                 title="Diploma in Nutrition and Fitness?"
                 titleStyle={{
                   fontSize: Font.p1,
-                  fontFamily: "Poppins-Medium",
+                  fontFamily: "Roboto-Medium",
                   color: "#3E3E3E",
                 }}
                 style={{ backgroundColor: "#F4F4F4" }}
@@ -831,7 +1090,7 @@ const CourseDetailScreen = (props) => {
                 title="Content Prep course?"
                 titleStyle={{
                   fontSize: Font.p1,
-                  fontFamily: "Poppins-Medium",
+                  fontFamily: "Roboto-Medium",
                   color: "#3E3E3E",
                 }}
                 style={{ backgroundColor: "#F4F4F4" }}
@@ -846,7 +1105,7 @@ const CourseDetailScreen = (props) => {
                 title="Calisthenics Trainer Certification?"
                 titleStyle={{
                   fontSize: Font.p1,
-                  fontFamily: "Poppins-Medium",
+                  fontFamily: "Roboto-Medium",
                   color: "#3E3E3E",
                 }}
                 style={{ backgroundColor: "#F4F4F4" }}
@@ -871,7 +1130,7 @@ const CourseDetailScreen = (props) => {
         <View style={{ marginLeft: 20, marginTop: 20 }}>
           <Text
             style={{
-              fontFamily: "Poppins-Regular",
+              fontFamily: "Roboto-Regular",
               fontSize: Font.h5,
               color: "#3E3E3E",
             }}
@@ -887,7 +1146,7 @@ const CourseDetailScreen = (props) => {
             />
             <Text
               style={{
-                fontFamily: "Poppins-SemiBold",
+                fontFamily: "Roboto-SemiBold",
                 fontSize: Font.h5,
                 color: "#3E3E3E",
                 marginTop: 2,
@@ -923,7 +1182,7 @@ const CourseDetailScreen = (props) => {
 
               color: "#FFFFFF",
               fontSize: Font.h5,
-              fontFamily: "Poppins-SemiBold",
+              fontFamily: "Roboto-SemiBold",
             }}
           >
             Enroll Now
@@ -936,6 +1195,7 @@ const CourseDetailScreen = (props) => {
           flexDirection: "row",
           marginBottom: 30,
           height: 40,
+          backgroundColor: "rgba(52, 52, 52, alpha)",
         }}
       >
         <TouchableOpacity
@@ -963,6 +1223,8 @@ const CourseDetailScreen = (props) => {
                 "UnitScreenForCourses",
                 data.modules[0]
               );
+              //return props.navigation.navigate("CustomHeaderScreen");
+              //return props.navigation.navigate("CoursesDetailsScrollable");
             }
           }}
         >
@@ -972,7 +1234,7 @@ const CourseDetailScreen = (props) => {
               textAlign: "center",
               color: "#FFFFFF",
               fontSize: Font.h6,
-              fontFamily: "Poppins-SemiBold",
+              fontFamily: "Roboto-Bold",
             }}
           >
             Start My Learning
@@ -996,7 +1258,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   hairline: {
-    backgroundColor: "#838383",
+    backgroundColor: "#364F65",
     height: 13,
     width: 2,
     marginTop: 5,
@@ -1029,7 +1291,7 @@ const styles = StyleSheet.create({
   boldText: {
     fontFamily: "Poppins-Regular",
     fontSize: Font.p1,
-    color: "#3E3E3E",
+    color: "#364F65",
     marginLeft: 15,
   },
   horizontalline: {
@@ -1044,7 +1306,7 @@ const styles = StyleSheet.create({
   textStyleForheaderMedium: {
     fontFamily: "Poppins-Medium",
     fontSize: Font.p1,
-    color: "#3E3E3E",
+    color: "#364F65",
   },
 });
 

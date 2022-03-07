@@ -10,11 +10,10 @@ const ListComponent = (props) => {
       <View>
         <Text
           style={{
-            color: "#3E3E3E",
-            marginLeft: 15,
+            color: "#364F65",
             fontSize: Font.h5,
             fontFamily: "Poppins-Medium",
-            marginTop: 10,
+            marginBottom: 10,
           }}
         >
           {props.title}

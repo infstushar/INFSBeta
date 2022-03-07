@@ -9,6 +9,7 @@ import {
 import Font from "../../constants/Font";
 import { WithLocalSvg } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import AxiosInstance from "../Auth/AxiosInstance";
 
@@ -62,7 +63,20 @@ export const RenderContent = (props) => {
 
   if (content !== undefined && Object.keys(content).length !== 0) {
     return (
-      <View style={{ marginLeft: -10, borderWidth: 1, borderColor: "#f2f2f2" }}>
+      <View
+        style={{
+          alignItems: "flex-start",
+          paddingStart: -10,
+          paddingTop: 10,
+          width: "95%",
+          borderRadius: 15,
+          backgroundColor: "rgba(255, 255, 255, 255)",
+          shadowColor: "f2f2f2",
+          shadowOpacity: 1,
+          shadowOffset: 0,
+          shadowRadius: 25,
+        }}
+      >
         {content.map((value, index) => (
           <TouchableOpacity
             onPress={() => {
@@ -93,13 +107,27 @@ export const RenderContent = (props) => {
                   />
                 ) : null}
               </View>
-              <View style={{ marginLeft: 10, width: "75%" }}>
+              <View style={{ marginLeft: 10, width: "10%" }}>
                 <Text
                   style={{
                     marginTop: 10,
                     fontFamily: "Poppins-Regular",
                     fontSize: Font.h6,
                     marginLeft: 15,
+                    color: "rgba(209, 218, 219, 255)",
+                  }}
+                  numberOfLines={3}
+                >
+                  {value.order}
+                </Text>
+              </View>
+              <View style={{ marginLeft: 10, width: "65%" }}>
+                <Text
+                  style={{
+                    marginTop: 10,
+                    fontFamily: "Poppins-Regular",
+                    fontSize: Font.h6,
+                    marginLeft: 5,
                     color: "#3E3E3E",
                   }}
                   numberOfLines={3}
@@ -109,10 +137,16 @@ export const RenderContent = (props) => {
               </View>
               <View style={{ marginLeft: 5, marginRight: 5 }}>
                 {value.lesson_type === "video" ? (
-                  <WithLocalSvg
-                    width={16}
-                    height={16}
-                    asset={require("../../assets/Vector.svg")}
+                  // <WithLocalSvg
+                  //   width={16}
+                  //   height={16}
+                  //   asset={require("../../assets/Vector.svg")}
+                  //   style={{ marginTop: 15, marginLeft: 15 }}
+                  // />
+                  <Icon
+                    name="play-circle"
+                    size={18}
+                    color="gray"
                     style={{ marginTop: 15, marginLeft: 15 }}
                   />
                 ) : (
@@ -155,38 +189,68 @@ export const RenderContent = (props) => {
               }}
             >
               <View style={{ width: "5%" }}>
+                {/* {props.completiondata &&
+                props.completiondata.includes(value.slug) ? (
+                  <WithLocalSvg
+                    width={16}
+                    height={16}
+                    asset={require("../../assets/tick.svg")}
+                    style={{ marginTop: 15, marginLeft: 15 }}
+                  />
+                ) : null} */}
+              </View>
+              {/* <View style={{ width: "5%" }}>
                 {/* <WithLocalSvg
                   width={16}
                   height={16}
                   asset={require("../../assets/tick.svg")}
                   style={{ marginTop: 15, marginLeft: 15 }}
                 /> */}
-              </View>
-              <View style={{ marginLeft: 10, width: "75%" }}>
+              {/* </View>  */}
+              <View style={{ marginLeft: 10, width: "10%" }}>
                 <Text
                   style={{
-                    marginLeft: 15,
-                    fontFamily: "Poppins-Medium",
+                    marginTop: 10,
+                    fontFamily: "Poppins-Regular",
                     fontSize: Font.h6,
+                    marginLeft: 15,
+                    color: "rgba(209, 218, 219, 255)",
+                  }}
+                  numberOfLines={3}
+                >
+                  9
+                </Text>
+              </View>
+              <View style={{ marginLeft: 10, width: "65%" }}>
+                <Text
+                  style={{
+                    marginTop: 10,
+                    fontFamily: "Poppins-Regular",
+                    fontSize: Font.h6,
+                    marginLeft: 15,
                     color: "#3E3E3E",
-                    marginTop: 9,
-                    marginRight: 10,
                   }}
                   numberOfLines={3}
                 >
                   Quiz
                 </Text>
               </View>
-              <View style={{ marginLeft: 5, marginRight: 5 }}>
+              <View>
                 {/* <WithLocalSvg
                   width={16}
                   height={16}
                   asset={require("../../assets/fluent_document-20-filled.svg")}
                   style={{ marginTop: 15, marginLeft: 15 }}
                 /> */}
-                <Image
+                {/* <Image
                   source={require("../../assets/image.png")}
                   style={{ marginTop: 15, marginLeft: 15 }}
+                /> */}
+                <Icon
+                  name="head-question"
+                  size={24}
+                  color="gray"
+                  style={{ marginTop: 5, marginLeft: 15 }}
                 />
               </View>
             </View>

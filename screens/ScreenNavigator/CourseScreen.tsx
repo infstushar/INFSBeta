@@ -107,7 +107,7 @@ const CourseScreen = (props: {
 
   const AllCourses = () => {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "#e6faff" }}>
         <FlatList
           data={data.records}
           keyExtractor={({ id }, index) => id}
@@ -196,10 +196,10 @@ const CourseScreen = (props: {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#e6faff" }}>
       <StatusBar hidden />
       <Header title="Courses" />
-      <Modal
+      {/* <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -208,7 +208,7 @@ const CourseScreen = (props: {
         }}
       >
         <FilterScreen onPress={() => setModalVisible(!modalVisible)} />
-      </Modal>
+      </Modal> */}
       {/* <View style={{ flexDirection: "row", marginTop: 5 }}>
         <View
           style={{
@@ -358,7 +358,7 @@ const CourseScreen = (props: {
 
 const styles = StyleSheet.create({
   screen: {
-    marginTop: 20,
+    marginTop: 0,
     marginLeft: 1,
     marginRight: -8,
     flexGrow: 1,

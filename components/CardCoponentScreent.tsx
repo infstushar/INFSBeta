@@ -22,13 +22,13 @@ const CardCoponentScreent = (props) => {
       }}
     >
       <Card.Content>
-        <Image source={props.Img} style={styles.imageContainer}></Image>
+        {/* <Image source={props.Img} style={styles.imageContainer}></Image> */}
 
         {/* <View style={styles.imageContainer}>
           <VimeoPlayer videoId={id} />
     </View>*/}
 
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -151,7 +151,7 @@ const CardCoponentScreent = (props) => {
               </Text>
             </View>
           </View>
-        </View>
+        </View> */}
 
         {/* <View style={{ flexDirection: "row", marginTop: 5, marginBottom: 15 }}>
           <Chip
@@ -179,24 +179,103 @@ const CardCoponentScreent = (props) => {
             Health
           </Chip>
         </View> */}
-        <View style={{ height: height * 0.5 }}></View>
+        {/* <View style={{ height: height * 0.5 }}></View> */}
+
+        <View>
+          <WithLocalSvg
+            width={330}
+            height={200}
+            preserveAspectRatio="xMinYMin slice"
+            asset={require("../assets/CourseImage.svg")}
+          />
+          <Text
+            style={{
+              fontFamily: "Roboto-Medium",
+              fontSize: 16,
+              color: "#3E3E3E",
+              lineHeight: 22.4,
+              margin: 15,
+              fontWeight: "500",
+              letterSpacing: 0.41,
+            }}
+          >
+            {props.title}
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              paddingHorizontal: 10,
+              marginLeft: 5,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "Roboto-Regular",
+                fontSize: 12,
+                color: "#787C84",
+                lineHeight: 16.8,
+
+                fontWeight: "500",
+                letterSpacing: 0.41,
+              }}
+            >
+              Instructor:{" "}
+            </Text>
+            <Text
+              style={{
+                fontFamily: "Roboto-Regular",
+                fontSize: 12,
+                color: "#203B54",
+                lineHeight: 16.8,
+                fontWeight: "500",
+                letterSpacing: 0.41,
+              }}
+            >
+              {props.author}
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                position: "absolute",
+                right: 2,
+                top: -2,
+              }}
+            >
+              <WithLocalSvg
+                width={12}
+                height={14}
+                asset={require("../assets/Iconawesome-rupee-sign.svg")}
+                style={{ marginTop: 5 }}
+              />
+              <Text style={styles.priceTextStyle}>
+                {Math.floor(props.price)}
+              </Text>
+            </View>
+          </View>
+        </View>
       </Card.Content>
     </Card>
   );
 };
 const styles = StyleSheet.create({
   card: {
-    shadowColor: "#0000001A",
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    shadowOpacity: 1,
+    // shadowColor: "#0000001A",
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowRadius: 6,
+    // shadowOpacity: 1,
+    shadowColor: "rgba(0, 0, 0, 0.25)",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
     backgroundColor: "#FFFFFF",
     elevation: 10,
     borderRadius: 15,
-    marginLeft: 10,
-    marginRight: 20,
-    width: wp("94%"),
-    height: hp("60%"),
+    // marginLeft: 10,
+    // marginRight: 10,
+    marginTop: 20,
+    marginLeft: 15,
+    width: "90%",
+
     flexGrow: 1,
   },
   imageContainer: {
@@ -236,11 +315,12 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   priceTextStyle: {
-    fontFamily: "Poppins-SemiBold",
-    fontSize: Font.h5,
+    fontFamily: "Roboto-Medium",
+    fontSize: 21,
     color: "#3E3E3E",
     marginLeft: 1,
-    lineHeight: 24,
+    lineHeight: 26,
+    fontWeight: "600",
   },
   cardTextStyleForRegular: {
     fontFamily: "Poppins-Regular",

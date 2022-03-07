@@ -70,7 +70,7 @@ const UnitScreenForCourses = (props) => {
           : props?.route?.params?.slug
       );
 
-      console.log("unit API call for UnitScreenForCourse");
+      // console.log("unit API call for UnitScreenForCourse");
       setData(response.data);
     } catch (error) {
       console.error("type; " + error);
@@ -88,9 +88,9 @@ const UnitScreenForCourses = (props) => {
       );
 
       setWorkbookContent(response.data.records);
-      console.log(
-        "workbook API call for UnitScreenForCourse" + workbookcontent
-      );
+      // console.log(
+      //   "workbook API call for UnitScreenForCourse" + workbookcontent
+      // );
     } catch (error) {
       console.error("workbook Error:-" + error);
     } finally {
@@ -103,10 +103,10 @@ const UnitScreenForCourses = (props) => {
       await AxiosInstance.get(`/catalog-tracking/${courseId}`).then(
         (response) => {
           setCompletion(response.data.response);
-          console.log(
-            "Completion API call for UnitScreenForCourse" +
-              JSON.stringify(response.data)
-          );
+          // console.log(
+          //   "Completion API call for UnitScreenForCourse" +
+          //     JSON.stringify(response.data)
+          // );
         }
       );
     } catch (error) {
@@ -242,10 +242,10 @@ const UnitScreenForCourses = (props) => {
       </Animatable.View>
     );
   };
-
+  let completedLessonArray;
   //console.log("lesson - " + completionLesson);
-  if (completion)
-    console.log("Completion at render" + JSON.stringify(completion));
+  // if (completion)
+  //   console.log("Completion at render" + JSON.stringify(completion));
   return (
     <View style={{ backgroundColor: "#FFFFFF", height: height }}>
       <Header
@@ -268,29 +268,64 @@ const UnitScreenForCourses = (props) => {
         {props?.route?.params?.title}
       </Text>
       <ScrollView>
-        {data && data.records ? (
-          <Accordion
-            activeSections={activeSections}
-            // For any default active section
-            sections={data.records}
-            // Title and content of accordion
-            touchableComponent={TouchableOpacity}
-            // Which type of touchable component you want
-            // It can be the following Touchables
-            // TouchableHighlight, TouchableNativeFeedback
-            // TouchableOpacity , TouchableWithoutFeedback
-            expandMultiple={multipleSelect}
-            // If you want to expand multiple at a time
-            renderHeader={renderHeader}
-            // Header Component(View) to render
-            renderContent={renderContent}
-            // Content Component(View) to render
-            duration={400}
-            // Duration for Collapse and expand
-            onChange={setSections}
-            // Setting the state of active sections
-          />
-        ) : null}
+        {data && data.records
+          ? // <Accordion
+            //   activeSections={activeSections}
+            //   // For any default active section
+            //   sections={data.records}
+            //   // Title and content of accordion
+            //   touchableComponent={TouchableOpacity}
+            //   // Which type of touchable component you want
+            //   // It can be the following Touchables
+            //   // TouchableHighlight, TouchableNativeFeedback
+            //   // TouchableOpacity , TouchableWithoutFeedback
+            //   expandMultiple={multipleSelect}
+            //   // If you want to expand multiple at a time
+            //   renderHeader={renderHeader}
+            //   // Header Component(View) to render
+            //   renderContent={renderContent}
+            //   // Content Component(View) to render
+            //   duration={400}
+            //   // Duration for Collapse and expand
+            //   onChange={setSections}
+            //   // Setting the state of active sections
+            // />
+            //console.log("data + " + JSON.stringify(data.records))
+
+            data.records.map((value) => (
+              <TouchableOpacity
+                onPress={() =>
+                  props.navigation.navigate("UnitLesson", {
+                    value,
+                    completedLessonArray: getCompletedLessons(value.slug),
+                    moduleId,
+                    courseId,
+                  })
+                }
+                style={[
+                  styles.inactive,
+                  {
+                    margin: 10,
+                    height: 50,
+                  },
+                ]}
+              >
+                <Text
+                  style={{
+                    marginRight: 20,
+                    marginTop: 5,
+                    //fontFamily: "Poppins-Regular",
+                    fontSize: Font.h6,
+                    marginLeft: 10,
+                    color: "#484848",
+                  }}
+                  numberOfLines={2}
+                >
+                  {value.title}
+                </Text>
+              </TouchableOpacity>
+            ))
+          : null}
 
         {workbookcontent ? (
           <TouchableOpacity
@@ -320,10 +355,10 @@ const UnitScreenForCourses = (props) => {
                   <Text
                     style={{
                       marginTop: 10,
-                      fontFamily: "Poppins-Regular",
+                      //fontFamily: "Poppins-Regular",
                       fontSize: Font.h6,
                       marginLeft: 10,
-                      color: "#3E3E3E",
+                      color: "#484848",
                     }}
                     numberOfLines={3}
                   >
@@ -379,7 +414,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
   },
-  active: { backgroundColor: "#FFFFFF" },
+  active: { backgroundColor: "#f2fbfd" },
   inactive: {
     backgroundColor: "#EDEDED",
   },
